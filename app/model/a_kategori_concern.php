@@ -73,7 +73,7 @@ class A_Kategori_Concern extends \JI_Model
 
         $this->datatables['admin'] = new \Seme_Datatable([
             ["$this->tbl_as.id", 'id', 'ID'],
-            ["$this->tbl_as.nama", 'nama', 'Kategori'],
+            ["$this->tbl_as.nama", 'nama', 'Kawasan'],
             ["$this->tbl_as.slug", 'slug', 'Slug'],
             ["$this->tbl_as.gambar", 'gambar', 'Gambar'],
             ["$this->tbl_as.is_active", 'is_active', 'Status']
