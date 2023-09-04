@@ -40,7 +40,7 @@
                             <input id="islug" type="text" name="slug" class="form-control" required>
                         </div>
                         <div class="col-md-4 mb-2">
-                            <label for="ia_kategori_id" class="control-label">Kategori</label>
+                            <label for="ia_kategori_id" class="control-label">Kawasan</label>
                             <select id="ia_kategori_id" type="text" name="a_kategori_id" class="form-control select2" required>
                                 <?php if (isset($akm[0]->id)) : ?>
                                     <?php foreach ($akm as $k => $v) : ?>
@@ -49,6 +49,76 @@
                                 <?php endif ?>
                             </select>
                         </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="itipe" class="control-label">Tipe Rumah</label>
+                            <select id="itipe" type="text" name="tipe" class="form-control select2" required>
+                                <option value="36">36</option>
+                                <option value="48">48</option>
+                                <option value="50">50</option>
+                                <option value="70">70</option>
+                            </select>
+                        </div>
+                        <!-- <div class="col-md-4 mb-2">
+                            <label for="iblok" class="control-label">Blok</label>
+                            <input id="iblok" type="text" name="blok" class="form-control" placeholder="ex: A" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="inomor" class="control-label">Nomor</label>
+                            <input id="inomor" type="text" name="nomor" class="form-control" required>
+                        </div> -->
+                        <div class="col-md-4 mb-2">
+                            <label for="iluas_tanah" class="control-label">Luas Tanah (m<sup>2</sup>)</label>
+                            <input id="iluas_tanah" type="text" name="luas_tanah" class="form-control" placeholder="ex: 5.6" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="iluas_bangunan" class="control-label">Luas Bangunan (m<sup>2</sup>)</label>
+                            <input id="iluas_bangunan" type="text" name="luas_bangunan" class="form-control" placeholder="ex: 5.6" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="ilantai" class="control-label">Lantai</label>
+                            <input id="ilantai" type="number" name="lantai" class="form-control" value="1" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="ikamar_tidur" class="control-label">Kamar</label>
+                            <input id="ikamar_tidur" type="number" name="kamar_tidur" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="itoilet" class="control-label">Toilet</label>
+                            <input id="itoilet" type="number" name="toilet" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="igarasi" class="control-label">Garasi</label>
+                            <input id="igarasi" type="number" name="garasi" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label for="iharga" class="control-label">Harga</label>
+                            <input id="iharga" type="text" name="harga" class="form-control currency" required>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="ilistrik" class="control-label">Listrik</label>
+                            <select id="ilistrik" type="text" name="listrik" class="form-control select2" required>
+                                <option value="900">900</option>
+                                <option value="1300" selected>1300</option>
+                                <option value="2500">2500</option>
+                                <option value="3300">3300</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="iair" class="control-label">Air</label>
+                            <input id="iair" type="text" name="air" class="form-control" value="pdam">
+                        </div>
+                        <!-- <div class="col-md-4 mb-2">
+                            <label for="istatus" class="control-label">Status Rumah/Kavling</label>
+                            <select id="istatus" type="text" name="status" class="form-control select2" required>
+                                <option value="tersedia">tersedia</option>
+                                <option value="booking">booking</option>
+                                <option value="terjual">terjual</option>
+                            </select>
+                        </div> -->
+                    </div>
+                    <div class="row">
                         <div class="col-md-3 mb-2">
                             <label for="igambar1" class="control-label">Gambar 1</label>
                             <div class="input-group">
@@ -115,7 +185,7 @@
                 </div>
 
                 <hr>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <h5>Spesifikasi</h5>
                     <div class="row mb-3">
                         <div class="col-12">
@@ -170,7 +240,7 @@
                         <div id="panel_spec"></div>
                         <div id="panel_price" class="col-md-12" style="overflow-x: scroll;"></div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group form-actions">
                     <div class="col-xs-12 text-right">

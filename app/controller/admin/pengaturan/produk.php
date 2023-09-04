@@ -95,23 +95,26 @@ class Produk extends \JI_Controller
 			$qty = [];
 			$spesifikasi = [];
 			$data['bpm']->spesifikasi = json_decode($data['bpm']->spesifikasi);
-			foreach ($data['bpm']->spesifikasi as $k => $v) {
-				if ($k == 'QTY') {
-					foreach ($v as $ks => $vs) {
-						$arr_qty = explode(' ', $vs);
-						if (count($arr_qty) == 3) {
-							$qty[$ks]['dari_qty'] = $arr_qty[0];
-							$qty[$ks]['opr'] = $arr_qty[1];
-							$qty[$ks]['ke_qty'] = $arr_qty[2];
-						} else {
-							$qty[$ks]['opr'] = $arr_qty[0];
-							$qty[$ks]['ke_qty'] = $arr_qty[1];
+			if (isset($data['bpm']->spesifikasi)) {
+				foreach ($data['bpm']->spesifikasi as $k => $v) {
+					if ($k == 'QTY') {
+						foreach ($v as $ks => $vs) {
+							$arr_qty = explode(' ', $vs);
+							if (count($arr_qty) == 3) {
+								$qty[$ks]['dari_qty'] = $arr_qty[0];
+								$qty[$ks]['opr'] = $arr_qty[1];
+								$qty[$ks]['ke_qty'] = $arr_qty[2];
+							} else {
+								$qty[$ks]['opr'] = $arr_qty[0];
+								$qty[$ks]['ke_qty'] = $arr_qty[1];
+							}
 						}
+					} else {
+						$spesifikasi[$k] = $v;
 					}
-				} else {
-					$spesifikasi[$k] = $v;
 				}
 			}
+
 			$data['bpm']->spesifikasi = $spesifikasi;
 			$data['bpm']->qty = $qty;
 		}

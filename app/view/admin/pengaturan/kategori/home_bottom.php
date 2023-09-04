@@ -60,7 +60,7 @@ if(jQuery('#drTable').length>0){
 							}
 						})
 						$("#adetail").attr("href","<?=base_url_admin("pengaturan/kategori/detail/")?>"+ieid);
-						//$("#aedit").attr("href","<?=base_url_admin("pengaturan/kategori/edit/")?>"+ieid);
+						$("#asiteplan").attr("href","<?=base_url_admin("pengaturan/kategori/siteplan/")?>"+ieid);
 						$("#areseller").attr("href","<?=base_url_admin("partner/reseller/baru/")?>"+ieid);
 						$("#modal_option").modal("show");
 						

@@ -85,4 +85,25 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     $this->db->where('is_deleted', $this->db->esc(0));
     return $this->db->get('', 0);
   }
+
+  public function getAll($is_active = 1)
+  {
+    $this->db->select_as($this->tbl_as . '.id', "id", 0)
+      ->select_as($this->tbl_as . '.slug', "slug", 0)
+      ->select_as($this->tbl_as . '.gambar', "gambar", 0)
+      ->select_as($this->tbl_as . '.nama', "nama", 0)
+      ->select('luas_tanah')
+      ->select('luas_bangunan')
+      ->select('harga')
+      ->select('toilet')
+      ->select('kamar_tidur')
+      ->select_as("COALESCE($this->tbl2_as.nama,'')", "kawasan", 0)
+      ->select('a_kategori_id');
+    $this->db->from("$this->tbl", "$this->tbl_as");
+    $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id");
+    $this->db->where_as($this->tbl_as . '.is_active', $this->db->esc($is_active));
+    $this->db->where_as($this->tbl_as . '.is_deleted', $this->db->esc(0));
+    $this->db->order_by($this->tbl_as . '.count_read', 'desc');
+    return $this->db->get('', 0);
+  }
 }

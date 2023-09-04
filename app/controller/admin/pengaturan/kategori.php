@@ -22,7 +22,9 @@ class Kategori extends \JI_Controller
 		$this->setTheme('admin');
 		$this->lib("seme_purifier");
 		$this->load("a_kategori_concern");
+		$this->load("b_produk_concern");
 		$this->load("admin/a_kategori_model", "akm");
+		$this->load("admin/b_produk_model", "bpm");
 		$this->current_parent = 'pengaturan';
 		$this->current_page = 'kategori';
 	}
@@ -43,7 +45,7 @@ class Kategori extends \JI_Controller
 		$this->loadLayout('col-2-left', $data);
 		$this->render();
 	}
-	public function indikator($id)
+	public function siteplan($id)
 	{
 		$data = $this->__init();
 		if (!$this->admin_login) {
@@ -55,15 +57,22 @@ class Kategori extends \JI_Controller
 			redir(base_url_admin('pengaturan/kategori'));
 			die();
 		}
+		$akm = $this->akm->id($id);
+		// dd($akm);
+		$data['akm'] = $akm;
 		$pengguna = $data['sess']->admin;
 
+		$bpm = $this->bpm->getAll();
+		if (isset($bpm[0])) $data['bpm'] = $bpm;
+		unset($bpm);
 
-		$this->setTitle('Kawasan - Indikator ' . $this->config_semevar('admin_site_suffix', ''));
 
-		$this->putThemeContent("pengaturan/indikator/home_modal", $data);
-		$this->putThemeContent("pengaturan/indikator/home", $data);
+		$this->setTitle('Kawasan - Siteplan ' . $this->config_semevar('admin_site_suffix', ''));
 
-		$this->putJsContent("pengaturan/indikator/home_bottom", $data);
+		$this->putThemeContent("pengaturan/siteplan/baru_modal", $data);
+		$this->putThemeContent("pengaturan/siteplan/baru", $data);
+
+		$this->putJsContent("pengaturan/siteplan/baru_bottom", $data);
 		$this->loadLayout('col-2-left', $data);
 		$this->render();
 	}

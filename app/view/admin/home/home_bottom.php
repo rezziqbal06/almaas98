@@ -94,3 +94,6 @@ gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 
 initLineChart(ctx1, "line", "Omset", <?=$chart->bulan?>, <?=$chart->omset?>, "#5e72e4", gradientStroke1)
 initLineChart(ctx2, "bar", "Order", <?=$chart->bulan?>, <?=$chart->jumlah?>, "#3A416F", "#3A416F")
+
+const canvas = document.getElementById("house_3d");
+const engine = new BABYLON.Engine(canvas, true);

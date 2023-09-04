@@ -182,3 +182,39 @@ $("#fpesan").on('submit', function(e){
   pesanProduk()
 })
 
+$("#angsuran").mask("#.##0", {reverse: true});
+
+function setSimulasi(harga, tenor=36){
+    var angsuran = harga/tenor;
+    $("#angsuran").val(angsuran).trigger('input');
+    angsuran = $("#angsuran").val();
+    var s = '';
+    if(!tenor){
+      return false;
+    }
+    for(var i = 0;i < tenor; i++){
+      s += `<tr><td>${(i+1)}</td><td>Rp. ${angsuran}</td></tr>`
+    }
+    $("#panel_simulasi").html(s);
+}
+
+$("#simulasi").on('click', function(e){
+  e.preventDefault();
+  var harga = <?=$produk->harga_asli ?? 0?>;
+  setSimulasi(harga);
+  $("#modal_simulasi").modal('show');
+})
+
+$("#btn-simulasi").on('click', function(e){
+  e.preventDefault();
+  var harga = <?=$produk->harga_asli ?? 0?>;
+  var tenor = $("#tenor").val();
+  setSimulasi(harga,tenor);
+})
+
+
+$("#siteplan").on('click', function(e){
+  e.preventDefault();
+  var kategori_id = $(this).attr('data-id');
+  window.location = '<?=base_url('siteplan/')?>'+kategori_id
+})

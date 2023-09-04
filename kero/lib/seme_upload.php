@@ -143,6 +143,14 @@ class Seme_Upload
                     $filename = "$nation_code-$unique_id-$ke";
                     $filethumb = $filename . '-thumb';
                     break;
+                case 'svg':
+                    if (!in_array($fileext, array("svg"))) {
+                        $sc->status = 303;
+                        $sc->message = 'Invalid file extension, please try other ' . $jenis . ' file.';
+                        return $sc;
+                    }
+                    $filename = "$nation_code-$unique_id-$ke";
+                    break;
                 default:
                     $sc->status = 998;
                     $sc->message = 'Jenis file upload tidak ditemukan';

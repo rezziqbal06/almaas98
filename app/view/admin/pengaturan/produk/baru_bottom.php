@@ -9,6 +9,8 @@ var id_spec = 0;
 
 $(".select2").select2();
 
+$('.currency').mask("#.##0", {reverse: true});
+
 function convertToSlug(Text) {
   	return Text.toLowerCase()
              .replace(/ /g, '-')

@@ -20,6 +20,24 @@ class Home extends JI_Controller
 		$this->load('front/b_produk_model', 'bpm');
 	}
 
+	function __formatNominal($nominal)
+	{
+		$formats = [
+			1000000000 => 'miliar',
+			1000000 => 'juta',
+			1000 => 'ribu'
+		];
+
+		foreach ($formats as $divisor => $format) {
+			if ($nominal >= $divisor) {
+				$result = $nominal / $divisor;
+				return number_format($result, 0) . ' ' . $format;
+			}
+		}
+
+		return number_format($nominal, 0);
+	}
+
 	public function index()
 	{
 		$data = $this->__init();
@@ -30,16 +48,20 @@ class Home extends JI_Controller
 		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
 		$this->setOGImage(base_url("media/logo.png"));
 		$bpm_popular = $this->bpm->getPopular();
-		if (isset($bpm_popular[0]->id)) $data['bpm'] = $bpm_popular;
-
+		if (isset($bpm_popular[0]->id)) {
+			foreach ($bpm_popular as $b) {
+				if (isset($b->luas_bangunan)) $b->luas_bangunan = (int) $b->luas_bangunan;
+				if (isset($b->luas_tanah)) $b->luas_tanah = (int) $b->luas_tanah;
+				if (isset($b->harga)) {
+					$b->harga = $b->harga / (3 * 12);
+					$b->harga = $this->__formatNominal((int) $b->harga);
+				}
+			}
+		}
 		$data['bpm_popular'] = $bpm_popular;
 		unset($bpm_popular);
 
-		$bpm = $this->bpm->getAll();
-		if (isset($bpm[0]->id)) $data['bpm'] = $bpm;
 
-		$data['bpm'] = $bpm;
-		unset($bpm);
 
 		$akm = $this->akm->getAll();
 		if (isset($akm[0]->id)) $data['akm'] = $akm;

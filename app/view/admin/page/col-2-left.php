@@ -22,6 +22,7 @@
 	<!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
 	<?php $this->getJsFooter(); ?>
 
+
 	<!-- Load and execute javascript code used only in this page -->
 	<script>
 		var from_user_id = '';

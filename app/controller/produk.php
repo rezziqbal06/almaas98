@@ -29,45 +29,32 @@ class Produk extends JI_Controller
 		// 	redir(base_url('login'), 0);
 		// 	die();
 		// }
+		$this->current_page = 'explore';
 		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
 
-		$bpm_popular = $this->bpm->getPopular();
-		if (isset($bpm_popular[0]->id)) $data['bpm'] = $bpm_popular;
-
-		$data['bpm_popular'] = $bpm_popular;
-		unset($bpm_popular);
-
-		$bpm = $this->bpm->getAll();
-		if (isset($bpm[0]->id)) $data['bpm'] = $bpm;
-
-		$data['bpm'] = $bpm;
-		unset($bpm);
-
-		$akm = $this->akm->getAll();
-		if (isset($akm[0]->id)) $data['akm'] = $akm;
-
-		$data['akm'] = $akm;
-		unset($akm);
-
-		$abm = $this->abm->getAll();
-		if (isset($abm[0]->id)) $data['abm'] = $abm;
-
-		$data['abm'] = $abm;
-		unset($abm);
-
-		$apm = $this->apm->getAll();
-		if (isset($apm[0]->id)) $data['apm'] = $apm;
-
-		$data['apm'] = $apm;
-		unset($apm);
-
-		// $data['jp'] = $this->input->request('jp', 2);
-
-		$this->putThemeContent("home/home", $data);
-		$this->putThemeContent("home/home_modal", $data);
-		$this->putJsContent("home/home_bottom", $data);
+		$this->putThemeContent("explore/home", $data);
+		$this->putThemeContent("explore/home_modal", $data);
+		$this->putJsContent("explore/home_bottom", $data);
 		$this->loadLayout('col-1-bar', $data);
 		$this->render();
+	}
+
+	function __formatNominal($nominal)
+	{
+		$formats = [
+			1000000000 => 'miliar',
+			1000000 => 'juta',
+			1000 => 'ribu'
+		];
+
+		foreach ($formats as $divisor => $format) {
+			if ($nominal >= $divisor) {
+				$result = $nominal / $divisor;
+				return number_format($result, 0) . ' ' . $format;
+			}
+		}
+
+		return number_format($nominal, 0);
 	}
 
 	public function detail($slug)
@@ -78,31 +65,36 @@ class Produk extends JI_Controller
 		// 	die();
 		// }
 
-		// Untuk Header
-		$bpm = $this->bpm->getAll();
-		if (isset($bpm[0]->id)) $data['bpm'] = $bpm;
-
-		$data['bpm'] = $bpm;
-
 		$produk = $this->bpm->getBySlug($slug);
 		if (isset($produk->id)) $data['produk'] = $produk;
-		if (isset($produk->spesifikasi)) $produk->spesifikasi = json_decode($produk->spesifikasi);
+		if (isset($produk->luas_tanah)) $produk->luas_tanah = (int)$produk->luas_tanah;
+		if (isset($produk->luas_bangunan)) $produk->luas_bangunan = (int)$produk->luas_bangunan;
+		if (isset($produk->harga)) {
+			$produk->harga_asli = $produk->harga;
+			$produk->angsuran = $produk->harga / (3 * 12);
+			$produk->angsuran = $this->__formatNominal((int) $produk->angsuran);
+			$produk->harga = number_format($produk->harga, 0, ',', '.');
+		}
 		$bpm_related = $this->bpm->getByKategori($produk->a_kategori_id, $produk->id);
 		if (isset($bpm_related[0]->id)) $data['bpm_related'] = $bpm_related;
 
 		$data['bpm_related'] = $bpm_related;
 		unset($bpm_related);
 
-		$akm = $this->akm->id($produk->a_kategori_id);
-		if (isset($akm->id)) $data['akm'] = $akm;
-
-		$data['akm'] = $akm;
-
 		$bpgm = $this->bpgm->getByProduk($produk->id);
 		if (isset($bpgm[0]->id)) $data['bpgm'] = $bpgm;
 
 		$data['bpgm'] = $bpgm;
 
+		$akm = $this->akm->id($produk->a_kategori_id);
+		$is_sold = true;
+		$data_siteplan = '';
+		if (isset($akm->data_siteplan)) $data_siteplan = $akm->data_siteplan;
+		$tipe = "LT-" . $produk->luas_tanah . "|LB-" . $produk->luas_bangunan;
+		// dd($tipe . $data_siteplan);
+		if (stripos($data_siteplan, $tipe) !== false) $is_sold = false;
+
+		$data['is_sold'] = $is_sold;
 		$this->setTitle($produk->nama . $this->config->semevar->site_suffix);
 		$this->setDescription($this->convertToMetaDescription($produk->deskripsi) . $this->config->semevar->site_suffix);
 		$this->setKeyword($produk->meta_keyword ?? '');
@@ -115,7 +107,7 @@ class Produk extends JI_Controller
 		$this->putThemeContent("produk/detail", $data);
 		$this->putThemeContent("produk/detail_modal", $data);
 		$this->putJsContent("produk/detail_bottom", $data);
-		$this->loadLayout('col-1-bar', $data);
+		$this->loadLayout('col-1', $data);
 		$this->render();
 	}
 }

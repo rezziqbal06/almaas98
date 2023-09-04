@@ -1,72 +1,44 @@
 <!-- List Produk Popular -->
-<section class="p-3 p-md-5">
-	<div class="row">
-		<div class="col-md-5 flex">
-			<img id="display-gambar" class="w-100" src="<?= base_url($produk->gambar) ?>" data-zoom-image="<?= base_url($produk->gambar) ?>" alt="<?= $produk->nama ?>" style="border-radius:16px;">
+<a href="<?= base_url($produk->gambar) ?>" target="_blank"><img id="display-gambar" class="w-100" src="<?= base_url($produk->gambar) ?>" data-zoom-image="<?= base_url($produk->gambar) ?>" alt="<?= $produk->nama ?>" style="border-radius:0 0 32px 32px;"></a>
+
+<div class="row" style="margin-top: -5em;padding:0 2em;">
+	<div class="kartu-detail ">
+		<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->luas_tanah ?? '150' ?>/<?= $produk->luas_bangunan ?? '70' ?></b></p>
+		<small class="text-grey"><i class="fa fa-map-marker mb-2"></i> <?= $produk->kawasan ?? '' ?></small>
+		<div class="d-flex justify-content-start flex-wrap text-grey">
+			<div class="me-3"><i class="fa fa-bolt"></i> <small><?= $produk->listrik ?? 1300 ?> watt</small></div>
+			<div class="me-3"><i class="fa fa-bath" style="vertical-align: baseline;"></i> <small><?= $produk->toilet ?? 1 ?></small></div>
+			<div class="me-3"><i class="fa fa-bed"></i> <small><?= $produk->kamar_tidur ?? 1 ?></small></div>
+		</div>
+		<p class="mt-4"><?= $produk->deskripsi ?? '' ?></p>
+		<hr>
+		<h3 class="me-3 m-0"><b class="text-primary"><?= $produk->angsuran ?? 0 ?></b>/bulan</h3>
+		<span class="text-grey" style="margin-top: -4px;">Rp. <?= $produk->harga ?? 0 ?></span>
+		<a href="#" class="float-end mt-3" id="simulasi">Lihat simulasi</a>
+	</div>
+</div>
+<section class="mt-3">
+	<div class="row mb-3" style="padding: 0 2em;">
+		<div class="col-md-5 horizontal-list kartu-detail">
 			<?php if (isset($bpgm)) : ?>
-				<div class="mb-2 mt-3 d-flex flex-row">
-					<?php $i = 0; ?>
-					<?php foreach ($bpgm as $k => $v) : ?>
-						<a href="#" class="image-selected p-2" data-count="<?= $k ?>" class="p-2"><img id="gambar-item-<?= $k ?>" src="<?= base_url() . $v->gambar ?>" alt="Gambar <?= $produk->nama ?> <?= ($i + 1) ?>" height="100px" class="gambar-item rounded <?= $v->gambar == $produk->gambar ? 'selected' : '' ?>"></a>
-						<?php $i++ ?>
-					<?php endforeach ?>
-				</div>
+				<?php $i = 0; ?>
+				<?php foreach ($bpgm as $k => $v) : ?>
+					<a href="#" class="image-selected p-2" data-count="<?= $k ?>" class="p-2"><img id="gambar-item-<?= $k ?>" src="<?= base_url() . $v->gambar ?>" alt="Gambar <?= $produk->nama ?> <?= ($i + 1) ?>" height="100px" class="gambar-item rounded <?= $v->gambar == $produk->gambar ? 'selected' : '' ?>"></a>
+					<?php $i++ ?>
+				<?php endforeach ?>
 			<?php endif ?>
 		</div>
-		<div class="col-md-7">
-			<form method="POST" id="fhitung">
-				<span class="text-accent"><?= $akm->nama ?></span>
-				<h3 class="mb-3"><b><?= $produk->nama ?></b></h3>
-
-				<input type="hidden" name="id" value="<?= $produk->id ?>" />
-				<div class="row">
-					<?php if (isset($produk->spesifikasi)) : ?>
-						<?php $i = 0; ?>
-						<?php foreach ($produk->spesifikasi as $k => $v) : ?>
-							<?php if ($i != count((array)$produk->spesifikasi) - 1) : ?>
-								<div class="col-md-3 mb-3 align-middle">
-									<label for="" class="form-label "><?= $k ?></label>
-								</div>
-								<div class="col-md-9 mb-3">
-									<select name="specs[]" id="spec<?= $i ?>" <?= count((array)$produk->spesifikasi) == 1 ? 'readonly' : '' ?> class="form-control hitung-spec kartu bg-light">
-										<?php foreach ($v as $k2 => $v2) : ?>
-											<option value="<?= $v2 ?>"><?= $v2 ?></option>
-										<?php endforeach ?>
-									</select>
-								</div>
-								<?php $i++ ?>
-							<?php endif ?>
-						<?php endforeach ?>
-					<?php endif ?>
-				</div>
-
-				<div class="row">
-					<div class="col-12 mb-3">
-						<h6 id="harga_peritem"></h6>
-						<h3 id="harga_total" class="text-primary"></h3>
-					</div>
-					<div class="col-6 col-md-4 mb-3">
-						<div class="input-group">
-							<a href="#" id="kurang" class="btn bg-secondary ">-</a>
-							<input type="number" name="qty" min="1" class="form-control text-center" value="1">
-							<a href="#" id="tambah" class="btn bg-secondary ">+</a>
-						</div>
-					</div>
-					<div class="col-6 col-md-4 d-grid mb-3">
-						<button type="submit" id="hitung" class="btn bg-success">Hitung</button>
-					</div>
-					<div class="col-md-4 d-grid mb-3">
-						<button id="pesan" class="btn bg-accent" disabled>Pesan</button>
-					</div>
-				</div>
-				<span>Deskripsi</span>
-				<hr>
-				<p class="text-grey" style="text-align:justify"><?= $produk->deskripsi ?></p>
-			</form>
+	</div>
+	<div class="row mb-3" style="padding: 0 2em;">
+		<div class="col-md-6 mb-3 mb-md-0 d-grid">
+			<button id="siteplan" data-id="<?= $produk->a_kategori_id ?>" class="btn btn-info"><b>LIHAT KETERSEDIAAN (SITEPLAN)</b></button>
+		</div>
+		<div class="col-md-6 d-grid">
+			<button id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-default disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></button>
 		</div>
 	</div>
 </section>
-
+<!-- 
 <section>
 	<div id="" class="row p-5">
 		<h3>Produk Terkait</h3>
@@ -83,4 +55,4 @@
 			<?php endforeach ?>
 		<?php endif ?>
 	</div>
-</section>
+</section> -->

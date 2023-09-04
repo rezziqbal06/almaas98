@@ -4,7 +4,7 @@ if (isset($sess->admin->foto)) $admin_foto = $sess->admin->foto;
 if (empty($admin_foto)) $admin_foto = 'media/pengguna/default.png';
 $admin_foto = base_url($admin_foto);
 ?>
-<header class="navbar navbar-default bg-secondary">
+<header class="navbar navbar-default bg-primary">
 	<!-- Left Header Navigation -->
 	<ul class="nav navbar-nav-custom">
 		<!-- Main Sidebar Toggle Button -->

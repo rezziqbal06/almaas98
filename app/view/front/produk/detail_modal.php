@@ -40,3 +40,35 @@
         </div>
     </div>
 </div>
+
+<div id="modal_simulasi" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title">Simulasi Pembayaran</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- END Modal Header -->
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <input type="hidden" id="angsuran">
+                <div class="input-group mb-3">
+                    <input type="number" id="tenor" min="1" class="form-control" placeholder="Jumlah Bulan" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="btn-simulasi">Simulasikan</button>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Bulan</th>
+                            <th>Angsuran</th>
+                        </tr>
+                    </thead>
+                    <tbody id="panel_simulasi"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

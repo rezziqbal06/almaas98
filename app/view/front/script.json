@@ -48,6 +48,12 @@
     },
     {
       "src": "{{cdn_url}}skin/admin/js/custom-navbar.js"
+    },
+    {
+      "src": "{{cdn_url}}skin/admin/js/select2.min.js"
+    },
+    {
+      "src": "https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
     }
     
   ]

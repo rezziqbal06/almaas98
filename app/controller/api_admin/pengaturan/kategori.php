@@ -57,7 +57,7 @@ class Kategori extends JI_Controller
 				$gd->is_active = $this->akm->label('is_active', $gd->is_active);
 			}
 			if (isset($gd->gambar)) {
-				$gd->gambar = '<img src="' . base_url($gd->gambar) . '" class="img-fluid rounded"/>';
+				$gd->gambar = '<img src="' . base_url($gd->gambar) . '" class="img-fluid rounded" width="150"/>';
 			}
 		}
 
@@ -351,5 +351,79 @@ class Kategori extends JI_Controller
 		$data = $this->akm->cari($keyword);
 		array_unshift($data, $p);
 		$this->__json_select2($data);
+	}
+
+	/**
+	 * Update data by supplied ID
+	 *
+	 * @param  int   $id               ID value from a_fasilitas table
+	 *
+	 * @api
+	 *
+	 * @return void
+	 */
+	public function update_siteplan($id = "")
+	{
+		$d = $this->__init();
+		$data = array();
+		$id = (int)$id;
+		if (!$this->admin_login) {
+			$this->status = 400;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			header("HTTP/1.0 400 Harus login");
+			$this->__json_out($data);
+			die();
+		}
+
+		$id = (int) $id;
+		if ($id <= 0) {
+			$this->status = 444;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			$this->__json_out($data);
+			die();
+		}
+
+		$akm = $this->akm->id($id);
+		if (!isset($akm->id)) {
+			$this->status = 445;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			$this->__json_out($data);
+			die();
+		}
+
+
+		if ($id > 0) {
+			$du = [];
+			$path_siteplan = $this->input->post('path_siteplan', '');
+			if (!strlen($path_siteplan)) {
+				$resUpload = $this->se->upload_file('siteplan', 'siteplan', $id, "", "svg", 3000000);
+				if ($resUpload->status == 200) {
+					$du['siteplan'] = $resUpload->file;
+				} else {
+					$this->status = $resUpload->status;
+					$this->message = $resUpload->message;
+					$this->__json_out($data);
+					die();
+				}
+			}
+
+			$du['data_siteplan'] = $this->input->post('data_siteplan', '');
+
+			$res = $this->akm->update($id, $du);
+			if ($res) {
+				$this->status = 200;
+				$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			} else {
+				$this->status = 901;
+				$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			}
+		} else {
+			$this->status = 444;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			$this->__json_out($data);
+			die();
+		}
+
+		$this->__json_out($data);
 	}
 }

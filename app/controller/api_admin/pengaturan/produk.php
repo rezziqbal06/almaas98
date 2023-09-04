@@ -59,11 +59,14 @@ class Produk extends JI_Controller
 			if (isset($gd->fnama)) {
 				$gd->fnama = htmlentities(rtrim($gd->fnama, ' - '));
 			}
+			if (isset($gd->harga)) {
+				$gd->harga = number_format($gd->harga, 0, ',', '.');
+			}
 			if (isset($gd->is_active)) {
 				$gd->is_active = $this->bpm->label('is_active', $gd->is_active);
 			}
 			if (isset($gd->gambar)) {
-				$gd->gambar = '<img src="' . base_url($gd->gambar) . '" class="img-fluid rounded"/>';
+				$gd->gambar = '<img src="' . base_url($gd->gambar) . '" class="img-fluid rounded" width="150"/>';
 			}
 		}
 
@@ -251,10 +254,28 @@ class Produk extends JI_Controller
 		$id = (int)$id;
 		$id = isset($du['id']) ? $du['id'] : 0;
 		$du = [];
+		$du['a_kategori_id'] = $_POST['a_kategori_id'] ?? 0;
 		$du['nama'] = $_POST['nama'];
 		$du['deskripsi'] = $_POST['deskripsi'];
 		$du['slug'] = $_POST['slug'];
 		$du['is_active'] = $_POST['is_active'];
+		$du['harga'] = isset($_POST['harga']) ? str_replace(".", '', $_POST['harga']) : 0;
+		$du['nomor'] = $_POST['nomor'] ?? '';
+		$du['blok'] = $_POST['blok'] ?? '';
+		$du['tipe'] = $_POST['tipe'] ?? '';
+		$du['status'] = $_POST['status'] ?? 'Tersedia';
+		$du['luas_tanah'] = $_POST['luas_tanah'] ?? 0;
+		$du['luas_bangunan'] = $_POST['luas_bangunan'] ?? 0;
+		$du['lantai'] = $_POST['lantai'] ?? 1;
+		$du['kamar_tidur'] = $_POST['kamar_tidur'] ?? 1;
+		$du['toilet'] = $_POST['toilet'] ?? 1;
+		$du['garasi'] = $_POST['garasi'] ?? 0;
+		$du['lat'] = $_POST['lat'] ?? '';
+		$du['lang'] = $_POST['lang'] ?? '';
+		$du['gmaps'] = $_POST['gmaps'] ?? '';
+		$du['listrik'] = $_POST['listrik'] ?? '';
+		$du['air'] = $_POST['air'] ?? '';
+		$du['a_three_d_id'] = $_POST['a_three_d_id'] ?? 0;
 
 		if (!$this->admin_login) {
 			$this->status = 400;

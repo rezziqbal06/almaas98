@@ -24,6 +24,7 @@
 				<!-- End Footer -->
 			</div>
 			<!-- End Main Container -->
+				<?php $this->getThemeElement('page/html/bottom_navigation', $__forward); ?>
 
 		</div>
 		<!-- End Page Container -->

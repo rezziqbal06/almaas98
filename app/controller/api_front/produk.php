@@ -15,6 +15,24 @@ class Produk extends JI_Controller
 		$this->lib("seme_upload", 'se');
 	}
 
+	function __formatNominal($nominal)
+	{
+		$formats = [
+			1000000000 => 'miliar',
+			1000000 => 'juta',
+			1000 => 'ribu'
+		];
+
+		foreach ($formats as $divisor => $format) {
+			if ($nominal >= $divisor) {
+				$result = $nominal / $divisor;
+				return number_format($result, 0) . ' ' . $format;
+			}
+		}
+
+		return number_format($nominal, 0);
+	}
+
 	/**
 	 * Give json data set result on datatable format
 	 *
@@ -32,7 +50,18 @@ class Produk extends JI_Controller
 
 		$a_kategori_id = $this->input->request("a_kategori_id", "");
 
-		$data = $this->bpm->getByKategori($a_kategori_id);
+		$data = $this->bpm->getAll();
+		if (isset($data[0]->id)) {
+			foreach ($data as $b) {
+				if (isset($b->luas_bangunan)) $b->luas_bangunan = (int) $b->luas_bangunan;
+				if (isset($b->luas_tanah)) $b->luas_tanah = (int) $b->luas_tanah;
+				if (isset($b->harga)) {
+					$b->harga = $b->harga / (3 * 12);
+					$b->harga = $this->__formatNominal((int) $b->harga);
+				}
+			}
+		}
+
 
 		$this->__json_out($data);
 	}

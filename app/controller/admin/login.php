@@ -9,6 +9,7 @@ class Login extends JI_Controller
 	{
 		parent::__construct();
 		$this->setTheme('admin');
+		$this->load("a_pengguna_concern");
 		$this->load("admin/a_pengguna_model", "apm");
 		$this->load("admin/a_pengguna_module_model", "apmm");
 		$this->load("admin/a_modules_model", "amod");
