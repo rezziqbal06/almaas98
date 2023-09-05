@@ -17,7 +17,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     $this->point_of_view = 'front';
   }
 
-  private function filters($keyword = '', $lantai = "", $kamar_tidur = "", $toilet = "", $garasi = "", $sharga = "", $eharga = "", $is_active = 1, $is_deleted = 0)
+  private function filters($keyword = '', $lantai = "", $kamar_tidur = "", $toilet = "", $garasi = "", $sharga = "", $eharga = "", $tipe = "", $is_active = 1, $is_deleted = 0)
   {
     // if (strlen($b_user_id)) {
     //   $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
@@ -33,6 +33,9 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     }
     if (strlen($garasi)) {
       $this->db->where_as("$this->tbl_as.garasi", $this->db->esc($garasi), "AND");
+    }
+    if (strlen($tipe)) {
+      $this->db->where_as("$this->tbl_as.tipe", $this->db->esc($tipe), "AND");
     }
     if (strlen($is_active)) {
       $this->db->where_as("$this->tbl_as.is_active", $this->db->esc($is_active), "AND");
@@ -112,7 +115,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     return $this->db->get('', 0);
   }
 
-  public function getAll($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $is_active = 1)
+  public function getAll($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $tipe, $sort_harga, $sort_luas_bangunan, $is_active = 1)
   {
     $this->db->select_as($this->tbl_as . '.id', "id", 0)
       ->select_as($this->tbl_as . '.slug', "slug", 0)
@@ -127,8 +130,9 @@ class B_Produk_Model extends \Model\B_Produk_Concern
       ->select('a_kategori_id');
     $this->db->from("$this->tbl", "$this->tbl_as");
     $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id");
-    $this->filters($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $is_active)->scoped();
-    $this->db->order_by($this->tbl_as . '.count_read', 'desc');
+    $this->filters($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $tipe, $is_active)->scoped();
+    if (strlen($sort_harga)) $this->db->order_by($this->tbl_as . '.harga', $sort_harga);
+    if (strlen($sort_luas_bangunan)) $this->db->order_by($this->tbl_as . '.luas_bangunan', $sort_luas_bangunan);
     return $this->db->get('', 0);
   }
 }

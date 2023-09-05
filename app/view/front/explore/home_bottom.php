@@ -1,3 +1,4 @@
+var fcommons = {};
 NProgress.start();
 
 setTimeout(function(){
@@ -110,3 +111,39 @@ $("#ffilter").on('submit', function(e){
 	getProduk(fd)
 	$("#modal_filter").modal('hide');
 });
+
+
+$(document).off('click', '.pill');
+$(document).on('click', '.pill', function(e){
+	e.preventDefault();
+	var fc = $(this);
+	var key = fc.attr('data-key');
+	var value = fc.attr('data-value');
+	if(value == '70'){
+		$("[data-value='36']").removeClass('active');
+	}else if(value == '36'){
+		$("[data-value='70']").removeClass('active');
+	}
+	if(key == 'reset'){
+		fcommons = {}
+		$(".pill").removeClass('active');
+		getProduk();
+		return false;
+	}
+	if(fc.hasClass('active')){ //aktif
+		fc.removeClass('active');
+		if(!fcommons[key]) fcommons[key] = '';
+		fcommons[key] = '';
+	}else{ //tidak aktif
+		fc.addClass('active');
+		if(!fcommons[key]) fcommons[key] = '';
+		fcommons[key] = value;
+	}
+	getProduk(fcommons)
+});
+
+var filter = '<?=$filter?>'
+if(filter){
+	console.log(filter, 'filter');
+	$("[data-text='"+filter+"']").trigger('click')
+}

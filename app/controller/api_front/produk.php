@@ -58,8 +58,13 @@ class Produk extends JI_Controller
 		$eharga = $this->input->request("eharga", "");
 		$sharga = str_replace('.', '', $sharga);
 		$eharga = str_replace('.', '', $eharga);
+		$tipe = $this->input->request("tipe", "");
 
-		$data = $this->bpm->getAll($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga);
+		$sort_harga = $this->input->request("sort_harga", "");
+		$sort_luas_bangunan = $this->input->request("sort_luas_bangunan", "");
+
+
+		$data = $this->bpm->getAll($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $tipe, $sort_harga, $sort_luas_bangunan);
 		if (isset($data[0]->id)) {
 			foreach ($data as $b) {
 				if (isset($b->luas_bangunan)) $b->luas_bangunan = (int) $b->luas_bangunan;

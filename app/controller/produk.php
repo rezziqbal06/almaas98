@@ -29,6 +29,8 @@ class Produk extends JI_Controller
 		// 	redir(base_url('login'), 0);
 		// 	die();
 		// }
+		$data['filter'] = $this->input->request('f', '');
+
 		$this->current_page = 'explore';
 		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
 

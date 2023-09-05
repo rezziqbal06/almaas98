@@ -20,8 +20,8 @@
 		<input id="cari_quiz" type="text" class="form-control bg-white p-3" placeholder="Cari Rumah" style="border:none; border-radius:16px; color:white;">
 	</div>
 	<div class="col-12">
-		<?php $text = ["Termurah", "Terluas", "36", "2 lantai",  "70", "2 kamar"] ?>
-		<?php $icon = ["money", "arrows-alt", "expand", "building", "expand", "bed"] ?>
+		<?php $text = ["Termurah", "Terluas", "36", "2 lantai",  "70", "2 kamar"]; ?>
+		<?php $icon = ["money", "arrows-alt", "expand", "building", "expand", "bed"]; ?>
 		<div class="d-flex flex-wrap" style="justify-content: start;">
 			<?php foreach ($text as $k => $t) : ?>
 				<div class="pe-3 ps-3 pt-1 pb-1 m-1 " style="border-radius: 32px;background-color:#D9D9D940;color:white;"><a href="<?= base_url("explore/") ?>?f=<?= $t ?>"><i class="fa fa-<?= $icon[$k] ?> me-1"></i> <span><?= $t ?></span></a></div>
@@ -31,7 +31,7 @@
 </div>
 <!-- List Kustomer -->
 <section class="row p-3 p-md-5">
-	<h6>Popular</h6>
+	<h6>Sering dilihat</h6>
 	<div id="panel_produk" class="horizontal-list">
 		<?php if (isset($bpm_popular) && count($bpm_popular)) : ?>
 			<?php foreach ($bpm_popular as $produk) : ?>

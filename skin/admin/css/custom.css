@@ -376,8 +376,6 @@ iframe{
 }
 
 
-
-
 @media (prefers-color-scheme:light){
     .bg-primary{
         background-color: var(--primary) !important;
