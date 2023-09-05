@@ -8,12 +8,7 @@
 </div>
 <!-- List Kustomer -->
 <section class="row p-3 p-md-5">
-	<h6>Popular</h6>
-	<div id="panel_produk" class="">
-		<?php if (isset($bpm_popular) && count($bpm_popular)) : ?>
-			<?php foreach ($bpm_popular as $produk) : ?>
+	<div id="panel_produk" class="row">
 
-			<?php endforeach ?>
-		<?php endif ?>
 	</div>
 </section>

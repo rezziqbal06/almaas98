@@ -17,18 +17,24 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     $this->point_of_view = 'front';
   }
 
-  private function filters($keyword = '', $is_active = '')
+  private function filters($keyword = '', $is_active = 1, $is_deleted = 0)
   {
     // if (strlen($b_user_id)) {
     //   $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
     // }
     if (strlen($is_active)) {
-      $this->db->where_as("$this->tbl_as.is_active", $this->db->esc($is_active));
+      $this->db->where_as("$this->tbl_as.is_active", $this->db->esc($is_active), "AND");
+    }
+
+    if (strlen($is_deleted)) {
+      $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc($is_deleted), "AND");
     }
     if (strlen($keyword) > 0) {
       $this->db->where_as("$this->tbl_as.nama", $keyword, "OR", "%like%", 1, 0);
-      $this->db->where_as("$this->tbl_as.deskripsi", $keyword, "AND", "%like%", 0, 0);
-      $this->db->where_as("$this->tbl_as.kd_ruangan", $keyword, "AND", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.luas_tanah", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.luas_bangunan", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.harga", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.tipe", $keyword, "AND", "%like%", 0, 1);
     }
     return $this;
   }
@@ -86,7 +92,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     return $this->db->get('', 0);
   }
 
-  public function getAll($is_active = 1)
+  public function getAll($keyword, $is_active = 1)
   {
     $this->db->select_as($this->tbl_as . '.id', "id", 0)
       ->select_as($this->tbl_as . '.slug', "slug", 0)
@@ -101,8 +107,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
       ->select('a_kategori_id');
     $this->db->from("$this->tbl", "$this->tbl_as");
     $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id");
-    $this->db->where_as($this->tbl_as . '.is_active', $this->db->esc($is_active));
-    $this->db->where_as($this->tbl_as . '.is_deleted', $this->db->esc(0));
+    $this->filters($keyword, $is_active)->scoped();
     $this->db->order_by($this->tbl_as . '.count_read', 'desc');
     return $this->db->get('', 0);
   }

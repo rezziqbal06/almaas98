@@ -51,7 +51,8 @@ function getProduk(options={}){
 		if(dt.status == 200){
 			var s = '';
 			$.each(dt.data, function(k,v){
-				s+= `<div class="p-2 mb-3 kartu-produk" data-kategori-id="${v?.a_kategori_id}">
+				s+= `<div class="col-md-4">
+						<div class="p-2 mb-3 kartu-produk" data-kategori-id="${v?.a_kategori_id}">
 							<a href="<?= base_url("produk/") ?>${v?.slug}" class="" data-id="${v?.id}" data-kategori-id="${v?.a_kategori_id}" alt="${v?.nama}">
 								<div class="row">
 									<div class="col-4">
@@ -70,7 +71,8 @@ function getProduk(options={}){
 									</div>
 								</div>
 							</a>
-						</div>`
+						</div>
+					</div>`
 			})
 
 			$("#panel_produk").html(s);
@@ -83,4 +85,7 @@ function getProduk(options={}){
 
 getProduk();
 
-  
+$('#cari_quiz').bind('keyup blur', $.debounce(function(){
+	var keyword = $(this).val();
+	getProduk({keyword: keyword})
+}, 300));

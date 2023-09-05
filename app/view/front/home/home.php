@@ -1,3 +1,20 @@
+<style>
+	.blog-item {
+		border-radius: 32px;
+		position: relative;
+	}
+
+	.blog-tgl {
+		position: absolute;
+		z-index: 4;
+		background-color: var(--secondary);
+		color: white;
+		padding: 8px;
+		margin-top: 16px;
+		margin-left: 16px;
+		border-radius: 16px;
+	}
+</style>
 <div class="row bg-primary p-3 mt-n2" style="margin-top: -16px;">
 	<div class="col-12 mb-3">
 		<input id="cari_quiz" type="text" class="form-control bg-white p-3" placeholder="Cari Rumah" style="border:none; border-radius:16px; color:white;">
@@ -47,6 +64,34 @@
 		<?php endforeach ?>
 	<?php endif ?>
 </div>
-<div class="carousel-indicators">
+<div class="carousel-indicators ">
 	<ul></ul>
+</div>
+
+<div id="tentang_kami" class="row p-3 mt-3 text-center">
+	<div class="col-12">
+		<img src="<?= base_url("media/logo.png") ?>" alt="Logo Almaas 98" class="img-fluid" width="30%">
+		<h4><?= $this->config->semevar->site_motto ?? '' ?></h4>
+		<a href="<?= base_url("tentang_kami") ?>"><u>Lihat profil kami</u></a>
+	</div>
+</div>
+
+<div id="blog" class="row p-3 mb-3">
+	<?php if (isset($ablm) && count($ablm)) : ?>
+		<?php foreach ($ablm as $k => $a) : ?>
+			<div class="col-md-4">
+				<a href="<?= base_url('blog/' . $a->slug) ?>" class="" alt="<?= $a->judul ?>">
+					<div class="blog-tgl"><b><?= $a->cdate ?></b></div>
+					<img src="<?= base_url($a->gambar) ?>" alt="<?= $a->judul ?>" class="blog-item img-fluid">
+					<div class="blog-desc p-3">
+						<span class="text-primary"><?= $a->kategori ?></span>
+						<h3><?= $a->judul ?></h3>
+					</div>
+				</a>
+			</div>
+		<?php endforeach ?>
+	<?php endif ?>
+	<div class="col-12 text-end">
+		<a href="<?= base_url("blog") ?>">Selengkapnya</a>
+	</div>
 </div>

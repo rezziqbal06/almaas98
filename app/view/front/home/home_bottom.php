@@ -46,4 +46,9 @@ $('#banner').slick({
     }
   });
 
+
+$("#cari_quiz").on('click', function(e){
+	e.preventDefault();
+	window.location = '<?= base_url("explore") ?>'
+})
   

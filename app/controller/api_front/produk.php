@@ -49,8 +49,9 @@ class Produk extends JI_Controller
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
 
 		$a_kategori_id = $this->input->request("a_kategori_id", "");
+		$keyword = $this->input->request("keyword", "");
 
-		$data = $this->bpm->getAll();
+		$data = $this->bpm->getAll($keyword);
 		if (isset($data[0]->id)) {
 			foreach ($data as $b) {
 				if (isset($b->luas_bangunan)) $b->luas_bangunan = (int) $b->luas_bangunan;

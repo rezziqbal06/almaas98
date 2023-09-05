@@ -11,12 +11,12 @@ class Home extends JI_Controller
 
 		$this->load('a_kategori_concern');
 		$this->load('a_banner_concern');
-		$this->load('a_partner_concern');
+		$this->load('a_blog_concern');
 		$this->load('b_produk_concern');
 
 		$this->load('front/a_kategori_model', 'akm');
 		$this->load('front/a_banner_model', 'abm');
-		$this->load('front/a_partner_model', 'apm');
+		$this->load('front/a_blog_model', 'ablm');
 		$this->load('front/b_produk_model', 'bpm');
 	}
 
@@ -62,7 +62,6 @@ class Home extends JI_Controller
 		unset($bpm_popular);
 
 
-
 		$akm = $this->akm->getAll();
 		if (isset($akm[0]->id)) $data['akm'] = $akm;
 
@@ -75,11 +74,20 @@ class Home extends JI_Controller
 		$data['abm'] = $abm;
 		unset($abm);
 
-		$apm = $this->apm->getAll();
-		if (isset($apm[0]->id)) $data['apm'] = $apm;
+		$abm = $this->abm->getAll();
+		if (isset($abm[0]->id)) $data['abm'] = $abm;
 
-		$data['apm'] = $apm;
-		unset($apm);
+		$data['abm'] = $abm;
+		unset($abm);
+
+		$ablm = $this->ablm->getAll(1, 0, 3);
+		if (isset($ablm[0]->id)) $data['ablm'] = $ablm;
+
+		foreach ($ablm as $a) {
+			if (isset($a->cdate)) $a->cdate = $this->__dateIndonesia($a->cdate);
+		}
+		$data['ablm'] = $ablm;
+		unset($ablm);
 
 		// $data['jp'] = $this->input->request('jp', 2);
 

@@ -21,11 +21,12 @@ class A_Blog_Model extends \Model\A_Blog_Concern
 		$this->point_of_view = 'front';
 	}
 
-	public function getAll($is_active = 1, $is_deleted = 0)
+	public function getAll($is_active = 1, $is_deleted = 0, $limit = '')
 	{
 		$this->db->select('id')->select('slug')->select('gambar')->select('judul')->select('kategori')->select('cdate');
 		$this->db->where('is_active', $is_active);
 		$this->db->where('is_deleted', $this->db->esc($is_deleted));
+		if (strlen($limit)) $this->db->limit($limit);
 		return $this->db->get('', 0);
 	}
 

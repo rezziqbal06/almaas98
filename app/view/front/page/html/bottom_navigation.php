@@ -23,7 +23,7 @@
       <a href="<?= base_url("") ?>"><img src="<?= base_url("media/home-menu.png") ?>" alt="home"></a>
     </div>
     <div class="col-3 text-center">
-      <a href="<?= base_url("discover") ?>"><img src="<?= base_url("media/search-menu.png") ?>" alt="search"></a>
+      <a href="<?= base_url("explore") ?>"><img src="<?= base_url("media/search-menu.png") ?>" alt="search"></a>
     </div>
     <div class="col-3 text-center">
       <a href="<?= base_url("leaderboard") ?>"><img src="<?= base_url("media/dashboard-menu.png") ?>" alt="dashboard"></a>
