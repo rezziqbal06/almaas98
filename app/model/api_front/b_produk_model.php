@@ -17,17 +17,37 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     $this->point_of_view = 'front';
   }
 
-  private function filters($keyword = '', $is_active = 1, $is_deleted = 0)
+  private function filters($keyword = '', $lantai = "", $kamar_tidur = "", $toilet = "", $garasi = "", $sharga = "", $eharga = "", $is_active = 1, $is_deleted = 0)
   {
     // if (strlen($b_user_id)) {
     //   $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
     // }
+    if (strlen($lantai)) {
+      $this->db->where_as("$this->tbl_as.lantai", $this->db->esc($lantai), "AND");
+    }
+    if (strlen($kamar_tidur)) {
+      $this->db->where_as("$this->tbl_as.kamar_tidur", $this->db->esc($kamar_tidur), "AND");
+    }
+    if (strlen($toilet)) {
+      $this->db->where_as("$this->tbl_as.toilet", $this->db->esc($toilet), "AND");
+    }
+    if (strlen($garasi)) {
+      $this->db->where_as("$this->tbl_as.garasi", $this->db->esc($garasi), "AND");
+    }
     if (strlen($is_active)) {
       $this->db->where_as("$this->tbl_as.is_active", $this->db->esc($is_active), "AND");
     }
 
     if (strlen($is_deleted)) {
       $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc($is_deleted), "AND");
+    }
+
+    if (strlen($sharga) && strlen($eharga)) {
+      $this->db->between("$this->tbl_as.harga", '"' . $sharga . '"', '"' . $eharga . '"');
+    } elseif (!strlen($sharga) && strlen($eharga)) {
+      $this->db->where_as("$this->tbl_as.harga", '"' . $eharga . '"', "AND", '<=');
+    } elseif (strlen($sharga) && !strlen($eharga)) {
+      $this->db->where_as("$this->tbl_as.harga", '"' . $sharga . '"', "AND", '>=');
     }
     if (strlen($keyword) > 0) {
       $this->db->where_as("$this->tbl_as.nama", $keyword, "OR", "%like%", 1, 0);
@@ -92,7 +112,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
     return $this->db->get('', 0);
   }
 
-  public function getAll($keyword, $is_active = 1)
+  public function getAll($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $is_active = 1)
   {
     $this->db->select_as($this->tbl_as . '.id', "id", 0)
       ->select_as($this->tbl_as . '.slug', "slug", 0)
@@ -107,7 +127,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
       ->select('a_kategori_id');
     $this->db->from("$this->tbl", "$this->tbl_as");
     $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id");
-    $this->filters($keyword, $is_active)->scoped();
+    $this->filters($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $is_active)->scoped();
     $this->db->order_by($this->tbl_as . '.count_read', 'desc');
     return $this->db->get('', 0);
   }

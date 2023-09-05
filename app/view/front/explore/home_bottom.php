@@ -89,3 +89,24 @@ $('#cari_quiz').bind('keyup blur', $.debounce(function(){
 	var keyword = $(this).val();
 	getProduk({keyword: keyword})
 }, 300));
+
+$("#bfilter").on('click', function(e){
+	e.preventDefault();
+	$("#modal_filter").modal('show');
+})
+
+$('.currency').mask("#.##0", {reverse: true});
+
+$("#breset").on('click', function(e){
+	e.preventDefault();
+	$("#ffilter").trigger('reset');
+})
+
+$("#ffilter").on('submit', function(e){
+	e.preventDefault();
+	$('#cari_quiz').val('')
+	var fd = $(this).serializeArray();
+	console.log(fd,'fd')
+	getProduk(fd)
+	$("#modal_filter").modal('hide');
+});

@@ -31,10 +31,10 @@
 	</div>
 	<div class="row mb-3" style="padding: 0 2em;">
 		<div class="col-md-6 mb-3 mb-md-0 d-grid">
-			<button id="siteplan" data-id="<?= $produk->a_kategori_id ?>" class="btn btn-info"><b>LIHAT KETERSEDIAAN (SITEPLAN)</b></button>
+			<button id="siteplan" data-id="<?= $produk->a_kategori_id ?>" class="btn btn-info bg-info"><b>LIHAT KETERSEDIAAN (SITEPLAN)</b></button>
 		</div>
 		<div class="col-md-6 d-grid">
-			<button id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-default disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></button>
+			<button id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-secondary disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></button>
 		</div>
 	</div>
 </section>
