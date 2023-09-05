@@ -60,8 +60,7 @@ class A_Pengguna_Concern extends \JI_Model
     ];
 
     const REQUIREDS = [
-        'nama',
-        'a_jabatan_nama'
+        'nama'
     ];
 
     /**

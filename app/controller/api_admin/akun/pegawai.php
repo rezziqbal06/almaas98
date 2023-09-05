@@ -8,6 +8,7 @@ class Pegawai extends JI_Controller
 		parent::__construct();
 		$this->load('a_pengguna_concern');
 		$this->load("api_admin/a_pengguna_model", 'apm');
+		$this->lib("seme_upload", 'se');
 	}
 
 	/**
@@ -162,7 +163,7 @@ class Pegawai extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-
+		$id = $this->input->request('id', 0);
 		$id = (int) $id;
 		if ($id <= 0) {
 			$this->status = 444;
@@ -179,18 +180,31 @@ class Pegawai extends JI_Controller
 			die();
 		}
 
-		if (!$this->apm->validates()) {
-			$this->status = 444;
-			$this->message = API_ADMIN_ERROR_CODES[$this->status];
-			$validation_message = $this->apm->validation_message();
-			if (strlen($validation_message)) {
-				$this->message = $validation_message;
+		$du = $_POST;
+		$new_password = '';
+		$re_password = '';
+		if (isset($du['new_password'])) $new_password = $du['new_password'];
+		if (isset($du['re_password'])) $re_password = $du['re_password'];
+
+		if (strlen($new_password)) {
+			if ($new_password != $re_password) {
+				$this->status = 446;
+				$this->message = 'Ulang password tidak sesuai';
+				$this->__json_out($data);
+				die();
+			} else {
+				$du['password'] = md5($new_password);
 			}
-			$this->__json_out($data);
-			die();
 		}
 
-		$res = $this->apm->save($id);
+		if (isset($du['new_password'])) unset($du['new_password']);
+		if (isset($du['re_password'])) unset($du['re_password']);
+
+		$resUpload = $this->se->upload_file('gambar', 'pengguna', $id);
+		if ($resUpload->status == 200) {
+			$du['foto'] = $resUpload->file;
+		}
+		$res = $this->apm->update($id, $du);
 		if ($res) {
 			$this->status = 200;
 			$this->message = API_ADMIN_ERROR_CODES[$this->status];
@@ -419,5 +433,73 @@ class Pegawai extends JI_Controller
 		$data = $this->apm->cari($keyword);
 		array_unshift($data, $p);
 		$this->__json_select2($data);
+	}
+
+	public function changePass($id = "")
+	{
+		$d = $this->__init();
+		$data = array();
+
+		$du = $_POST;
+		// dd($du);
+		// if (!$this->user_login) {
+		// 	$this->status = 400;
+		// 	$this->message = API_ADMIN_ERROR_CODES[$this->status];
+		// 	header("HTTP/1.0 400 Harus login");
+		// 	$this->__json_out($data);
+		// 	die();
+		// }
+
+		$is_reset = false;
+		if (isset($du['is_reset'])) {
+			$is_reset = $du['is_reset'];
+			unset($du['is_reset']);
+		}
+
+		// dd($du['is_reset']);
+		$id = (int) $id;
+		// $du = $_POST;
+		$id =  isset($du['id']) ? $du['id'] : 0;
+		unset($du['id']);
+		if ($id > 0) {
+			$dtuser = $this->apm->id($id);
+			// dd(["old" => $dtuser->password, "conf" => md5($du['old_pass'])]);
+			if ($is_reset) {
+				if (strlen($du['new_pass'])) {
+					$du['password'] = md5($du['new_pass']);
+					unset($du['old_pass']);
+					unset($du['new_pass']);
+					unset($du['confirm_new_pass']);
+					$res = $this->apm->update($id, $du);
+					$this->status = 200;
+					$this->message = 'Perubahan berhasil diterapkan';
+				} else {
+					$this->status = 901;
+					$this->message = 'Password terlalu pendek';
+				}
+			} else {
+				if ($dtuser->password == md5($du['old_pass'])) {
+					if (strlen($du['new_pass'])) {
+						$du['password'] = md5($du['new_pass']);
+						unset($du['old_pass']);
+						unset($du['new_pass']);
+						unset($du['confirm_new_pass']);
+						$res = $this->apm->update($id, $du);
+						$this->status = 200;
+						$this->message = 'Perubahan berhasil diterapkan';
+					} else {
+						$this->status = 901;
+						$this->message = 'Password terlalu pendek';
+					}
+				} else {
+					$this->status = 402;
+					$this->message = 'Password salah';
+				}
+			}
+		} else {
+			$this->status = 447;
+			$this->message = 'ID Pengguna tidak valid';
+		}
+		$this->__json_out($data);
 	}
 }

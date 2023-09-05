@@ -72,7 +72,7 @@
 	<div class="col-12">
 		<img src="<?= base_url("media/logo.png") ?>" alt="Logo Almaas 98" class="img-fluid" width="30%">
 		<h4><?= $this->config->semevar->site_motto ?? '' ?></h4>
-		<a href="<?= base_url("tentang_kami") ?>"><u>Lihat profil kami</u></a>
+		<a href="<?= base_url("tentang_kami") ?>" class="text-info">Lihat profil</a>
 	</div>
 </div>
 

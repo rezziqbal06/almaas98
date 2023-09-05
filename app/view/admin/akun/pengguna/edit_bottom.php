@@ -13,7 +13,7 @@ function gritter(gpesan,gtype="info"){
 
 
 function detail(){
-	$.get('<?=base_url("api_admin/akun/pengguna/detail/").$sess->admin->id?>').done(function(dt){
+	$.get('<?=base_url("api_admin/akun/pegawai/detail/").$sess->admin->id?>').done(function(dt){
     if(dt.status == 200){
       if(dt.data){
         var data = dt.data;
@@ -35,7 +35,7 @@ $("#fprofil").on("submit",function(e){
 	$('.icon-submit').addClass('fa-circle-o-notch fa-spin');
 
 	var fd = new FormData($(this)[0]);
-	var url = '<?= base_url("api_admin/akun/pengguna/edit/")?>';
+	var url = '<?= base_url("api_admin/akun/pegawai/edit/")?>';
 	var gambar = getImageData('iprofil_gambarprev');
   fd.append('id', <?=$sess->admin->id?>)
 	if(gambar){

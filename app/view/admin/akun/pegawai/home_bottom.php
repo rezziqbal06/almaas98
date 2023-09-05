@@ -129,8 +129,9 @@ $("#fchange-password").on("submit",function(e){
 	$('.icon-submit').addClass('fa-circle-o-notch fa-spin');
 
 	var fd = new FormData($(this)[0]);
-	var url = '<?=base_url("api_front/akun/pegawai/changePass/")?>';
+	var url = '<?=base_url("api_admin/akun/pegawai/changePass/")?>';
 	fd.append('is_reset', true);
+	fd.append('id', ieid);
 
   let newPass = $("#new-pass").val();
   let confirmNewPass = $("#confirm-new-pass").val();

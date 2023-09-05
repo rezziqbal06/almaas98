@@ -16,7 +16,7 @@
 						<!-- <a id="adetail" href="#" class="btn btn-info btn-left"><i class="fa fa-info-circle"></i> Detail</a> -->
 						<a id="aedit" href="#" class="btn btn-primary btn-left"><i class="fa fa-pencil"></i> Edit</a>
 						<!-- <a id="amodule" href="#" class="btn btn-warning btn-left"><i class="fa fa-gear"></i> Module</a> -->
-						<!-- <a id="aresetpass" href="#" class="btn btn-danger bg-primary btn-left"><i class="fa fa-key"></i> Reset Password</a> -->
+						<a id="aresetpass" href="#" class="btn btn-danger bg-primary btn-left"><i class="fa fa-key"></i> Reset Password</a>
 						<button id="bhapus" type="button" class="btn btn-danger btn-left btn-submit"><i class="fa fa-trash-o icon-submit"></i> Hapus</button>
 					</div>
 				</div>
@@ -48,7 +48,7 @@
 				<form action="" method="POST" id="fchange-password">
 					<div class="row">
 						<div class="form-group">
-							<input type="hidden" name="id" id="ieid-user" value="<?= $ue->id ?? '' ?>">
+							<input type="hidden" name="id" id="ieid" value="<?= $ue->id ?? '' ?>">
 							<!-- <div class="col-md-12">
 								<label for="old-pass">Password Lama</label>
 								<input type="password" name="old_pass" class="form-control" id="old-pass">
@@ -68,7 +68,7 @@
 					<div class="row" style="margin-top: 1em; ">
 						<div class="col-md-12" style="border-top: 1px #afafaf dashed;">&nbsp;</div>
 						<div class="col-xs-12 btn-group-vertical" style="">
-							<button type="" id="breset" class="btn btn-dark btn-block text-left" data-dismiss="modal"><i class="fa fa-rotate"></i> Reset</button>
+							<!-- <button type="" id="breset" class="btn btn-dark btn-block text-left" data-dismiss="modal"><i class="fa fa-rotate"></i> Reset</button> -->
 							<button type="submit" class="btn btn-success btn-block text-left" data-dismiss="modal"><i class="fa fa-save"></i> Simpan</button>
 						</div>
 					</div>
