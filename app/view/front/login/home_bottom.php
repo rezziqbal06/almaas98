@@ -35,7 +35,7 @@ $("#form-login").on("submit",function(evt){
 	$.post(url,fd).done(function(dt){
 		NProgress.set(0.6);
 		if(dt.status == 200){
-			gritter("<h4>Sukses</h4><p>Harap tunggu sementara mengarahkan ke dasbor</p>",'success');
+			gritter("<h4>Sukses</h4><p>Selamat Datang</p>",'success');
 			setTimeout(function(){
 				NProgress.set(0.7)
 			},2000);

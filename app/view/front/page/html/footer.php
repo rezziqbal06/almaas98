@@ -18,20 +18,19 @@
 			<p class="mb-5"><b>Follow</b></p>
 			<a class="dropdown-link" target="_blank" href="<?= $this->config->semevar->site_ig ?? '' ?>">Instagram</a>
 			<a class="dropdown-link" target="_blank" href="<?= $this->config->semevar->site_fb ?? '' ?>">Facebook</a>
-			<p class="mb-2 mt-2"><b>Marketplace</b></p>
-			<a class="dropdown-link" target="_blank" href="<?= $this->config->semevar->site_tokopedia ?? '' ?>">Tokopedia</a>
+			<p class="mb-2 mt-2 d-none"><b>Marketplace</b></p>
+			<a class="dropdown-link d-none" target="_blank" href="<?= $this->config->semevar->site_tokopedia ?? '' ?>">Tokopedia</a>
 		</div>
 		<div class="col-6 col-md-3 p-4 p-md-5">
 			<p class="mb-5"><b>Menu</b></p>
-			<a class="dropdown-link" href="#">Produk</a>
+			<a class="dropdown-link" href="<?= base_url("explore") ?>">Produk</a>
 			<a class="dropdown-link" href="<?= base_url("tentang_kami") ?>">Tentang Kami</a>
 			<a class="dropdown-link" href="<?= base_url("blog") ?>">Blog</a>
 		</div>
 	</div>
 	<hr class="bg-white">
-	<div class="row p-3 text-sm" style="color: rgba(0,0,0,0.4);">
-		<div class="col-md-6"><a href="https://qaanii.com" target="_blank" title="Qaanii">Copyright © Qaanii</a></div>
-		<div class="col-md-6"><small class="pull-right">Image by <a href="https://www.freepik.com/free-vector/organic-flat-illustration-printing-industry_13176038.htm">Freepik</a></small></div>
+	<div class="row p-3 text-sm " style="color: rgba(0,0,0,0.4);">
+		<div class="col-md-6 mb-5"><a href="https://qaanii.com" target="_blank" title="Qaanii">Copyright © Qaanii</a></div>
 	</div>
 
 </footer>

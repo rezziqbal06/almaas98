@@ -38,7 +38,7 @@ class Siteplan extends JI_Controller
 		$this->putThemeContent("siteplan/home", $data);
 		$this->putThemeContent("siteplan/home_modal", $data);
 		$this->putJsContent("siteplan/home_bottom", $data);
-		$this->loadLayout('col-1-bar', $data);
+		$this->loadLayout('col-1-bottom-nav', $data);
 		$this->render();
 	}
 
