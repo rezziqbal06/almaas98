@@ -17,9 +17,6 @@
       "src": "{{cdn_url}}skin/front/js/bootstrap-datepicker.min.js"
     },
     {
-      "src": "{{cdn_url}}skin/front/js/bootstrap.bundle.min.js"
-    },
-    {
       "src": "{{cdn_url}}skin/front/js/jquery.gritter.min.js"
     },
     {
