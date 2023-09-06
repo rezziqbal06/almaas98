@@ -47,7 +47,7 @@ class Login extends \JI_Controller
 		$this->putJsFooter($this->cdn_url('skin/admin/') . 'js/pages/login');
 		$this->putThemeContent("login/home", $data);
 		$this->putJsContent('login/home_bottom', $data);
-		$this->loadLayout('login', $data);
+		$this->loadLayout('col-1', $data);
 		$this->render();
 	}
 	public function proses()
@@ -199,7 +199,7 @@ class Login extends \JI_Controller
 				}
 				if (empty($pv1) && empty($pv2)) {
 					$this->status = 104;
-					$this->message = 'Kombinasi username dan password tidak cocok';
+					$this->message = 'Kombinasi username dan pin tidak cocok';
 					$this->__json_out($dt);
 					return;
 				}
@@ -217,9 +217,9 @@ class Login extends \JI_Controller
 
 
 
-				$sess->user->menus = new stdClass();
-				$sess->user->menus->left = array();
-				$sess->user->modules = array();
+				// $sess->user->menus = new stdClass();
+				// $sess->user->menus->left = array();
+				// $sess->user->modules = array();
 
 				//get modules
 				// $modules = $this->amod->getAllParent('front');

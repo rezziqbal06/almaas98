@@ -47,42 +47,6 @@ $("#changepass").on("click",function(e){
 		$("#modal_edit_password").modal("show");
 });
 
-const chartCtx = $("#asesmenChart");
-
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [{
-    label: 'Looping tension',
-    data: [65, 59, 80, 81, 26, 55, 40],
-    fill: false,
-    borderColor: 'rgb(75, 192, 192)',
-  }]
-};
-
-const config = {
-  type: 'line',
-  data: data,
-  options: {
-    animations: {
-      tension: {
-        duration: 1000,
-        easing: 'linear',
-        from: 1,
-        to: 0,
-        loop: true
-      }
-    },
-    scales: {
-      y: { // defining min and max so hiding the dataset does not change scale range
-        min: 0,
-        max: 100
-      }
-    }
-  }
-};
-
-new Chart(chartCtx, config);
-
 
 // edit profil
 $("#fedit-profil").on("submit",function(e){
@@ -151,10 +115,12 @@ $("#fchange-password").on("submit",function(e){
       processData: false,
       contentType: false,
       success: function(respon){
+        NProgress.done();
         if(respon.status==200){
           gritter('<h4>Sukses</h4><p>Password berhasil diubah</p>','success');
           setTimeout(function(){
-            window.location = '<?=base_url('profil/')?>';
+            $("#modal_option").modal("hide");
+		        $("#modal_edit_password").modal("hide");
           },500);
         }else{
           gritter('<h4>Gagal</h4><p>'+respon.message+'</p>','danger');

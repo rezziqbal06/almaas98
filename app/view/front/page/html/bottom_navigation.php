@@ -29,7 +29,7 @@
       <a href="<?= base_url("siteplan") ?>"><img src="<?= base_url("media/map.svg") ?>" alt="dashboard"></a>
     </div>
     <div class="col-3 text-center">
-      <a href="<?= base_url("account") ?>"><img src="<?= base_url("media/user-menu.png") ?>" alt="account"></a>
+      <a href="<?= base_url("profil") ?>"><img src="<?= base_url("media/user-menu.png") ?>" alt="profil"></a>
     </div>
   </div>
 </div>

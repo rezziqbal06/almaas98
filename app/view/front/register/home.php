@@ -1,135 +1,58 @@
-<!-- Register Container -->
-<div id="login-container" class="animation-fadeIn" style="top: 10px;">
-	<!-- Register Title -->
-	<div class="login-title text-center">
-		<img src="<?= $this->cdn_url($this->current_reseller->logo()->path) ?>" class="img-responsive" />
-	</div>
-	<!-- END Register Title -->
+<style>
+	.bg-form {
+		background-color: var(--white);
+		border-radius: 32px;
+		margin-bottom: 32px;
+	}
 
-	<!-- Login Block -->
-	<div class="block push-bit">
-		<?php if($this->status != 200){
-			?>
-			<div id="form_info" class="alert alert-danger" role="alert">
-				Gagal: [<?=$this->status?>] <?=$this->message?>
-			</div>
-			<?php
+	@media screen and (max-width: 765px) {
+		.bg-form {
+			background-color: var(--white);
+			border-top-left-radius: 32px;
+			border-top-right-radius: 32px;
+			border-bottom-right-radius: 0px;
+			border-bottom-left-radius: 0px;
+			margin-bottom: 0px;
 		}
-		?>
-		<!-- Register Form -->
-		<form id="form-register" action="<?=base_url('register/proses/')?>" method="post" class="form-horizontal form-bordered form-control-borderless">
-			<div class="form-group">
-				<div class="col-md-12">
-					<h1 >Form Pendaftaran</h1>
-					<p style="margin: 0; line-height: 1;">Daftarkan diri anda sebagai member di <?=$this->current_reseller->nama?> dengan melengkapi form data dibawah ini.</p>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-md-7 col-sm-12 col-xs-12">
-					<label for="register-name">Nama *</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="gi gi-user"></i></span>
-						<input type="text" id="register-name" name="fnama" class="form-control input-lg" placeholder="Nama Lengkap" minlength="1" required>
-					</div>
-				</div>
-				<div class="col-md-5 col-sm-12 col-xs-12">
-					<label for="register-phone">Telp *</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-phone"></i></span>
-						<input type="text" id="register-phone" name="telp" class="form-control input-lg" placeholder="No Telp" minlength="6" required>
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<label for="register-email">Email *</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="gi gi-envelope"></i></span>
-						<input id="register-email" type="email" name="email" class="form-control input-lg" placeholder="Email" minlength="6" required>
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-xs-12">
-					<label for="register-password">Password *</label>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="gi gi-asterisk"></i></span>
-						<input type="password" id="register-password" name="password" class="form-control input-lg" placeholder="Password" required>
-					</div>
-				</div>
-			</div>
-            <div class="form-group">
+	}
+</style>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="col-md-6 ">
+		<img src="<?= base_url("media/logo.png") ?>" alt="<?= $this->config->semevar->site_name ?>" class="img-fluid text-center mt-4 mb-5 p-5">
+		<form id="form-register" class="p-4 bg-form">
+			<h3 class="text-primary mb-3">Daftar</h3>
 
-                <div class="col-xs-12">
-                    <label for="ialamat">Alamat Baris 1*</label>
-                    <textarea id="ialamat" class="form-control" name="alamat" maxlength="30" required></textarea>
-                </div>
-                <div class="col-xs-12">
-                    <label for="ialamat2">Alamat Baris 2</label>
-                    <textarea id="ialamat2" class="form-control" name="alamat2" maxlength="30"></textarea>
-                </div>
-                <div class="col-xs-12">
-                    <label for="ialamat_select" class="control-label">Pilihan Alamat (<small><i>origin</i></small>)</label>
-                    <select id="ialamat_select" class="form-control select2"></select>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="inegara">Negara *</label>
-                    <input id="inegara" class="form-control" name="negara" value="INDONESIA" required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="iprovinsi">Provinsi *</label>
-                    <input id="iprovinsi" class="form-control" name="provinsi" required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="ikabkota">Kabupaten / Kota *</label>
-                    <input id="ikabkota" class="form-control" name="kabkota" required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="ikecamatan">Kecamatan *</label>
-                    <input id="ikecamatan" class="form-control" name="kecamatan" required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="ikelurahan">Desa / Kelurahan *</label>
-                    <input id="ikelurahan" class="form-control" name="kelurahan" required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="ikodepos" class="control-label">Kodepos *</label>
-                    <input id="ikodepos" class="form-control " name="kodepos" placeholder="Kodepos" required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="ikode_origin" class="control-label">Kode Origin *</label>
-                    <input id="ikode_origin" class="form-control" name="kode_origin" placeholder="Kode Origin" readonly required>
-                </div>
-                <div class="col-md-4 hidden">
-                    <label for="ikode_destination" class="control-label">Kode Destination *</label>
-                    <input id="ikode_destination" class="form-control" name="kode_destination" placeholder="Kode Destination" readonly required>
-                </div>
-            </div>
-
-			<div class="form-group">
-				<div class="col-xs-12">
-					<a href="#modal-terms" data-toggle="modal" class="register-terms" title="Syarat dan ketentuan">Setujui Syarat &amp; Ketentuan</a>
-					<label class="switch switch-primary" data-toggle="tooltip" title="Setujui Syarat dan Ketentuan">
-						<input type="checkbox" id="register-terms" name="register-terms">
-						<span></span>
-					</label>
-				</div>
+			<div class="col-md-6 mb-2">
+				<label for="ifnama" class="control-label">Nama Lengkap</label>
+				<input id="ifnama" type="text" name="fnama" value="<?= $ue->fnama ?? '' ?>" class="form-control" required>
+			</div>
+			<div class="col-md-6 mb-2">
+				<label for="inik" class="control-label">NIK</label>
+				<input type="number" id="inik" class="form-control" name="nik" value="<?= $ue->nik ?? '' ?>" required>
+			</div>
+			<div class="col-md-6 mb-2">
+				<label for="itelp" class="control-label">No. Telpon</label>
+				<input type="number" id="itelp" class="form-control" name="telp" value="<?= $ue->telp ?? '' ?>" required>
+			</div>
+			<div class="col-md-6 mb-2">
+				<label for="iemail" class="control-label">Email</label>
+				<input type="email" id="iemail" class="form-control" name="email" value="<?= $ue->email ?? '' ?>" required>
+			</div>
+			<div class="col-md-6 mb-2">
+				<label for="ipassword" class="control-label">Password Baru</label>
+				<input id="ipassword" type="password" name="password" class="form-control" required>
+			</div>
+			<div class="col-md-6 mb-2">
+				<label for="irepassword" class="control-label">Ulangi Password</label>
+				<input id="irepassword" type="password" name="" class="form-control" required>
 			</div>
 
-			<div class="form-group">
-				<div class="col-xs-12">
-					<button type="submit" class="btn btn-block btn-primary btn-submit">Daftar <i class="fa fa-angle-right icon-submit"></i></button>
-				</div>
+			<div class="text-center mb-5">
+				<button type="submit" class="btn btn-lg btn-lg bg-secondary w-100 mt-4 mb-0 btn-submit"><i class="icon-submit fa fa-register"></i> Daftar</button>
 			</div>
-			<div class="form-group">
-				<div class="col-xs-12 text-center">
-					<small>Sudah menjadi member?</small> <a href="<?=base_url('login')?>" id="link-register"><small>Login</small></a>
-				</div>
-			</div>
+			<a href="<?= base_url("login") ?>"><small>Sudah punya akun? login</small></a>
 		</form>
-		<!-- END Register Form -->
 	</div>
-	<!-- END Register Block -->
-    <?php $this->getThemeElement('page/html/footer_login', $__forward); ?>
+	<div class="col-md-3"></div>
 </div>
-<!-- END Register Container -->

@@ -1,6 +1,4 @@
 var login_try = 0;
-$(function(){ Login.init(); });
-
 function gritter(pesan,judul="info"){
 	$.bootstrapGrowl(pesan, {
 		type: judul,
@@ -19,12 +17,12 @@ $("#form-login").on("submit",function(evt){
 	fd.password = $("#ipassword").val();
 	if(fd.username.length<=3){
 		$("#iusername").focus();
-		gritter("<h4>Info</h4><p>Email belum diisi atau terlalu pendek</p>",'info');
+		gritter("<h4>Info</h4><p>NIK/No HP/Email belum diisi atau terlalu pendek</p>",'info');
 		return false;
 	}
 	if(fd.password.length<=4){
 		$("#ipassword").focus();
-		gritter("<h4>Info</h4><p>Kata sandi terlalu pendek</p>",'info');
+		gritter("<h4>Info</h4><p>Password terlalu pendek</p>",'info');
 		return false;
 	}
 	NProgress.start();
