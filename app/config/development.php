@@ -179,6 +179,7 @@ $controller_404 = 'notfound';
 $routes['admin/edit'] = 'admin/home/edit';
 $routes['explore/'] = 'produk/';
 $routes['produk/(:any)'] = 'produk/detail/$1';
+$routes['booking/(:any)'] = 'booking/book/$1';
 $routes['banner/(:any)'] = 'banner/detail/$1';
 $routes['siteplan/(:num)'] = 'siteplan/detail/$1';
 $routes['blog/(:any)'] = 'blog/detail/$1';

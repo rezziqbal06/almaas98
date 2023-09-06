@@ -75,7 +75,7 @@
 			<button id="siteplan" data-id="<?= $produk->a_kategori_id ?>" class="btn btn-info bg-info"><b>LIHAT KETERSEDIAAN (SITEPLAN)</b></button>
 		</div>
 		<div class="col-md-6 d-grid">
-			<button id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-secondary disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></button>
+			<a href="<?= base_url("booking/$produk->slug") ?>" id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-secondary disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></a>
 		</div>
 	</div>
 </section>

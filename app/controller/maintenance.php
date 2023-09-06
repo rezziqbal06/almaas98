@@ -1,5 +1,5 @@
 <?php
-class Notfound extends JI_Controller
+class Maintenance extends JI_Controller
 {
 	public function __constructx()
 	{
@@ -10,11 +10,10 @@ class Notfound extends JI_Controller
 	{
 		$data = $this->__init();
 		$this->setTheme('front');
-		header("HTTP/1.0 404 Not Found");
 
-		$this->setTitle("Tidak ditemukan" . $this->config->semevar->site_suffix);
+		$this->setTitle("Maintenance" . $this->config->semevar->site_suffix);
 		//$this->putThemeContent("notfound",$data);
-		$this->loadLayout('notfound', $data);
+		$this->loadLayout('401', $data);
 		$this->render();
 	}
 }
