@@ -134,7 +134,7 @@ class Register extends JI_Controller
 		$this->putThemeContent("register/home_modal", $data);
 		$this->putThemeContent("register/home", $data);
 		$this->putJsReady('register/home_bottom', $data);
-		$this->loadLayout('login', $data);
+		$this->loadLayout('col-1', $data);
 		$this->render();
 	}
 	public function proses()
