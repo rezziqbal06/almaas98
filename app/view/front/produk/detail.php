@@ -1,31 +1,72 @@
-<!-- List Produk Popular -->
-<a href="<?= base_url($produk->gambar) ?>" target="_blank"><img id="display-gambar" class="w-100" src="<?= base_url($produk->gambar) ?>" data-zoom-image="<?= base_url($produk->gambar) ?>" alt="<?= $produk->nama ?>" style="border-radius:0 0 32px 32px;"></a>
+<style>
+	ul {
+		list-style-type: disc !important;
+	}
 
-<div class="row" style="margin-top: -5em;padding:0 2em;">
+	.detail_produk {
+		margin-top: 0px;
+	}
+
+	@media screen and (max-width: 765px) {
+		.detail_produk {
+			margin-top: -5em;
+		}
+	}
+</style>
+<!-- List Produk Popular -->
+<a href="<?= base_url($produk->gambar) ?>" target="_blank" class="d-md-none"><img id="" class="display-gambar w-100" src="<?= base_url($produk->gambar) ?>" data-zoom-image="<?= base_url($produk->gambar) ?>" alt="<?= $produk->nama ?>" style="border-radius:0 0 32px 32px;"></a>
+
+<div class="row detail_produk" style="padding:0 2em;">
+
 	<div class="kartu-detail ">
-		<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->luas_tanah ?? '150' ?>/<?= $produk->luas_bangunan ?? '70' ?></b></p>
-		<small class="text-grey"><i class="fa fa-map-marker mb-2"></i> <?= $produk->kawasan ?? '' ?></small>
-		<div class="d-flex justify-content-start flex-wrap text-grey">
-			<div class="me-3"><i class="fa fa-bolt"></i> <small><?= $produk->listrik ?? 1300 ?> watt</small></div>
-			<div class="me-3"><i class="fa fa-bath" style="vertical-align: baseline;"></i> <small><?= $produk->toilet ?? 1 ?></small></div>
-			<div class="me-3"><i class="fa fa-bed"></i> <small><?= $produk->kamar_tidur ?? 1 ?></small></div>
+		<div class="row">
+			<div class="col-md-4">
+				<a href="<?= base_url($produk->gambar) ?>" target="_blank" class="d-none d-md-block"><img id="" class="display-gambar w-100" src="<?= base_url($produk->gambar) ?>" data-zoom-image="<?= base_url($produk->gambar) ?>" alt="<?= $produk->nama ?>" style="border-radius:0 0 32px 32px;"></a>
+			</div>
+			<div class="col-md-8">
+				<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->luas_tanah ?? '150' ?>/<?= $produk->luas_bangunan ?? '70' ?></b></p>
+				<small class="text-grey"><i class="fa fa-map-marker mb-2 me-1"></i> <?= $produk->kawasan ?? '' ?></small>
+				<div class="d-flex justify-content-start flex-wrap text-grey">
+					<div class="me-3"><i class="fa fa-bolt me-1"></i> <small><?= $produk->listrik ?? 1300 ?> watt</small></div>
+					<div class="me-3"><i class="fa fa-bath me-1" style="vertical-align: baseline;"></i> <small><?= $produk->toilet ?? 1 ?></small></div>
+					<div class="me-3"><i class="fa fa-bed me-1"></i> <small><?= $produk->kamar_tidur ?? 1 ?></small></div>
+				</div>
+				<div class="mt-4"><?= $produk->deskripsi ?? '' ?></div>
+				<hr>
+				<h3 class="me-3 m-0"><b class="text-primary"><?= $produk->angsuran ?? 0 ?></b>/bulan</h3>
+				<span class="text-grey" style="margin-top: -4px;">Rp. <?= $produk->harga ?? 0 ?> </span>
+				<a href="#" class="float-end mt-3" id="simulasi">Lihat simulasi</a>
+			</div>
 		</div>
-		<p class="mt-4"><?= $produk->deskripsi ?? '' ?></p>
-		<hr>
-		<h3 class="me-3 m-0"><b class="text-primary"><?= $produk->angsuran ?? 0 ?></b>/bulan</h3>
-		<span class="text-grey" style="margin-top: -4px;">Rp. <?= $produk->harga ?? 0 ?></span>
-		<a href="#" class="float-end mt-3" id="simulasi">Lihat simulasi</a>
 	</div>
 </div>
 <section class="mt-3">
 	<div class="row mb-3" style="padding: 0 2em;">
-		<div class="col-md-5 horizontal-list kartu-detail">
+		<div class="col-md-6 horizontal-list">
 			<?php if (isset($bpgm)) : ?>
 				<?php $i = 0; ?>
 				<?php foreach ($bpgm as $k => $v) : ?>
 					<a href="#" class="image-selected p-2" data-count="<?= $k ?>" class="p-2"><img id="gambar-item-<?= $k ?>" src="<?= base_url() . $v->gambar ?>" alt="Gambar <?= $produk->nama ?> <?= ($i + 1) ?>" height="100px" class="gambar-item rounded <?= $v->gambar == $produk->gambar ? 'selected' : '' ?>"></a>
 					<?php $i++ ?>
 				<?php endforeach ?>
+			<?php endif ?>
+		</div>
+		<div class="col-md-6">
+			<?php if (isset($produk->three_d) && strlen($produk->three_d)) : ?>
+				<div class="accordion" id="accordionExample">
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="headingThree">
+							<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								3D Model
+							</button>
+						</h2>
+						<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+							<div class="accordion-body">
+								<?= $produk->three_d ?>
+							</div>
+						</div>
+					</div>
+				</div>
 			<?php endif ?>
 		</div>
 	</div>

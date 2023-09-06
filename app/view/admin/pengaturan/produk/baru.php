@@ -90,6 +90,16 @@
                             <label for="igarasi" class="control-label">Garasi</label>
                             <input id="igarasi" type="number" name="garasi" class="form-control">
                         </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="ia_three_d_id" class="control-label">3D Model House</label>
+                            <select id="ia_three_d_id" type="text" name="a_three_d_id" class="form-control select2">
+                                <?php if (isset($atdm[0]->id)) : ?>
+                                    <?php foreach ($atdm as $k => $v) : ?>
+                                        <option value="<?= $v->id ?>"><?= $v->deskripsi ?></option>
+                                    <?php endforeach ?>
+                                <?php endif ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-2">

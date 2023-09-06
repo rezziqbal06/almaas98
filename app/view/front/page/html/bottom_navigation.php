@@ -26,7 +26,7 @@
       <a href="<?= base_url("explore") ?>"><img src="<?= base_url("media/search-menu.png") ?>" alt="search"></a>
     </div>
     <div class="col-3 text-center">
-      <a href="<?= base_url("leaderboard") ?>"><img src="<?= base_url("media/dashboard-menu.png") ?>" alt="dashboard"></a>
+      <a href="<?= base_url("siteplan") ?>"><img src="<?= base_url("media/map.svg") ?>" alt="dashboard"></a>
     </div>
     <div class="col-3 text-center">
       <a href="<?= base_url("account") ?>"><img src="<?= base_url("media/user-menu.png") ?>" alt="account"></a>

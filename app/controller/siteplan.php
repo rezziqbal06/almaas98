@@ -29,12 +29,15 @@ class Siteplan extends JI_Controller
 		// 	redir(base_url('login'), 0);
 		// 	die();
 		// }
-		$this->current_page = 'explore';
-		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
 
-		$this->putThemeContent("explore/home", $data);
-		$this->putThemeContent("explore/home_modal", $data);
-		$this->putJsContent("explore/home_bottom", $data);
+		$akm = $this->akm->getAll();
+		$data['akm'] = $akm;
+		$this->current_page = 'siteplan';
+		$this->setTitle("Siteplan " . $this->config->semevar->site_suffix);
+
+		$this->putThemeContent("siteplan/home", $data);
+		$this->putThemeContent("siteplan/home_modal", $data);
+		$this->putJsContent("siteplan/home_bottom", $data);
 		$this->loadLayout('col-1-bar', $data);
 		$this->render();
 	}
@@ -78,9 +81,9 @@ class Siteplan extends JI_Controller
 
 		unset($akm);
 		unset($bpm);
-		$this->putThemeContent("siteplan/home", $data);
-		$this->putThemeContent("siteplan/home_modal", $data);
-		$this->putJsContent("siteplan/home_bottom", $data);
+		$this->putThemeContent("siteplan/detail", $data);
+		$this->putThemeContent("siteplan/detail_modal", $data);
+		$this->putJsContent("siteplan/detail_bottom", $data);
 		$this->loadLayout('col-1', $data);
 		$this->render();
 	}

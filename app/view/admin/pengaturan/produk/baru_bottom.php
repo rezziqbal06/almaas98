@@ -33,6 +33,7 @@ $("#ftambah").on("submit",function(e){
       fd.append('gambar'+i, gambar.blob, 'gambar.'+gambar.extension);
     }
   }
+	fd.append('deskripsi', editor["#ideskripsi"].getData())
 
 
 	var url = '<?= base_url("api_admin/pengaturan/produk/baru/")?>';
@@ -478,3 +479,5 @@ $(document).on('input', '.check-spec-filter', function(e){
   var checked = $(this).is(':checked');
   $("[data-value*='"+values+"']").prop('checked', checked).trigger('input');
 });
+
+initEditor('#ideskripsi');

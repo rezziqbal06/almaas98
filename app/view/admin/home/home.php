@@ -1,7 +1,7 @@
 <section>
     <div class="row">
-        <?php $title = ["Produk", "Kustomer", "Order On Proses", "Order Selesai"]; ?>
-        <?php $value = [$count_produk, $count_kustomer, $count_order_on_proses, $count_order_done]; ?>
+        <?php $title = ["Rumah", "Kustomer", "Booking", "Order Selesai"]; ?>
+        <?php $value = [$count_produk, $count_kustomer, $count_booking, $count_order_done]; ?>
         <?php $icon = ["app", "single-02", "cart", "cart"]; ?>
         <?php $color = ["danger", "warning", "info", "success"]; ?>
         <?php foreach ($title as $k => $v) : ?>

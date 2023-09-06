@@ -18,8 +18,8 @@ class B_Produk_Concern extends \JI_Model
     public $tbl_as = 'bp';
     public $tbl2 = 'a_kategori';
     public $tbl2_as = 'ak';
-    // public $tbl3 = 'a_company';
-    // public $tbl3_as = 'ac';
+    public $tbl3 = 'a_three_d';
+    public $tbl3_as = 'atd';
 
     const COLUMNS = [
         'a_kategori_id',
@@ -115,6 +115,11 @@ class B_Produk_Concern extends \JI_Model
             ["$this->tbl_as.nama", 'nama', 'Produk'],
             ["$this->tbl2_as.nama", 'kategori', 'Kawasan'],
             ["$this->tbl_as.harga", 'harga', 'Harga'],
+            ["$this->tbl_as.tipe", 'tipe', 'Tipe'],
+            ["$this->tbl_as.lantai", 'lantai', 'Lantai'],
+            ["$this->tbl_as.luas_tanah", 'luas_tanah', 'LT'],
+            ["$this->tbl_as.luas_bangunan", 'luas_bangunan', 'LB'],
+            ["$this->tbl_as.kamar_tidur", 'kamar_tidur', 'Kamar'],
             ["$this->tbl_as.gambar", 'gambar', 'Gambar'],
             ["$this->tbl_as.is_active", 'is_active', 'Status']
         ]);

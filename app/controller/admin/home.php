@@ -36,7 +36,7 @@ class Home extends JI_Controller
 
 		$data['count_produk'] = $this->bpm->countAll();
 		$data['count_kustomer'] = $this->bum->countAll();
-		$data['count_order_on_proses'] = $this->com->countAll('progress');
+		$data['count_booking'] = $this->com->countAll('progress');
 		$data['count_order_done'] = $this->com->countAll('done');
 		$bulan = [];
 		$omset = [];

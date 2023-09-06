@@ -21,6 +21,8 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+
+
 .gradient-primary{
     background: var(--secondary);
     background: linear-gradient(149deg, var(--secondary) 11%, var(--primary) 76%);

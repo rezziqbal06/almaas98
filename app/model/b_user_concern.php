@@ -28,6 +28,7 @@ class B_User_Concern extends \JI_Model
         'kode',
         'email',
         'username',
+        'nik',
         'foto',
         'welcome_message',
         'penilaian',
@@ -66,6 +67,7 @@ class B_User_Concern extends \JI_Model
         'b_user_id'
     ];
     const DEFAULTS = [
+        '',
         '',
         '',
         '',

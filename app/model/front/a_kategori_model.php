@@ -24,7 +24,7 @@ class A_kategori_Model extends \Model\A_kategori_Concern
 
 	public function getAll($is_active = 1)
 	{
-		$this->db->select('id')->select('nama')->select('slug');
+		$this->db->select('id')->select('nama')->select('deskripsi')->select('gambar');
 		$this->db->where('is_active', $is_active);
 		$this->db->where('is_deleted', $this->db->esc(0));
 		return $this->db->get('', 0);

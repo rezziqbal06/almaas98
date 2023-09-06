@@ -146,7 +146,7 @@ $(document).on('click', '.image-selected', function(e){
 	$(".gambar-item").removeClass('selected');
 	$("#gambar-item-"+count).addClass('selected');
   var src = $("#gambar-item-"+count).attr('src')
-  $("#display-gambar").attr('src',src)
+  $(".display-gambar").attr('src',src)
 });
 
 function pesanProduk(){

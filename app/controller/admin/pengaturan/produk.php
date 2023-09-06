@@ -24,7 +24,9 @@ class Produk extends \JI_Controller
 		$this->load("b_produk_concern");
 		$this->load("b_produk_harga_concern");
 		$this->load("b_produk_gambar_concern");
+		$this->load("a_three_d_concern");
 		$this->load("a_kategori_concern");
+		$this->load("admin/a_three_d_model", "atdm");
 		$this->load("admin/a_kategori_model", "akm");
 		$this->load("admin/b_produk_model", "bpm");
 		$this->load("admin/b_produk_harga_model", "bphm");
@@ -59,6 +61,8 @@ class Produk extends \JI_Controller
 		}
 		$pengguna = $data['sess']->admin;
 		$data['akm'] = $this->akm->getAll();
+		$data['atdm'] = $this->atdm->getAll();
+
 
 		$this->setTitle('Rumah/Kavling Baru ' . $this->config_semevar('admin_site_suffix', ''));
 
@@ -91,6 +95,7 @@ class Produk extends \JI_Controller
 		$data['akm'] = $this->akm->getAll();
 		$data['bpgm'] = $this->bpgm->getByProduk($bpm->id);
 		$data['bphm'] = $this->bphm->getByProduk($bpm->id);
+		$data['atdm'] = $this->atdm->getAll();
 		if (isset($data['bpm']->spesifikasi)) {
 			$qty = [];
 			$spesifikasi = [];

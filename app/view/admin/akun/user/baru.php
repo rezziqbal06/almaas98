@@ -34,9 +34,13 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label for="ifnama" class="control-label">Nama Lengkap*</label>
                         <input type="text" name="fnama" id="ifnama" class="form-control" placeholder="Nama" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inik" class="control-label">NIK*</label>
+                        <input type="number" name="nik" id="inik" class="form-control" placeholder="Nama" required>
                     </div>
                     <?php if (isset($jabatans) && count($jabatans)) { ?>
                         <div class="col-md-6">

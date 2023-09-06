@@ -65,6 +65,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
 			->select_as($this->tbl_as . '.gambar', "gambar", 0)
 			->select_as($this->tbl_as . '.nama', "nama", 0)
 			->select_as($this->tbl_as . '.deskripsi', "deskripsi", 0)
+			->select_as($this->tbl3_as . '.gambar', "three_d", 0)
 			->select('luas_tanah')
 			->select('luas_bangunan')
 			->select('harga')
@@ -74,6 +75,7 @@ class B_Produk_Model extends \Model\B_Produk_Concern
 			->select('a_kategori_id');
 		$this->db->from("$this->tbl", "$this->tbl_as");
 		$this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id");
+		$this->db->join($this->tbl3, $this->tbl3_as, "id", $this->tbl_as, "a_three_d_id");
 		if (strlen($slug)) $this->db->where($this->tbl_as . '.slug', $slug);
 		return $this->db->get_first('', 0);
 	}

@@ -61,6 +61,8 @@ $("#fedit").on("submit",function(e){
       fd.append('gambar'+i, gambar.blob, 'gambar.'+gambar.extension);
     }
   }
+	fd.append('deskripsi', editor["#iedeskripsi"].getData())
+
 	var url = '<?=base_url("api_admin/pengaturan/produk/edit/".$bpm->id)?>';
 
 	$.ajax({
@@ -245,3 +247,5 @@ function generateCombinations(arrays, i = 0) {
   }
   return result;
 }
+
+initEditor('#iedeskripsi');
