@@ -16,7 +16,7 @@
 	}
 </style>
 <div class="row bg-primary p-3 mt-n2" style="margin-top: -16px;">
-	<h3 class="mb-3 text-white <?= $sess->user->fnama ?? 'd-none' ?>">Halo, <?= $sess->user->fnama ?></h3>
+	<h3 class="mb-3 text-white <?= $sess->user->fnama ?? 'd-none' ?>">Halo, <?= $sess->user->fnama ?? '' ?></h3>
 	<div class="col-12 mb-3">
 		<input id="cari_quiz" type="text" class="form-control bg-white p-3" placeholder="Cari Rumah" style="border:none; border-radius:16px; color:white;">
 	</div>

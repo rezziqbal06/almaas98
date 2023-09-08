@@ -28,7 +28,6 @@
 						<span class="text-primary"><?= $a->kategori ?></span>
 						<h3><?= $a->judul ?></h3>
 					</div>
-
 				</a>
 			</div>
 		<?php endforeach ?>
