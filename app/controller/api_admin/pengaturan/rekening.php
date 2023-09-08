@@ -56,8 +56,8 @@ class Rekening extends JI_Controller
 			if (isset($gd->is_active)) {
 				$gd->is_active = $this->arm->label('is_active', $gd->is_active);
 			}
-			if (isset($gd->gambar)) {
-				$gd->gambar = '<img src="' . base_url($gd->gambar) . '" class="img-fluid rounded" width="150"/>';
+			if (isset($gd->icon)) {
+				$gd->icon = '<img src="' . base_url("media/bank/" . $gd->icon . '.png') . '" class="img-fluid rounded" width="50"/>';
 			}
 		}
 
@@ -86,7 +86,7 @@ class Rekening extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-		$this->arm->columns['cdate']->value = 'NOW()';
+		// $this->arm->columns['cdate']->value = 'NOW()';
 
 		$res = $this->arm->save();
 		if ($res) {

@@ -16,7 +16,6 @@
 					<div class="col-xs-12 btn-group-vertical">
 						<!-- <a id="adetail" href="#" class="btn btn-info btn-left"><i class="fa fa-info"></i> Detail</a> -->
 						<a id="aedit" href="#" class="btn btn-primary btn-left"><i class="fa fa-pencil"></i> Edit</a>
-						<a id="asiteplan" href="#" class="btn btn-success btn-left"><i class="fa fa-map"></i> Siteplan</a>
 						<button id="bhapus" type="button" class="btn btn-danger btn-left btn-submit"><i class="fa fa-trash-o icon-submit"></i> Hapus</button>
 					</div>
 				</div>
@@ -56,8 +55,8 @@
 									<input id="inomor" type="text" name="nomor" class="form-control" required>
 								</div>
 								<div class="col-md-2 mb-2">
-									<label for="iicon" class="control-label select2">Bank</label>
-									<select name="icon" id="iicon" class="form-control">
+									<label for="iicon" class="control-label ">Bank</label>
+									<select name="icon" id="iicon" class="select2 form-control">
 										<option value="bsi">BSI</option>
 										<option value="bri">BRI</option>
 										<option value="bri-syariah">BRI Syariah</option>
@@ -123,8 +122,8 @@
 									<input id="ienomor" type="text" name="nomor" class="form-control" required>
 								</div>
 								<div class="col-md-2 mb-2">
-									<label for="ieicon" class="control-label select2">Bank</label>
-									<select name="icon" id="ieicon" class="form-control">
+									<label for="ieicon" class="control-label ">Bank</label>
+									<select name="icon" id="ieicon" class="select2 form-control">
 										<option value="bsi">BSI</option>
 										<option value="bri">BRI</option>
 										<option value="bri-syariah">BRI Syariah</option>
