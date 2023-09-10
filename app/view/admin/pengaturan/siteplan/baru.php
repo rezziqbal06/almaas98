@@ -153,8 +153,8 @@
                 </div>
 
                 <div class="form-group form-actions">
-                    <div class="col-xs-12 text-right">
-                        <div class="btn-group pull-right">
+                    <div class="col-xs-12">
+                        <div class="btn-group">
                             <button type="submit" class="btn btn-primary btn-submit">
                                 <i class="fa fa-save"></i> Simpan
                             </button>

@@ -120,8 +120,11 @@ $("#isiteplan").on('change', function(e){
   if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-          const svgContent = e.target.result;
-          $("#siteplan").html(svgContent); // Display the SVG
+          const svg = e.target.result;
+          var width = svg.attr('width');
+          var height = svg.attr('height');
+          svg.attr('viewBox', `0 0 ${width} ${height}`)
+          $("#siteplan").html(svg); // Display the SVG
       };
       reader.readAsText(file);
   }
