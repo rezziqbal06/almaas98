@@ -260,7 +260,7 @@ class Pegawai extends JI_Controller
 			die();
 		}
 
-		$res = $this->apm->update($id, array('is_deleted' => 1));
+		$res = $this->apm->del($id);
 		if ($res) {
 			$this->status = 200;
 			$this->message = API_ADMIN_ERROR_CODES[$this->status];
