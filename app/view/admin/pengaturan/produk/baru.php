@@ -100,6 +100,10 @@
                                 <?php endif ?>
                             </select>
                         </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="istok" class="control-label">Stok Unit</label>
+                            <input id="istok" type="number" name="stok" class="form-control">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-2">
