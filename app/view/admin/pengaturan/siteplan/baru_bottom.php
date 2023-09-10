@@ -120,11 +120,23 @@ $("#isiteplan").on('change', function(e){
   if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
-          const svg = e.target.result;
-          var width = svg.attr('width');
-          var height = svg.attr('height');
-          svg.attr('viewBox', `0 0 ${width} ${height}`)
-          $("#siteplan").html(svg); // Display the SVG
+          const svgContent = e.target.result;
+
+          const parser = new DOMParser();
+          const svgDoc = parser.parseFromString(svgContent, "image/svg+xml");
+
+          const svgElement = svgDoc.querySelector("svg");
+          const width = svgElement.getAttribute("width");
+          const height = svgElement.getAttribute("height");
+
+          svgElement.setAttribute("viewBox", `0 0 ${width} ${height}`);
+
+          const modifiedSvgContent = new XMLSerializer().serializeToString(svgDoc);
+
+         
+          $("#siteplan").html(modifiedSvgContent); // Display the SVG
+       
+
       };
       reader.readAsText(file);
   }
