@@ -163,7 +163,7 @@ class Pegawai extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-		$id = $this->input->request('id', 0);
+		// $id = $this->input->request('id', 0);
 		$id = (int) $id;
 		if ($id <= 0) {
 			$this->status = 444;
