@@ -57,6 +57,20 @@
     .terjual {
         fill: var(--terjual) !important;
     }
+
+    .text-tersedia {
+        color: var(--tersedia) !important;
+    }
+
+
+    .text-booking {
+        color: var(--booking) !important;
+    }
+
+
+    .text-terjual {
+        color: var(--terjual) !important;
+    }
 </style>
 <div id="page-content">
     <!-- Static Layout Header -->
@@ -78,6 +92,9 @@
                             <div class="row bg-white" style="border-radius: 16px 0px 0px 16px;">
                                 <div class="col-md-12 mb-2">
                                     <p><b id="detail_rumah"></b></p>
+                                    <small><i class="fa fa-square text-tersedia "></i> tersedia</small>
+                                    <small><i class="fa fa-square text-booking ms-3"></i> booking</small>
+                                    <small><i class="fa fa-square text-terjual ms-3"></i> terjual</small>
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="istatus" class="control-label">Status Rumah</label>
