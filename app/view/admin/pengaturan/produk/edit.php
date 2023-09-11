@@ -110,8 +110,8 @@
 							</select>
 						</div>
 						<div class="col-md-4 mb-2">
-							<label for="stock_unit" class="control-label">Stock unit</label>
-							<input id="stock_unit" type="number" name="stock_unit" class="form-control" required>
+							<label for="iestock_unit" class="control-label">Stock unit</label>
+							<input id="iestock_unit" type="number" name="stock_unit" class="form-control" required>
 						</div>
 					</div>
 					<div class="row">
