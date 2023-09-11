@@ -94,7 +94,7 @@
                             <input id="ipath_siteplan" type="hidden" name="path_siteplan" value="<?= $akm->siteplan ?? '' ?>">
                             <div id="siteplan"> </div>
                         </div>
-                        <div class="col-md-3 " style="position: fixed;top: 15em;right:2em;">
+                        <div class="col-md-3 " style="">
                             <div class="row bg-white" style="border-radius: 16px 0px 0px 16px;">
                                 <div class="col-md-12 mb-2">
                                     <p><b id="detail_rumah"></b></p>

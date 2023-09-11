@@ -49,6 +49,7 @@ class B_Produk_Concern extends \JI_Model
         'cdate',
         'spesifikasi',
         'count_read',
+        'stok',
     ];
     const DEFAULTS = [
         0,
@@ -77,6 +78,7 @@ class B_Produk_Concern extends \JI_Model
         0,
         NULL,
         NULL,
+        0,
         0,
     ];
     const REQUIREDS = [
