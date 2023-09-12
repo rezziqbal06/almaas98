@@ -20,7 +20,7 @@
     }
 
     #siteplan {
-        min-height: 450px;
+        min-height: 50vh;
         border-radius: 16px;
         margin-bottom: 2em;
         padding: 1em;
@@ -28,7 +28,10 @@
 
     #siteplan svg {
         width: 100%;
-        height: auto;
+        height: 80vh;
+        transform-origin: center;
+        object-fit: cover;
+        overflow: hidden;   
     }
 
     path:hover {
@@ -86,9 +89,9 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-8">
-                            <div id="siteplan"> </div>
+                            <div id="siteplan" style="overflow: hidden; position: relative;"> </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="row bg-white" style="border-radius: 16px 0px 0px 16px;">
                                 <div class="col-md-12 mb-2">
                                     <p><b id="detail_rumah"></b></p>
