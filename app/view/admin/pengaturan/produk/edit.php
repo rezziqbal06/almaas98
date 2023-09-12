@@ -52,10 +52,19 @@
 						<div class="col-md-4 mb-2">
 							<label for="ietipe" class="control-label">Tipe Rumah</label>
 							<select id="ietipe" type="text" name="tipe" class="form-control select2" required>
-								<option value="36">36</option>
-								<option value="48">48</option>
-								<option value="50">50</option>
-								<option value="70">70</option>
+								<option value="60/60">60/60</option>
+								<option value="60/62">60/62</option>
+								<option value="72/64">72/64</option>
+								<option value="90/70">90/70</option>
+								<option value="90/72">90/72</option>
+								<option value="90/77">90/77</option>
+								<option value="100/80">100/80</option>
+								<option value="100/84">100/84</option>
+								<option value="100/86">100/86</option>
+								<option value="100/88">100/88</option>
+								<option value="110/190">110/190</option>
+								<option value="120/100">120/100</option>
+								<option value="120/109">120/109</option>
 							</select>
 						</div>
 						<!-- <div class="col-md-4 mb-2">
@@ -101,8 +110,8 @@
 							</select>
 						</div>
 						<div class="col-md-4 mb-2">
-							<label for="iestok" class="control-label">Stok Unit</label>
-							<input id="iestok" type="number" name="stok" class="form-control">
+							<label for="iestock_unit" class="control-label">Stock unit</label>
+							<input id="iestock_unit" type="number" name="stock_unit" class="form-control" required>
 						</div>
 					</div>
 					<div class="row">
@@ -121,7 +130,7 @@
 						</div>
 						<div class="col-md-4 mb-2">
 							<label for="ieair" class="control-label">Air</label>
-							<input id="ieair" type="text" name="air" class="form-control" value="pdam">
+							<input id="ieair" type="text" name="air" class="form-control" value="Sibel">
 						</div>
 						<!-- <div class="col-md-4 mb-2">
 							<label for="iestatus" class="control-label">Status Rumah/Kavling</label>

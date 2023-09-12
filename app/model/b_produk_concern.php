@@ -49,7 +49,7 @@ class B_Produk_Concern extends \JI_Model
         'cdate',
         'spesifikasi',
         'count_read',
-        'stok',
+        'stock_unit',
     ];
     const DEFAULTS = [
         0,

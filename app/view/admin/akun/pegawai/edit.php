@@ -52,7 +52,8 @@
 					<div class="col-md-4">
 						<label for="iea_jabatan_nama" class="control-label">Profesi*</label>
 						<select name="a_jabatan_nama" id="iea_jabatan_nama" class="form-control select2" required>
-							<option value="Sales">Sales</option>
+							<option value="Marketing">Marketing</option>
+							<option value="Direktur">Direktur</option>
 						</select>
 					</div>
 					<div class="col-md-4">
@@ -75,6 +76,7 @@
 						<select name="pendidikan_terakhir" id="iependidikan_terakhir" class="form-control select2">
 							<option value="S1">S1</option>
 							<option value="SMA">SMA</option>
+							<option value="SMK">SMK</option>
 							<option value="SMP">SMP</option>
 							<option value="SD">SD</option>
 						</select>
