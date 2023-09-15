@@ -31,7 +31,7 @@
         height: 80vh;
         transform-origin: center;
         object-fit: cover;
-        overflow: hidden;   
+        overflow: hidden;
     }
 
     path:hover {
@@ -100,7 +100,7 @@
                                     <small><i class="fa fa-square text-terjual ms-3"></i> terjual</small>
                                 </div>
                                 <div class="col-md-12 mb-2">
-                                    <label for="istatus" class="control-label">Status Rumah</label>
+                                    <label for="istatus" class="control-label">Status</label>
                                     <br>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status_rumah" checked id="status_rumah_4" value="">
@@ -117,6 +117,26 @@
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="status_rumah" id="status_rumah_3" value="terjual">
                                         <label class="form-check-label" for="status_rumah_3">terjual</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                    <label for="istatus" class="control-label">Posisi</label>
+                                    <br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="posisi" checked id="posisi_4" value="">
+                                        <label class="form-check-label" for="posisi_4">semua</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="posisi" id="posisi_1" value="sayap">
+                                        <label class="form-check-label" for="posisi_1">sayap</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="posisi" id="posisi_2" value="utama">
+                                        <label class="form-check-label" for="posisi_2">utama</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="posisi" id="posisi_3" value="hook">
+                                        <label class="form-check-label" for="posisi_3">hook</label>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-2">

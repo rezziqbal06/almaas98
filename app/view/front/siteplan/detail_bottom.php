@@ -70,48 +70,6 @@ $("#ftambah").on("submit",function(e){
 
 
 
-$("#attach").on('click', function(e){
-  e.preventDefault();
-  var id = $("#id_path").val();
-  if(!id){
-   gritter('Rumah/Kavling belum dipilih', 'warning')
-   return false;
-  }
-  var blok = $("#iblok").val();
-    var nomor = $("#inomor").val();
-    if(!blok || !nomor){
-      gritter("Blok dan Nomor harus diisi terlebih dahulu", "warning");
-      return false;
-    }
-    var rumah = $("#irumah").find('option:selected').val();
-    rumah = rumah+'|B-'+blok+'|N-'+nomor;
-    var status_rumah = $("#istatus").find('option:selected').val();
-    $("#"+id).attr('data-rumah-id', rumah);
-    $("path").removeClass('selected');
-    $("#"+id).removeClass('booking').removeClass('tersedia').removeClass('terjual');
-    $("#"+id).addClass(status_rumah);
-    $("#id_path").val('')
-    $("#inomor").val('');
-
-    if(!data_siteplan[id]) data_siteplan[id] = {};
-    data_siteplan[id] = {"data":rumah,"status":status_rumah}
-})
-
-$("#remove").on('click', function(e){
-  e.preventDefault();
-  var id = $("#id_path").val();
-  if(!id){
-   gritter('Rumah/Kavling belum dipilih', 'warning')
-   return false;
-  }
-  $("#"+id).attr('data-rumah-id', '');
-  $("#"+id).removeClass('selected').removeClass('booking').removeClass('tersedia').removeClass('terjual');
-  
-  $("#id_path").val('')
-  data_siteplan[id] = null;
-
-})
-
 $("#isiteplan").on('change', function(e){
   e.preventDefault();
   $("#ipath_siteplan").val('')
@@ -151,8 +109,11 @@ $(document).on('click', 'path', function(e){
         data_siteplan = JSON.parse(stok);
         console.log(data_siteplan, 'data_siteplan')
         $.each(data_siteplan, function(k,v){
-          $("#"+k).attr('data-rumah-id', v.data);
-          $("#"+k).addClass(v.status);
+          if(v){
+            $("#"+k).attr('data-rumah-id', v.data);
+            $("#"+k).addClass(v.status);
+          }
+          
         })
       }
     })
@@ -175,6 +136,7 @@ $(document).on('mouseenter', 'path', function(e){
       var lb = '';
       var kamar = '';
       var toilet = '';
+      var posisi = '';
       $.each(datas, function(k,v){
         if(v.includes('LB-')){
             lb = v.replaceAll('LB-','');
@@ -184,10 +146,12 @@ $(document).on('mouseenter', 'path', function(e){
             lt = v.replaceAll('LT-','');
         }else if(v.includes('B-')){
             blok = v.replaceAll('B-','');
+        }else if(v.includes('PS-')){
+            posisi = v.replaceAll('PS-','');
         }
       })
 
-      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb}`
+      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb} ${posisi}`
       $("#detail_rumah").text(detail)
     }
   }
@@ -204,17 +168,24 @@ function resetSiteplan(){
 function filterSitemap(){
   $("path[data-rumah-id]").addClass('fill-white');
   var status_rumah = $('[name="status_rumah"]:checked').val();
+  var posisi = $('[name="posisi"]:checked').val();
   var blok = $("#iblok").val();
   var rumah = $("#irumah").val(); //type
   var stringSelected = "path";
   if(status_rumah) stringSelected += "[class*='"+status_rumah+"']"
   if(blok) stringSelected += "[data-rumah-id*='B-"+blok+"']"
   if(rumah) stringSelected += "[data-rumah-id*='"+rumah+"']"
-  console.log(stringSelected);
+  if(posisi) stringSelected += "[data-rumah-id*='PS-"+posisi+"']"
+  console.log(stringSelected, 'string selected');
   $(stringSelected).removeClass('fill-white');
 }
 
 $('[name="status_rumah"]').on('change', function(e){
+  e.preventDefault();
+  filterSitemap();
+})
+
+$('[name="posisi"]').on('change', function(e){
   e.preventDefault();
   filterSitemap();
 })

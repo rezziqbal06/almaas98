@@ -78,23 +78,25 @@ $("#attach").on('click', function(e){
    return false;
   }
   var blok = $("#iblok").val();
-    var nomor = $("#inomor").val();
-    if(!blok || !nomor){
-      gritter("Blok dan Nomor harus diisi terlebih dahulu", "warning");
-      return false;
-    }
-    var rumah = $("#irumah").find('option:selected').val();
-    rumah = rumah+'|B-'+blok+'|N-'+nomor;
-    var status_rumah = $("#istatus").find('option:selected').val();
-    $("#"+id).attr('data-rumah-id', rumah);
-    $("path").removeClass('selected');
-    $("#"+id).removeClass('booking').removeClass('tersedia').removeClass('terjual');
-    $("#"+id).addClass(status_rumah);
-    $("#id_path").val('')
-    $("#inomor").val('');
+  var nomor = $("#inomor").val();
+  var posisi = $("#iposisi").val();
+  if(!blok || !nomor){
+    gritter("Blok dan Nomor harus diisi terlebih dahulu", "warning");
+    return false;
+  }
+  var rumah = $("#irumah").find('option:selected').val();
+  rumah = rumah+'|B-'+blok+'|N-'+nomor+'|PS-'+posisi;
+  var status_rumah = $("#istatus").find('option:selected').val();
+  $("#"+id).attr('data-rumah-id', rumah);
+  $("path").removeClass('selected');
+  $("#"+id).removeClass('booking').removeClass('tersedia').removeClass('terjual');
+  $("#"+id).addClass(status_rumah);
+  $("#id_path").val('')
+  $("#inomor").val('');
+  
 
-    if(!data_siteplan[id]) data_siteplan[id] = {};
-    data_siteplan[id] = {"data":rumah,"status":status_rumah}
+  if(!data_siteplan[id]) data_siteplan[id] = {};
+  data_siteplan[id] = {"data":rumah,"blok":blok,"nomor":nomor,"posisi":posisi,"status":status_rumah}
 })
 
 $("#remove").on('click', function(e){
@@ -166,8 +168,10 @@ $(document).on('click', 'path', function(e){
         data_siteplan = JSON.parse(stok);
         console.log(data_siteplan, 'data_siteplan')
         $.each(data_siteplan, function(k,v){
-          $("#"+k).attr('data-rumah-id', v.data);
-          $("#"+k).addClass(v.status);
+          if(v){
+            $("#"+k).attr('data-rumah-id', v.data);
+            $("#"+k).addClass(v.status);
+          }
         })
       }
     })
@@ -190,6 +194,7 @@ $(document).on('mouseenter', 'path', function(e){
       var lb = '';
       var kamar = '';
       var toilet = '';
+      var posisi = '';
       $.each(datas, function(k,v){
         if(v.includes('LB-')){
             lb = v.replaceAll('LB-','');
@@ -199,10 +204,12 @@ $(document).on('mouseenter', 'path', function(e){
             lt = v.replaceAll('LT-','');
         }else if(v.includes('B-')){
             blok = v.replaceAll('B-','');
+        }else if(v.includes('PS-')){
+            posisi = v.replaceAll('PS-','');
         }
       })
 
-      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb}`
+      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb} ${posisi}`
       $("#detail_rumah").text(detail)
     }
   }
