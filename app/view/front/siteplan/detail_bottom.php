@@ -202,23 +202,26 @@ $("#reset").on('click', function(e){
 })
 
 $(document).ready(function() {
+  var windowWidth = $(window).width();
   var $siteplan = $('#siteplan');
 
-  $siteplan.on('mousemove', function(e) {
-    var x = e.clientX;
-    var y = e.clientY;
+  if(windowWidth > 468){
+    $siteplan.on('mousemove', function(e) {
+      var x = e.clientX;
+      var y = e.clientY;
 
-    $('svg').css({
-      'transform-origin': x + 'px ' + y + 'px',
-      'transform': 'scale(1.5)'
+      $('svg').css({
+        'transform-origin': x + 'px ' + y + 'px',
+        'transform': 'scale(1.5)'
+      });
     });
-  });
 
-  $siteplan.on('mouseleave', function(e) {
-    $('svg').css('transform', 'scale(1.0)');
-  });
+    $siteplan.on('mouseleave', function(e) {
+      $('svg').css('transform', 'scale(1.0)');
+    });
 
-  $siteplan.on('click', function() {
-    $('svg').css('transform', 'scale(1.0)');
-  });
+    $siteplan.on('click', function() {
+      $('svg').css('transform', 'scale(1.0)');
+    });
+  }
 });

@@ -83,7 +83,7 @@
     <div class="card">
 
 
-        <div class="card-body">
+        <div class="card-body position-relative overflow-hidden">
 
             <form id="ftambah" action="<?= base_url_admin() ?>" method="POST" enctype="multipart/form-data" class="form-bordered form-horizontal" onsubmit="return false;">
                 <div class="form-group">
