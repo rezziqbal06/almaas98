@@ -202,10 +202,9 @@ $("#reset").on('click', function(e){
 })
 
 $(document).ready(function() {
-  var windowWidth = $(window).width();
   var $siteplan = $('#siteplan');
 
-  if(windowWidth > 468){
+  if('ontouchstart' in window == false && window.matchMedia("(orientation: portrait)").matches == false) {
     $siteplan.on('mousemove', function(e) {
       var x = e.clientX;
       var y = e.clientY;
