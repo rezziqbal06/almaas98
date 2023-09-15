@@ -79,7 +79,7 @@
             <h6><strong><?= $this->getTitle() ?></strong></h6>
         </div>
 
-        <div class="card-body">
+        <div class="card-body position-relative overflow-hidden">
 
             <form id="ftambah" action="<?= base_url_admin() ?>" method="POST" enctype="multipart/form-data" class="form-bordered form-horizontal" onsubmit="return false;">
 
