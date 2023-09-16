@@ -1,3 +1,5 @@
+var drTable = {};
+var ieid = '';
 function initLineChart(context, type_chart, label_title, labels, data, color, backgroundColor){
     new Chart(context, {
     type: type_chart,
@@ -95,5 +97,53 @@ gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 initLineChart(ctx1, "line", "Omset", <?=$chart->bulan?>, <?=$chart->omset?>, "#5e72e4", gradientStroke1)
 initLineChart(ctx2, "bar", "Order", <?=$chart->bulan?>, <?=$chart->jumlah?>, "#3A416F", "#3A416F")
 
-const canvas = document.getElementById("house_3d");
-const engine = new BABYLON.Engine(canvas, true);
+
+App.datatables();
+
+if(jQuery('#drTable').length>0){
+	drTable = jQuery('#drTable')
+	.on('preXhr.dt', function ( e, settings, data ){
+		$().btnSubmit();
+	}).DataTable({
+			"order"					: [[ 3, "asc" ]],
+			"responsive"	  : true,
+			"bProcessing"		: true,
+			"bServerSide"		: true,
+			"sAjaxSource"		: "<?=base_url("api_admin/pengaturan/jadwal/")?>",
+			"fnServerParams": function ( aoData ) {
+				aoData.push(
+					{ "name": "a_company_id", "value": $("#fl_a_company_id").val() },
+					{ "name": "is_active", "value": $("#fl_is_active").val() }
+				);
+			},
+			"fnServerData"	: function (sSource, aoData, fnCallback, oSettings) {
+				oSettings.jqXHR = $.ajax({
+					dataType 	: 'json',
+					method 		: 'POST',
+					url 		: sSource,
+					data 		: aoData
+				}).done(function (response, status, headers, config) {
+					$('#drTable > tbody').off('click', 'tr');
+					$('#drTable > tbody').on('click', 'tr', function (e) {
+						e.preventDefault();
+						var id = $(this).find("td").html();
+						ieid = id;
+					
+						
+					});
+
+					$().btnSubmit('finished');
+
+					fnCallback(response);
+				}).fail(function (response, status, headers, config) {
+					gritter("<?=DATATABLES_AJAX_FAILED_MSG?>", '<?=DATATABLES_AJAX_FAILED_CLASS?>');
+					$().btnSubmit('finished');
+				});
+			},
+	});
+	$('.dataTables_filter input').attr('placeholder', 'Cari nama, telp');
+	$("#fl_button").on("click",function(e){
+		e.preventDefault();
+		drTable.ajax.reload();
+	});
+}

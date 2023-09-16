@@ -16,6 +16,7 @@ class Home extends JI_Controller
 		$this->load('b_user_concern');
 		$this->load('c_order_concern');
 		$this->load('c_order_produk_concern');
+		$this->load('c_jadwal_concern');
 
 		$this->load('admin/a_kategori_model', 'akm');
 		$this->load('admin/a_banner_model', 'abm');
@@ -24,6 +25,7 @@ class Home extends JI_Controller
 		$this->load('admin/b_user_model', 'bum');
 		$this->load('admin/c_order_model', 'com');
 		$this->load('admin/c_order_produk_model', 'copm');
+		$this->load('admin/c_jadwal_model', 'cjm');
 	}
 
 	public function index()
@@ -92,6 +94,10 @@ class Home extends JI_Controller
 			}
 		}
 		$data['orders'] = $orders;
+
+		$day = date("N");
+		$jadwal_hari_ini = $this->cjm->getHariIni($day);
+		$data['jadwal_hari_ini'] = $jadwal_hari_ini;
 		$this->setTitle('Dashboard ' . $this->config->semevar->site_suffix);
 
 		$this->putJsFooter($this->cdn_url('skin/admin/') . 'js/pages/index');

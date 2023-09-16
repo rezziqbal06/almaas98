@@ -128,7 +128,7 @@
 }
 
 .select2-container--open {
-    z-index: 9999999
+    z-index: 9999999 !important
 }
 
 .progress{

@@ -129,31 +129,32 @@ function addProduk(id, value="", value_detail=""){
                     ${option_produk}
                 </select>
             </div>
-            <div class="col-md-1 mb-3">
+            <div class="col-md-1 mb-3 d-none">
                 <label for="iqty_${id}" data-count="${id}">Qty</label>
                 <input type="number" name="qty[]" id="iqty_${id}" data-count="${id}" class="form-control">
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-3 mb-3 d-none">
                 <label for="ib_produk_id_harga_${id}" data-count="${id}">Spesifikasi</label>
                 <select name="b_produk_id_harga[]" id="ib_produk_id_harga_${id}" data-count="${id}" class="form-control select2">
                    <option>-- pilih nama & qty terlebih dahulu --</option>
                 </select>
             </div>
             <div class="col-md-2 mb-3">
+                <label for="istatus_${id}" data-count="${id}">Jenis</label>
+                <select name="status[]" id="istatus_${id}" data-count="${id}" class="form-control">
+                   <option value="booking">booking</option>
+                   <option value="dp">dp</option>
+                   <option value="pembayaran">pembayaran</option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-3">
                 <label for="iharga_${id}" data-count="${id}">Harga</label>
                 <input type="text" name="harga[]" id="iharga_${id}" data-count="${id}" class="form-control">
             </div>
-            <div class="col-md-2 mb-3">
-                <label for="istatus_${id}" data-count="${id}">Status</label>
-                <select name="status[]" id="istatus_${id}" data-count="${id}" class="form-control">
-                   <option value="pending">pending</option>
-                   <option value="progress">progress</option>
-                   <option value="done">done</option>
-                </select>
-            </div>
-            <div class="col-md-1 mb-3">
+            
+            <div class="col-md-1 mb-3 d-none">
                 <label for="" class="text-white">Aksi</label>
-                <button class="btn btn-danger btn-remove-produk pull-right" type="button" data-count="${id}" data-count-detail="${window['produk_'+id]}"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-danger btn-remove-produk pull-right " type="button" data-count="${id}" data-count-detail="${window['produk_'+id]}"><i class="fa fa-minus"></i></button>
             </div>
         </div>`;
   $('#panel_produk').append(s);

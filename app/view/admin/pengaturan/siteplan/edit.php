@@ -109,7 +109,7 @@
 							<label for="ieair" class="control-label">Air</label>
 							<input id="ieair" type="text" name="air" class="form-control" value="pdam">
 						</div>
-						<div class="col-md-4 mb-2">
+						<div class="col-md-4 mb-2 d-none">
 							<label for="iestatus" class="control-label">Status Rumah/Kavling</label>
 							<select id="iestatus" type="text" name="status" class="form-control select2" required>
 								<option value="tersedia">tersedia</option>

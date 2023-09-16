@@ -14,7 +14,7 @@ register_namespace(__NAMESPACE__);
  * @package Partner\User
  * @since 1.0.0
  */
-class Produk extends \JI_Controller
+class Produk_Item extends \JI_Controller
 {
 	public function __construct()
 	{
@@ -22,6 +22,7 @@ class Produk extends \JI_Controller
 		$this->setTheme('admin');
 		$this->lib("seme_purifier");
 		$this->load("b_produk_concern");
+		$this->load("b_produk_item_concern");
 		$this->load("b_produk_harga_concern");
 		$this->load("b_produk_gambar_concern");
 		$this->load("a_three_d_concern");
@@ -29,6 +30,7 @@ class Produk extends \JI_Controller
 		$this->load("admin/a_three_d_model", "atdm");
 		$this->load("admin/a_kategori_model", "akm");
 		$this->load("admin/b_produk_model", "bpm");
+		$this->load("admin/b_produk_item_model", "bpim");
 		$this->load("admin/b_produk_harga_model", "bphm");
 		$this->load("admin/b_produk_gambar_model", "bpgm");
 		$this->current_parent = 'pengaturan';
@@ -42,13 +44,13 @@ class Produk extends \JI_Controller
 			die();
 		}
 
-		$data['akm'] = $this->akm->getAll();
+		$data['bpm'] = $this->bpm->getAll();
 
-		$this->setTitle('Tipe Rumah ' . $this->config_semevar('admin_site_suffix', ''));
+		$this->setTitle('Rumah/Kavling ' . $this->config_semevar('admin_site_suffix', ''));
 
-		$this->putThemeContent("pengaturan/produk/home_modal", $data);
-		$this->putThemeContent("pengaturan/produk/home", $data);
-		$this->putJsContent("pengaturan/produk/home_bottom", $data);
+		$this->putThemeContent("pengaturan/produk_item/home_modal", $data);
+		$this->putThemeContent("pengaturan/produk_item/home", $data);
+		$this->putJsContent("pengaturan/produk_item/home_bottom", $data);
 		$this->loadLayout('col-2-left', $data);
 		$this->render();
 	}
@@ -64,12 +66,12 @@ class Produk extends \JI_Controller
 		$data['atdm'] = $this->atdm->getAll();
 
 
-		$this->setTitle('Tipe Rumah Baru ' . $this->config_semevar('admin_site_suffix', ''));
+		$this->setTitle('Rumah/Kavling Baru ' . $this->config_semevar('admin_site_suffix', ''));
 
-		$this->putThemeContent("pengaturan/produk/baru_modal", $data);
-		$this->putThemeContent("pengaturan/produk/baru", $data);
+		$this->putThemeContent("pengaturan/produk_item/baru_modal", $data);
+		$this->putThemeContent("pengaturan/produk_item/baru", $data);
 
-		$this->putJsContent("pengaturan/produk/baru_bottom", $data);
+		$this->putJsContent("pengaturan/produk_item/baru_bottom", $data);
 		$this->loadLayout('col-2-left', $data);
 		$this->render();
 	}
@@ -82,12 +84,12 @@ class Produk extends \JI_Controller
 		}
 		$id = (int) $id;
 		if ($id <= 0) {
-			redir(base_url_admin('pengaturan/produk/'));
+			redir(base_url_admin('pengaturan/produk_item/'));
 			die();
 		}
 		$bpm = $this->bpm->id($id);
 		if (!isset($bpm->id)) {
-			redir(base_url_admin('pengaturan/produk/'));
+			redir(base_url_admin('pengaturan/produk_item/'));
 			die();
 		}
 
@@ -125,10 +127,10 @@ class Produk extends \JI_Controller
 		}
 
 		// dd($data['bphm']);
-		$this->setTitle('Tipe Rumah Edit #' . $bpm->id . ' ' . $this->config_semevar('admin_site_suffix', ''));
-		$this->putThemeContent("pengaturan/produk/edit_modal", $data);
-		$this->putThemeContent("pengaturan/produk/edit", $data);
-		$this->putJsContent("pengaturan/produk/edit_bottom", $data);
+		$this->setTitle('Rumah/Kavling Edit #' . $bpm->id . ' ' . $this->config_semevar('admin_site_suffix', ''));
+		$this->putThemeContent("pengaturan/produk_item/edit_modal", $data);
+		$this->putThemeContent("pengaturan/produk_item/edit", $data);
+		$this->putJsContent("pengaturan/produk_item/edit_bottom", $data);
 		$this->loadLayout('col-2-left', $data);
 		$this->render();
 	}

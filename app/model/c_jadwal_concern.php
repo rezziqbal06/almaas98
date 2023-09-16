@@ -4,7 +4,7 @@ namespace Model;
 
 register_namespace(__NAMESPACE__);
 /**
- * Define all general method(s) and constant(s) for B_Produk table,
+ * Define all general method(s) and constant(s) for C_Jadwal table,
  *   can be inherited a Concern class also can be reffered as class constants
  *
  * @version 1.0.0
@@ -12,55 +12,42 @@ register_namespace(__NAMESPACE__);
  * @package Model\B_User
  * @since 1.0.0
  */
-class C_Order_Produk_Concern extends \JI_Model
+class C_Jadwal_Concern extends \JI_Model
 {
-    public $tbl = 'c_order_produk';
-    public $tbl_as = 'cop';
-    public $tbl2 = 'c_order';
-    public $tbl2_as = 'co';
-    public $tbl3 = 'b_produk';
-    public $tbl3_as = 'bp';
-    public $tbl4 = 'b_produk_harga';
-    public $tbl4_as = 'bph';
-    public $tbl5 = 'b_user';
-    public $tbl5_as = 'bu';
+    public $tbl = 'c_jadwal';
+    public $tbl_as = 'cj';
+    public $tbl2 = 'a_pengguna';
+    public $tbl2_as = 'ap';
+    public $tbl3 = 'a_kategori';
+    public $tbl3_as = 'ak';
 
     const COLUMNS = [
-        'c_order_id',
-        'b_produk_id',
-        'd_item_produk_id',
-        'b_produk_id_harga',
-        'qty',
-        'cdate',
-        'tgl_pesan',
-        'tgl_selesai',
-        'status',
-        'rating',
-        'penilaian',
-        'sub_harga',
+        'a_pengguna_id',
+        'a_kategori_id', //Kawasan
+        'day', //untuk angka
+        'hari',
+        'date',
+        'stime',
+        'etime',
         'is_active',
         'is_deleted',
+        'cdate',
     ];
     const DEFAULTS = [
         0,
         0,
-        0,
-        0,
         null,
         null,
         null,
-        null,
-        null,
-        null,
-        null,
-        null,
+        '08:00',
+        '20:00',
         1,
         0,
+        'NOW()',
     ];
     const REQUIREDS = [
-        'b_produk_id',
-        'b_produk_id_harga',
-        'tgl_pesan'
+        'a_pengguna_id',
+        'a_kategori_id'
     ];
     const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
@@ -90,15 +77,20 @@ class C_Order_Produk_Concern extends \JI_Model
 
         $this->datatables['admin'] = new \Seme_Datatable([
             ["$this->tbl_as.id", 'id', 'ID'],
-            ["$this->tbl_as.qty", 'qty', 'qty'],
-            ["$this->tbl_as.sub_harga", 'sub_harga', 'sub_harga'],
-            ["$this->tbl_as.tgl_pesan", 'tgl_pesan', 'Tgl Pesan'],
-            ["$this->tbl_as.tgl_selesai", 'tgl_selesai', 'Tgl Selesai'],
-            ["$this->tbl3_as.nama", 'produk', 'Produk'],
-            ["$this->tbl4_as.spesifikasi", 'spesifikasi', 'Spesifikasi'],
-            ["$this->tbl4_as.harga", 'harga', 'Harga'],
-            ["$this->tbl_as.status", 'status', 'Status']
+            ["$this->tbl2_as.nama", 'nama', 'Nama'],
+            ["$this->tbl_as.hari", 'hari', 'Hari'],
+            ["$this->tbl3_as.nama", 'kawasan', 'Kawasan'],
+            ["$this->tbl_as.is_active", 'is_active', 'Status']
         ]);
+
+        // $this->datatables['front'] = new \Seme_Datatable([
+        //     ["$this->tbl_as.id", 'id', 'ID'],
+        //     ["$this->tbl_as.fnama", 'fnama', 'Nama'],
+        //     ["$this->tbl_as.telp", 'telp', 'Telp'],
+        //     ["$this->tbl_as.email", 'email', 'Email'],
+        //     ["$this->tbl_as.utype", 'utype', 'Utype'],
+        //     ["$this->tbl_as.is_active", 'is_active', 'Status']
+        // ]);
 
         // $this->datatables['download'] = new \Seme_Datatable([
         //     ["$this->tbl_as.fnama", 'fnama', 'Nama'],

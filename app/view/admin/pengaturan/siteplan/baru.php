@@ -161,7 +161,7 @@
                                     <option value="hook">hook</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6 mb-2 d-none">
                                 <label for="istatus" class="control-label">Status</label>
                                 <select id="istatus" type="text" class="form-control select2">
                                     <option value="tersedia">tersedia</option>
@@ -169,7 +169,7 @@
                                     <option value="terjual">terjual</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="iaksi" class="control-label">aksi</label>
                                 <br>
                                 <div class="btn-group">

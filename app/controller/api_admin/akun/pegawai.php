@@ -58,6 +58,9 @@ class Pegawai extends JI_Controller
 		);
 
 		foreach ($ddata as &$gd) {
+			if (isset($gd->a_jabatan_nama) && $gd->a_jabatan_nama == "Admin") {
+				unset($gd);
+			}
 			if (isset($gd->fnama)) {
 				$gd->fnama = htmlentities(rtrim($gd->fnama, ' - '));
 			}

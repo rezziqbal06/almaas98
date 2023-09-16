@@ -131,4 +131,12 @@ class A_Pengguna_Model extends  \Model\A_Pengguna_Concern
 		$this->db->order_by('nama', 'asc');
 		return $this->db->get();
 	}
+
+	public function getMarketing()
+	{
+		$this->db->where('a_jabatan_nama', "Marketing");
+		$this->db->where('is_deleted', $this->db->esc(0));
+		$this->db->order_by('nama', 'asc');
+		return $this->db->get();
+	}
 }

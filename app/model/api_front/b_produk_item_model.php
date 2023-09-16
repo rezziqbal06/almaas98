@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * Scoped `front` model for `b_user` table
+ *
+ * @version 5.4.1
+ *
+ * @package Model\Front
+ * @since 1.0.0
+ */
+class B_Produk_Item_Model extends \Model\B_Produk_Item_Concern
+{
+  public function __construct()
+  {
+    parent::__construct();
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->point_of_view = 'front';
+  }
+
+  private function filters($keyword = '', $lantai = "", $kamar_tidur = "", $toilet = "", $garasi = "", $sharga = "", $eharga = "", $tipe = "", $is_active = 1, $is_deleted = 0)
+  {
+    // if (strlen($b_user_id)) {
+    //   $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
+    // }
+    if (strlen($lantai)) {
+      $this->db->where_as("$this->tbl_as.lantai", $this->db->esc($lantai), "AND");
+    }
+    if (strlen($kamar_tidur)) {
+      $this->db->where_as("$this->tbl_as.kamar_tidur", $this->db->esc($kamar_tidur), "AND");
+    }
+    if (strlen($toilet)) {
+      $this->db->where_as("$this->tbl_as.toilet", $this->db->esc($toilet), "AND");
+    }
+    if (strlen($garasi)) {
+      $this->db->where_as("$this->tbl_as.garasi", $this->db->esc($garasi), "AND");
+    }
+    if (strlen($tipe)) {
+      $this->db->where_as("$this->tbl_as.tipe", $this->db->esc($tipe), "AND");
+    }
+    if (strlen($is_active)) {
+      $this->db->where_as("$this->tbl_as.is_active", $this->db->esc($is_active), "AND");
+    }
+
+    if (strlen($is_deleted)) {
+      $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc($is_deleted), "AND");
+    }
+
+    if (strlen($sharga) && strlen($eharga)) {
+      $this->db->between("$this->tbl_as.harga", '"' . $sharga . '"', '"' . $eharga . '"');
+    } elseif (!strlen($sharga) && strlen($eharga)) {
+      $this->db->where_as("$this->tbl_as.harga", '"' . $eharga . '"', "AND", '<=');
+    } elseif (strlen($sharga) && !strlen($eharga)) {
+      $this->db->where_as("$this->tbl_as.harga", '"' . $sharga . '"', "AND", '>=');
+    }
+    if (strlen($keyword) > 0) {
+      $this->db->where_as("$this->tbl_as.nama", $keyword, "OR", "%like%", 1, 0);
+      $this->db->where_as("$this->tbl_as.luas_tanah", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.luas_bangunan", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.harga", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.tipe", $keyword, "AND", "%like%", 0, 1);
+    }
+    return $this;
+  }
+
+  private function join_company()
+  {
+    $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl_as, 'a_unit_id', 'left');
+
+    return $this;
+  }
+
+  private function joins()
+  {
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+
+    return $this;
+  }
+
+  public function data($b_user_id = "", $page = 0, $pagesize = 10, $sortCol = "id", $sortDir = "ASC", $keyword = '', $is_active = '')
+  {
+    $this->datatables[$this->point_of_view]->selections($this->db);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->filters($b_user_id, $keyword, $is_active)->scoped();
+    $this->db->order_by($sortCol, $sortDir)->limit($page, $pagesize);
+    return $this->db->get("object", 0);
+  }
+
+  public function count($b_user_id = '', $keyword = '', $is_active = '')
+  {
+    $this->db->select_as("COUNT($this->tbl_as.id)", "jumlah", 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->filters($b_user_id, $keyword, $is_active)->scoped();
+    $d = $this->db->get_first("object", 0);
+    if (isset($d->jumlah)) {
+      return $d->jumlah;
+    }
+    return 0;
+  }
+  public function setMass($dis)
+  {
+    return $this->db->insert_multi($this->tbl, $dis);
+  }
+
+  public function getBySlug($slug)
+  {
+    $this->db->where('slug', $slug);
+    return $this->db->get_first('', 0);
+  }
+
+  public function getByKategori($id)
+  {
+    if ($id != "all") $this->db->where('a_kategori_id', $id);
+    $this->db->where('is_deleted', $this->db->esc(0));
+    return $this->db->get('', 0);
+  }
+
+  public function getAll($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $tipe, $sort_harga, $sort_luas_bangunan, $is_active = 1)
+  {
+    $this->db->select_as($this->tbl_as . '.id', "id", 0)
+      ->select_as($this->tbl_as . '.slug', "slug", 0)
+      ->select_as($this->tbl_as . '.gambar', "gambar", 0)
+      ->select_as($this->tbl_as . '.nama', "nama", 0)
+      ->select('luas_tanah')
+      ->select('luas_bangunan')
+      ->select('harga')
+      ->select('toilet')
+      ->select('kamar_tidur')
+      ->select_as("COALESCE($this->tbl2_as.nama,'')", "kawasan", 0)
+      ->select('a_kategori_id');
+    $this->db->from("$this->tbl", "$this->tbl_as");
+    $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id");
+    $this->filters($keyword, $lantai, $kamar_tidur, $toilet, $garasi, $sharga, $eharga, $tipe, $is_active)->scoped();
+    if (strlen($sort_harga)) $this->db->order_by($this->tbl_as . '.harga', $sort_harga);
+    if (strlen($sort_luas_bangunan)) $this->db->order_by($this->tbl_as . '.luas_bangunan', $sort_luas_bangunan);
+    return $this->db->get('', 0);
+  }
+}

@@ -34,7 +34,7 @@
 							<label for="ieb_user_id_cari" class="control-label">Cari Pembeli</label>
 							<select id="ieb_user_id_cari" class="form-control select2"></select>
 						</div>
-						<div class="col-md-4 mb-2">
+						<div class="col-md-4 mb-2 d-none">
 							<label for="ieb_user_nama" class="control-label">Pembeli</label>
 							<input id="ieb_user_nama" type="text" name="b_user_nama" class="form-control" required>
 							<input type="hidden" id="ieb_user_id" name="b_user_id">
@@ -43,7 +43,7 @@
 							<label for="ietgl_pesan" class="control-label">Tanggal Pesan</label>
 							<input id="ietgl_pesan" type="text" name="tgl_pesan" class="form-control datepicker" value="<?= date('Y-m-d') ?>" required />
 						</div>
-						<div class="col-md-3 mb-2">
+						<div class="col-md-3 mb-2 d-none">
 							<label for="ietgl_selesai" class="control-label">Tanggal Selesai</label>
 							<input id="ietgl_selesai" type="text" name="tgl_selesai" class="form-control datepicker" value="" />
 						</div>
@@ -54,7 +54,7 @@
 				<div class="form-group">
 					<h5>Produk</h5>
 					<div class="row mb-3">
-						<div class="col-12">
+						<div class="col-12 d-none">
 							<button id="btn_add_produk" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Produk</button>
 						</div>
 					</div>
