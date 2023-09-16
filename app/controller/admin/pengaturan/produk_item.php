@@ -65,6 +65,7 @@ class Produk_Item extends \JI_Controller
 		$data['akm'] = $this->akm->getAll();
 		$data['atdm'] = $this->atdm->getAll();
 
+		$data['bpm'] = $this->bpm->getAll();
 
 		$this->setTitle('Rumah/Kavling Baru ' . $this->config_semevar('admin_site_suffix', ''));
 
@@ -87,47 +88,17 @@ class Produk_Item extends \JI_Controller
 			redir(base_url_admin('pengaturan/produk_item/'));
 			die();
 		}
-		$bpm = $this->bpm->id($id);
-		if (!isset($bpm->id)) {
+		$bpim = $this->bpim->id($id);
+		if (!isset($bpim->id)) {
 			redir(base_url_admin('pengaturan/produk_item/'));
 			die();
 		}
 
-		$data['bpm'] = $bpm;
+		$data['bpim'] = $bpim;
+		$data['bpm'] = $this->bpm->getAll();
 		$data['akm'] = $this->akm->getAll();
-		$data['bpgm'] = $this->bpgm->getByProduk($bpm->id);
-		$data['bphm'] = $this->bphm->getByProduk($bpm->id);
-		$data['atdm'] = $this->atdm->getAll();
-		if (isset($data['bpm']->spesifikasi)) {
-			$qty = [];
-			$spesifikasi = [];
-			$data['bpm']->spesifikasi = json_decode($data['bpm']->spesifikasi);
-			if (isset($data['bpm']->spesifikasi)) {
-				foreach ($data['bpm']->spesifikasi as $k => $v) {
-					if ($k == 'QTY') {
-						foreach ($v as $ks => $vs) {
-							$arr_qty = explode(' ', $vs);
-							if (count($arr_qty) == 3) {
-								$qty[$ks]['dari_qty'] = $arr_qty[0];
-								$qty[$ks]['opr'] = $arr_qty[1];
-								$qty[$ks]['ke_qty'] = $arr_qty[2];
-							} else {
-								$qty[$ks]['opr'] = $arr_qty[0];
-								$qty[$ks]['ke_qty'] = $arr_qty[1];
-							}
-						}
-					} else {
-						$spesifikasi[$k] = $v;
-					}
-				}
-			}
 
-			$data['bpm']->spesifikasi = $spesifikasi;
-			$data['bpm']->qty = $qty;
-		}
-
-		// dd($data['bphm']);
-		$this->setTitle('Rumah/Kavling Edit #' . $bpm->id . ' ' . $this->config_semevar('admin_site_suffix', ''));
+		$this->setTitle('Rumah/Kavling Edit #' . $bpim->id . ' ' . $this->config_semevar('admin_site_suffix', ''));
 		$this->putThemeContent("pengaturan/produk_item/edit_modal", $data);
 		$this->putThemeContent("pengaturan/produk_item/edit", $data);
 		$this->putJsContent("pengaturan/produk_item/edit_bottom", $data);

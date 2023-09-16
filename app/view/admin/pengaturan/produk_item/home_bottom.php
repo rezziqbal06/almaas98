@@ -20,6 +20,7 @@ function convertToSlug(Text) {
 
 App.datatables();
 
+
 if(jQuery('#drTable').length>0){
 	drTable = jQuery('#drTable')
 	.on('preXhr.dt', function ( e, settings, data ){
@@ -60,7 +61,7 @@ if(jQuery('#drTable').length>0){
 							}
 						})
 						$("#adetail").attr("href","<?=base_url_admin("pengaturan/produk_item/detail/")?>"+ieid);
-						$("#asiteplan").attr("href","<?=base_url_admin("pengaturan/produk_item/siteplan/")?>"+ieid);
+						$("#aedit").attr("href","<?=base_url_admin("pengaturan/produk_item/edit/")?>"+ieid);
 						$("#areseller").attr("href","<?=base_url_admin("partner/reseller/baru/")?>"+ieid);
 						$("#modal_option").modal("show");
 						
@@ -105,9 +106,9 @@ $("#ftambah").on("submit",function(e){
 		success: function(respon){
 			if(respon.status==200){
 				gritter('<h4>Sukses</h4><p>Data berhasil ditambahkan</p>','success');
-				$("#modal_option").modal('hide');
-				$("#modal_tambah").modal('hide');
-				drTable.ajax.reload()
+				setTimeout(function(){
+					window.location = '<?=base_url_admin('pengaturan/produk_item/')?>';
+				},500);
 			}else{
 				gritter('<h4>Gagal</h4><p>'+respon.message+'</p>','danger');
 				$('.icon-submit').removeClass('fa-circle-o-notch fa-spin');
@@ -151,9 +152,9 @@ $("#fedit").on("submit",function(e){
 		success: function(respon){
 			if(respon.status==200){
 				gritter('<h4>Sukses</h4><p>Data berhasil diubah</p>','success');
-				$("#modal_option").modal('hide');
-				$("#modal_edit").modal('hide');
-				drTable.ajax.reload()
+				setTimeout(function(){
+					window.location = '<?=base_url_admin('pengaturan/produk_item/')?>';
+				},500);
 			}else{
 				gritter('<h4>Gagal</h4><p>'+respon.message+'</p>','danger');
 
@@ -254,14 +255,13 @@ $("#fl_do").on("click",function(e){
 	
 $("#atambah").on("click",function(e){
 		e.preventDefault();
-		$("#modal_tambah").modal("show");
+		window.location = '<?=base_url_admin('pengaturan/produk_item/baru/')?>'
 	});
 
 // edit modal
 $("#aedit").on("click",function(e){
 	e.preventDefault();
-	$("#modal_option").modal("hide");
-	$("#modal_edit").modal("show");
+	window.location = '<?=base_url_admin('pengaturan/produk_item/edit/')?>' + ieid
 });
 
 $(document).off('click', '.btn-tambah-indikator')
@@ -290,3 +290,5 @@ $(document).on('change', 'input[type="file"]', function(e){
 	var id = $(this).attr('id');
 	readURLImage(this, 'img-'+id);
 });
+
+$('.select2').select2();

@@ -24,6 +24,10 @@ class B_Produk_Model extends \Model\B_Produk_Concern
 
 	public function getAll()
 	{
+		$this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+		$this->db->select_as("$this->tbl2_as.nama", 'kawasan', 0);
+		$this->db->from($this->tbl, $this->tbl_as);
+		$this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "a_kategori_id", "left");
 		$this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
 		$this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
 		return $this->db->get('', 0);
