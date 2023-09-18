@@ -18,6 +18,7 @@
 			<p class="mb-5"><b>Follow</b></p>
 			<a class="dropdown-link" target="_blank" href="<?= $this->config->semevar->site_ig ?? '' ?>">Instagram</a>
 			<a class="dropdown-link" target="_blank" href="<?= $this->config->semevar->site_fb ?? '' ?>">Facebook</a>
+			<a class="dropdown-link" target="_blank" href="<?= $this->config->semevar->site_yt ?? '' ?>">Youtube</a>
 			<p class="mb-2 mt-2 d-none"><b>Marketplace</b></p>
 			<a class="dropdown-link d-none" target="_blank" href="<?= $this->config->semevar->site_tokopedia ?? '' ?>">Tokopedia</a>
 		</div>
