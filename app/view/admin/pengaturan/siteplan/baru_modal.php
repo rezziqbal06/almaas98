@@ -48,7 +48,7 @@
 					<div class="kartu-detail ">
 						<div class="row">
 							<div class="col-md-4">
-								<a id="panel_gambar" href="" target="_blank" class="d-none d-md-block"><img id="gambar" class=" img-fluid rounded" src="" data-zoom-image="" alt="<?= $produk->nama ?? '' ?>" style="border-radius:0 0 32px 32px;"></a>
+								<a id="panel_gambar" href="" target="_blank" class=""><img id="gambar" class=" img-fluid rounded" src="" data-zoom-image="" alt="<?= $produk->nama ?? '' ?>" style="border-radius:0 0 32px 32px;"></a>
 							</div>
 							<div class="col-md-8">
 								<p class="fs-5 mt-2 mb-1"><b id="type">Type <?= $produk->luas_tanah ?? '' ?>/<?= $produk->luas_bangunan ?? '' ?></b></p>

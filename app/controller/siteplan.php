@@ -14,12 +14,14 @@ class Siteplan extends JI_Controller
 		$this->load('a_partner_concern');
 		$this->load('b_produk_concern');
 		$this->load('b_produk_gambar_concern');
+		$this->load("c_order_concern");
 
 		$this->load('front/a_kategori_model', 'akm');
 		$this->load('front/a_banner_model', 'abm');
 		$this->load('front/a_partner_model', 'apm');
 		$this->load('front/b_produk_model', 'bpm');
 		$this->load('front/b_produk_gambar_model', 'bpgm');
+		$this->load("admin/c_order_model", "com");
 	}
 
 	public function index()
@@ -31,7 +33,13 @@ class Siteplan extends JI_Controller
 		// }
 
 		$akm = $this->akm->getAll();
+		foreach ($akm as $k => $a) {
+			if (!isset($a->siteplan) || strlen($a->siteplan) < 3) {
+				unset($akm[$k]);
+			}
+		}
 		$data['akm'] = $akm;
+
 		$this->current_page = 'siteplan';
 		$this->setTitle("Siteplan " . $this->config->semevar->site_suffix);
 
@@ -71,7 +79,22 @@ class Siteplan extends JI_Controller
 		$bpm = $this->bpm->getAll(1, 1);
 		$data['bpm'] = $bpm;
 		$akm = $this->akm->id($id);
-
+		if (isset($akm->data_siteplan) && strlen($akm->data_siteplan) > 5) {
+			$data_siteplan = json_decode($akm->data_siteplan);
+			$orders = $this->com->getAllOrders();
+			foreach ($data_siteplan as $ds) {
+				if (!isset($ds->data)) continue;
+				foreach ($orders as $o) {
+					if (stripos($ds->data, "ID-" . $o->b_produk_id) !== false) {
+						$o->status = $o->status == 'pembayaran' ? 'terjual' : $o->status;
+						$ds->status = $o->status;
+						$ds->b_user_id = $o->b_user_id;
+						$ds->posisi = $o->posisi;
+					}
+				}
+			}
+			$akm->data_siteplan = json_encode($data_siteplan);
+		}
 		$data['akm'] = $akm;
 		$this->setTitle($akm->nama . $this->config->semevar->site_suffix);
 		$this->setDescription($this->convertToMetaDescription($akm->deskripsi) . $this->config->semevar->site_suffix);

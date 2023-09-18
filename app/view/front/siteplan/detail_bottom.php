@@ -86,45 +86,7 @@ $("#isiteplan").on('change', function(e){
 })
 
 
-$(document).off('click', 'path')
-$(document).on('click', 'path', function(e){
-	e.preventDefault();
-	var id = $(this).attr('id')
-  $("path").removeClass('selected');
-  //$("#"+id).removeClass('booking').removeClass('tersedia').removeClass('terjual');
-  $("#"+id).addClass('selected');
-  $("#id_path").val(id);
-})
-<?php if (isset($akm->siteplan) && strlen($akm->siteplan)) : ?>
-    var siteplan_url = '<?=base_url($akm->siteplan)?>'
-    $.get(siteplan_url).done(function(data){
-      var svg = $(data).find('svg');
-      var width = svg.attr('width');
-      var height = svg.attr('height');
-      svg.attr('viewBox', `0 0 ${width} ${height}`)
-      $("#siteplan").html(svg); // Display the SVG
-    
-      var stok = '<?=$akm->data_siteplan?>';
-      if(stok){
-        data_siteplan = JSON.parse(stok);
-        console.log(data_siteplan, 'data_siteplan')
-        $.each(data_siteplan, function(k,v){
-          if(v){
-            $("#"+k).attr('data-rumah-id', v.data);
-            $("#"+k).addClass(v.status);
-          }
-          
-        })
-      }
-    })
-<?php endif ?>
-
-
-$(document).off('mouseenter', 'path')
-$(document).on('mouseenter', 'path', function(e){
-	e.preventDefault();
-  var detail = '';
-	var data = $(this).attr('data-rumah-id');
+function getDetail(data, type = 'click'){
   if(data){
     var datas = data.split('|');
     if(datas){
@@ -148,14 +110,82 @@ $(document).on('mouseenter', 'path', function(e){
             blok = v.replaceAll('B-','');
         }else if(v.includes('PS-')){
             posisi = v.replaceAll('PS-','');
+        }else if(v.includes('ID-')){
+            id = v.replaceAll('ID-','');
         }
       })
 
       detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb} ${posisi}`
       $("#detail_rumah").text(detail)
+      if(type == 'click'){
+        $.get('<?=base_url("api_admin/pengaturan/produk_item/detail/")?>'+id).done(function(dt){
+          if(dt.status == 200){
+            if(dt.data){
+                var gambar = '<?=base_url()?>'+dt.data.tipe_rumah.gambar;
+                $("#panel_gambar").attr('href', gambar);
+                $("#gambar").attr('src', gambar);
+                $("#type").text(`Type ${dt.data.tipe_rumah.luas_tanah}/${dt.data.tipe_rumah.luas_bangunan}`);
+                $("#kawasan").html(`<i class="fa fa-map-marker mb-2 me-1"></i> ${dt.data.kategori.nama}`);
+                $("#listrik").html(`<i class="fa fa-bolt me-1"></i> ${dt.data.tipe_rumah.listrik}`);
+                $("#toilet").html(`<i class="fa fa-bath me-1"></i> ${dt.data.tipe_rumah.toilet}`);
+                $("#kamar_tidur").html(`<i class="fa fa-bed me-1"></i> ${dt.data.tipe_rumah.kamar_tidur}`);
+                $("#deskripsi").html(`${dt.data.tipe_rumah.deskripsi}`);
+                $("#angsuran").text(`Rp.${dt.data.tipe_rumah.angsuran}`);
+                $("#harga").text(`Rp.${dt.data.tipe_rumah.harga}`);
+                $("#modal_detail").modal('show')
+            }
+          }
+        });
+      }
+     
     }
   }
   
+}
+
+$(document).off('click', 'path')
+$(document).on('click', 'path', function(e){
+	e.preventDefault();
+	var id = $(this).attr('id')
+	var data = $(this).attr('data-rumah-id');
+  $("path").removeClass('selected');
+  //$("#"+id).removeClass('booking').removeClass('tersedia').removeClass('terjual');
+  $("#"+id).addClass('selected');
+  $("#id_path").val(id);
+  getDetail(data)
+})
+
+<?php if (isset($akm->siteplan) && strlen($akm->siteplan)) : ?>
+    var siteplan_url = '<?=base_url($akm->siteplan)?>'
+    $.get(siteplan_url).done(function(data){
+      var svg = $(data).find('svg');
+      var width = svg.attr('width');
+      var height = svg.attr('height');
+      svg.attr('viewBox', `0 0 ${width} ${height}`)
+      $("#siteplan").html(svg); // Display the SVG
+    
+      var stok = '<?=$akm->data_siteplan?>';
+      if(stok){
+        data_siteplan = JSON.parse(stok);
+        console.log(data_siteplan, 'data_siteplan')
+        $.each(data_siteplan, function(k,v){
+          if(v){
+            $("#"+k).attr('data-rumah-id', v.data);
+            $("#"+k).addClass(v.status);
+          }
+        })
+      }
+    })
+<?php endif ?>
+
+
+$(document).off('mouseenter', 'path')
+$(document).on('mouseenter', 'path', function(e){
+	e.preventDefault();
+  var detail = '';
+	var data = $(this).attr('data-rumah-id');
+  getDetail(data,'hover');
+ 
 })
 
 function resetSiteplan(){

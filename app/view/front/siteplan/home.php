@@ -64,22 +64,24 @@
 
     <!-- Content -->
     <?php if (isset($akm) && count($akm)) : ?>
-        <?php foreach ($akm as $produk) : ?>
-            <div class="col-md-4 card mb-3">
-                <a href="<?= base_url("siteplan/") ?><?= $produk->id ?>" class="" data-id="<?= $produk->id ?>" alt="<?= $produk->nama ?>">
-                    <div class="p-3 row ">
-                        <div class="col-4">
-                            <img src="<?= base_url("") ?><?= $produk->gambar ?? '' ?>" alt="<?= $produk->nama ?? '' ?>" aria-describedby="<?= $produk->nama ?? '' ?>" class="img-fluid rounded">
+        <div class="row gap-2">
+            <?php foreach ($akm as $produk) : ?>
+                <div class="col-md-4 card mb-3">
+                    <a href="<?= base_url("siteplan/") ?><?= $produk->id ?>" class="" data-id="<?= $produk->id ?>" alt="<?= $produk->nama ?>">
+                        <div class="p-3 row ">
+                            <div class="col-4">
+                                <img src="<?= base_url("") ?><?= $produk->gambar ?? '' ?>" alt="<?= $produk->nama ?? '' ?>" aria-describedby="<?= $produk->nama ?? '' ?>" class="img-fluid rounded">
+                            </div>
+                            <div class="col-8">
+                                <p class="fs-5 mt-2 mb-1"><b><?= $produk->nama ?? '' ?></b></p>
+                                <div class="me-3"><b class="text-primary"><?= $produk->deskripsi ?? '' ?></b></div>
+                            </div>
                         </div>
-                        <div class="col-8">
-                            <p class="fs-5 mt-2 mb-1"><b><?= $produk->nama ?? '' ?></b></p>
-                            <div class="me-3"><b class="text-primary"><?= $produk->deskripsi ?? '' ?></b></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
 
-        <?php endforeach ?>
+            <?php endforeach ?>
+        </div>
     <?php endif ?>
 
 </div>
