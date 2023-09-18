@@ -20,6 +20,10 @@ class B_Produk_Item_Concern extends \JI_Model
     public $tbl2_as = 'bp';
     public $tbl3 = 'a_kategori';
     public $tbl3_as = 'ak';
+    public $tbl4 = 'c_order';
+    public $tbl4_as = 'co';
+    public $tbl5 = 'c_order_produk';
+    public $tbl5_as = 'cop';
 
     const COLUMNS = [
         'b_produk_id',

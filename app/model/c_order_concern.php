@@ -24,21 +24,33 @@ class C_Order_Concern extends \JI_Model
     public $tbl4_as = 'bph';
     public $tbl5 = 'b_user';
     public $tbl5_as = 'bu';
+    public $tbl6 = 'b_produk_item';
+    public $tbl6_as = 'bpi';
 
     const COLUMNS = [
         'kode',
         'b_user_id',
+        'a_pengguna_id',
         'tgl_pesan',
         'tgl_selesai',
         'cdate',
         'status',
         'total_harga',
+        'metode_pembayaran',
+        'diskon',
+        'gambar',
+        'catatan',
         'is_active',
         'is_deleted',
     ];
     const DEFAULTS = [
         0,
         0,
+        0,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -81,10 +93,8 @@ class C_Order_Concern extends \JI_Model
             ["$this->tbl_as.id", 'id', 'ID'],
             ["$this->tbl_as.kode", 'kode', 'Kode'],
             ["$this->tbl5_as.fnama", 'pembeli', 'Pembeli'],
-            ["$this->tbl3_as.nama", 'produk', 'Salah Satu Produk'],
-            ["$this->tbl2_as.tgl_pesan", 'tgl_pesan', 'Tgl Pemesanan'],
-            ["$this->tbl2_as.tgl_selesai", 'tgl_selesai', 'Tgl Selesai'],
-            // ["$this->tbl3_as.spesifikasi", 'spesifikasi', 'Spesifikasi'],
+            ["$this->tbl3_as.nama", 'produk', 'Produk'],
+            ["$this->tbl2_as.tgl_pesan", 'tgl_pesan', 'Tanggal'],
             ["$this->tbl_as.total_harga", 'total_harga', 'Total Harga'],
             ["$this->tbl_as.status", 'status', 'Status']
         ]);

@@ -9,9 +9,11 @@ class Produk_Item extends JI_Controller
 		$this->load('b_produk_concern');
 		$this->load('b_produk_item_concern');
 		$this->load('b_produk_gambar_concern');
+		$this->load('c_order_produk_concern');
 		$this->load("api_admin/b_produk_model", 'bpm');
 		$this->load("api_admin/b_produk_item_model", 'bpim');
 		$this->load("api_admin/b_produk_gambar_model", 'bpgm');
+		$this->load("api_admin/c_order_produk_model", 'copm');
 		$this->lib("seme_upload", 'se');
 	}
 
@@ -399,6 +401,55 @@ class Produk_Item extends JI_Controller
 			$v->option = implode(" | ", $arr_spec);
 		}
 		$data->spesifikasi = $spesifikasi;
+		$this->__json_out($data);
+	}
+
+	/**
+	 * Get detailed information by idea
+	 *
+	 * @param  int   $id               ID value from a_fasilitas table
+	 *
+	 * @api
+	 * @return void
+	 */
+	public function get_tersedia()
+	{
+		$d = $this->__init();
+		$data = array();
+		if (!$this->admin_login) {
+			$this->status = 400;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			header("HTTP/1.0 400 Harus login");
+			$this->__json_out($data);
+			die();
+		}
+		$b_user_id = $this->input->request('b_user_id');
+		if (!isset($b_user_id)) {
+			$this->status = 441;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			$this->__json_out($data);
+			die();
+		}
+
+		$this->status = 200;
+		$this->message = API_ADMIN_ERROR_CODES[$this->status];
+		$ordered = $this->copm->getAllGroupByUser();
+		$produk_item = $this->bpim->getAll();
+		if (count($ordered)) {
+			foreach ($produk_item as $k => $v) {
+				$v->status = "tersedia";
+				$v->b_user_id = null;
+				if (isset($v->harga)) $v->harga = number_format($v->harga, 0, ',', '.');
+				foreach ($ordered as $o) {
+					if ($o->b_produk_id == $v->id) {
+						$v->status = $o->status;
+						$v->b_user_id = $o->b_user_id;
+						// break;
+					}
+				}
+			}
+		}
+		$data = $produk_item;
 		$this->__json_out($data);
 	}
 }

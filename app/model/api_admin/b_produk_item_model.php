@@ -96,4 +96,17 @@ class B_produk_Item_Model extends \Model\B_produk_Item_Concern
     $this->db->order_by("$this->tbl_as.nama", "asc");
     return $this->db->get('', 0);
   }
+
+  public function getAll()
+  {
+    $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+    $this->db->select_as("$this->tbl2_as.harga", 'harga', 0);
+    $this->db->select_as("$this->tbl3_as.nama", 'kawasan', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "b_produk_id", "left");
+    $this->db->join($this->tbl3, $this->tbl3_as, "id", $this->tbl2_as, "a_kategori_id", "left");
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    return $this->db->get('', 0);
+  }
 }

@@ -2,6 +2,14 @@
     .pe-1 {
         padding-left: 1rem !important;
     }
+
+    .is_owner {
+        color: var(--primary) !important;
+    }
+
+    option:disabled {
+        background-color: #e2e2e2 !important;
+    }
 </style>
 <div id="page-content">
     <!-- Static Layout Header -->
@@ -31,29 +39,34 @@
 
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-6 mb-2">
                             <label for="ib_user_id_cari" class="control-label">Cari Pembeli</label>
                             <select id="ib_user_id_cari" class="form-control select2"></select>
                         </div>
-                        <div class="col-md-3 mb-2 d-none">
+                        <div class="col-md-6 mb-2 d-none">
                             <label for="ib_user_nama" class="control-label">Pembeli</label>
                             <input id="ib_user_nama" type="text" name="b_user_nama" class="form-control" required>
                             <input type="hidden" id="ib_user_id" name="b_user_id">
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <label for="itgl_pesan" class="control-label">Tanggal Pesan</label>
+                        <div class="col-md-6 mb-2">
+                            <label for="itgl_pesan" class="control-label">Tanggal</label>
                             <input id="itgl_pesan" type="text" name="tgl_pesan" class="form-control datepicker" value="<?= date('Y-m-d') ?>" required />
                         </div>
+
                         <div class="col-md-3 mb-2 d-none">
                             <label for="itgl_selesai" class="control-label">Tanggal Selesai</label>
                             <input id="itgl_selesai" type="text" name="tgl_selesai" class="form-control datepicker" value="" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <div class="alert alert-info text-white" style="display: none;" id="panel_info_owning"></div>
                         </div>
                     </div>
                 </div>
 
                 <hr>
                 <div class="form-group">
-                    <h5>Produk</h5>
                     <div class="row mb-3">
                         <div class="col-12 d-none">
                             <button id="btn_add_produk" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Produk</button>
@@ -65,9 +78,45 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row pt-2">
+                        <div class="col-md-6 mb-2">
+                            <label for="imetode_pembayaran" class="control-label">Metode Pembayaran</label>
+                            <select id="imetode_pembayaran" type="text" name="metode_pembayaran" class="form-control " required>
+                                <option value="">-- pilih metode --</option>
+                                <option value="Cash Keras">Cash Keras</option>
+                                <option value="Cash Bertahap">Cash Bertahap</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <input id="idiskon" type="hidden" name="diskon" class="form-control " readonly />
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-12">
+                            <div class=" panel_history" style="display: none;"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="iharga_0" data-count="0">Nominal</label>
+                            <input type="text" name="harga[]" id="iharga_0" data-count="0" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="igambar" class="control-label">Bukti Pembayaran/Transfer</label>
+                            <input id="igambar" type="file" name="gambar" accept=".png, .jpg, .jpeg" class="form-control" required>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <img id="img-igambar" src="" alt="" class="img-fluid rounded">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="icatatan" data-count="0">Catatan</label>
+                            <textarea type="text" name="catatan" id="icatatan" data-count="0" class="form-control"></textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <div class="row">
+                    <div class="row d-none">
                         <div class="col-md-8">&nbsp;</div>
                         <div class="col-md-4">
                             <label for="itotal_harga">Total</label>

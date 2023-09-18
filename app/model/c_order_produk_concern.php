@@ -18,12 +18,14 @@ class C_Order_Produk_Concern extends \JI_Model
     public $tbl_as = 'cop';
     public $tbl2 = 'c_order';
     public $tbl2_as = 'co';
-    public $tbl3 = 'b_produk';
-    public $tbl3_as = 'bp';
+    public $tbl3 = 'b_produk_item';
+    public $tbl3_as = 'bpi';
     public $tbl4 = 'b_produk_harga';
     public $tbl4_as = 'bph';
     public $tbl5 = 'b_user';
     public $tbl5_as = 'bu';
+    public $tbl6 = 'a_pengguna';
+    public $tbl6_as = 'ap';
 
     const COLUMNS = [
         'c_order_id',
@@ -94,9 +96,9 @@ class C_Order_Produk_Concern extends \JI_Model
             ["$this->tbl_as.sub_harga", 'sub_harga', 'sub_harga'],
             ["$this->tbl_as.tgl_pesan", 'tgl_pesan', 'Tgl Pesan'],
             ["$this->tbl_as.tgl_selesai", 'tgl_selesai', 'Tgl Selesai'],
-            ["$this->tbl3_as.nama", 'produk', 'Produk'],
-            ["$this->tbl4_as.spesifikasi", 'spesifikasi', 'Spesifikasi'],
-            ["$this->tbl4_as.harga", 'harga', 'Harga'],
+            ["$this->tbl3_as.blok", 'blok', 'Blok'],
+            ["$this->tbl3_as.nomor", 'nomor', 'Nomor'],
+            ["$this->tbl3_as.posisi", 'posisi', 'Posisi'],
             ["$this->tbl_as.status", 'status', 'Status']
         ]);
 

@@ -135,3 +135,22 @@
 </div>
 <!-- end media add modal -->
 <!-- end media-->
+
+<div id="modal_history" class="modal fade " tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+			<!-- Modal Header -->
+			<div class="modal-header text-center">
+				<h4 class="modal-title text-start"></h4>
+			</div>
+			<!-- END Modal Header -->
+
+			<!-- Modal Body -->
+			<div class="modal-body">
+				<div class="panel_history"></div>
+				<!-- END Modal Body -->
+			</div>
+		</div>
+	</div>
+</div>

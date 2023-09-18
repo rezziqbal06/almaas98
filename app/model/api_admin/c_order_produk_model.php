@@ -43,6 +43,7 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
     $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl_as, 'b_produk_id', 'left');
     $this->db->join($this->tbl4, $this->tbl4_as, 'id', $this->tbl_as, 'b_produk_id_harga', 'left');
     $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl2_as, 'b_user_id', 'left');
+    $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'a_pengguna_id', 'left');
     return $this;
   }
 
@@ -87,5 +88,33 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
   {
     $this->db->where('c_order_id', $id);
     return $this->db->delete($this->tbl);
+  }
+
+  public function getAllGroupByUser()
+  {
+    $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+    $this->db->select_as("$this->tbl5_as.id", 'b_user_id', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    $this->db->group_by("$this->tbl5_as.id")->order_by("$this->tbl_as.id", "desc");
+    return $this->db->get();
+  }
+
+  public function getByProduk($produk_id)
+  {
+    $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+    $this->db->select_as("$this->tbl2_as.metode_pembayaran", 'metode_pembayaran', 0);
+    $this->db->select_as("$this->tbl2_as.diskon", 'diskon', 0);
+    $this->db->select_as("$this->tbl5_as.id", 'b_user_id', 0);
+    $this->db->select_as("$this->tbl6_as.nama", 'a_pengguna_nama', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+    $this->db->where_as("$this->tbl_as.b_produk_id", $produk_id, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    $this->db->order_by("$this->tbl_as.id", "asc");
+    return $this->db->get();
   }
 }

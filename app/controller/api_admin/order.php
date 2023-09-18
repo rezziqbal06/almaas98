@@ -2,6 +2,10 @@
 class Order extends JI_Controller
 {
 	var $media_pengguna = 'media/pengguna';
+	var $diskon_by_posisi = [
+		'cash keras' => ['sayap' => 15, 'utama' => 10, 'hook' => 7],
+		'cash bertahap' => ['sayap' => 10, 'utama' => 5, 'hook' => 2]
+	];
 
 	public function __construct()
 	{
@@ -9,12 +13,14 @@ class Order extends JI_Controller
 		$this->load('b_produk_concern');
 		$this->load('b_produk_harga_concern');
 		$this->load('b_produk_gambar_concern');
+		$this->load('b_produk_item_concern');
 		$this->load('b_user_concern');
 		$this->load('c_order_concern');
 		$this->load('c_order_produk_concern');
 		$this->load("api_admin/b_produk_model", 'bpm');
 		$this->load("api_admin/b_produk_harga_model", 'bphm');
 		$this->load("api_admin/b_produk_gambar_model", 'bpgm');
+		$this->load("api_admin/b_produk_item_model", 'bpim');
 		$this->load("api_admin/b_user_model", 'bum');
 		$this->load("api_admin/c_order_model", 'com');
 		$this->load("api_admin/c_order_produk_model", 'copm');
@@ -86,26 +92,29 @@ class Order extends JI_Controller
 			if (isset($gd->total_harga)) {
 				$gd->total_harga = number_format((int) $gd->total_harga, 0, ',', '.');
 			}
-			if ($gd->tgl_pesan == "0000-00-00 00:00:00") $gd->tgl_pesan = "";
-			if ($gd->tgl_selesai == "0000-00-00 00:00:00") $gd->tgl_selesai = "";
 			if (isset($gd->tgl_pesan) && strlen($gd->tgl_pesan)) {
+				if ($gd->tgl_pesan == "0000-00-00 00:00:00") $gd->tgl_pesan = "";
 				$gd->tgl_pesan = $this->__dateIndonesia($gd->tgl_pesan);
 			}
 			if (isset($gd->tgl_selesai) && strlen($gd->tgl_selesai)) {
+				if ($gd->tgl_selesai == "0000-00-00 00:00:00") $gd->tgl_selesai = "";
 				$gd->tgl_selesai = $this->__dateIndonesia($gd->tgl_selesai);
 			}
 			switch ($gd->status) {
-				case "pending":
+				case "pembayaran":
 					$gd->status = '<span class="badge badge-sm bg-gradient-secondary">' . $gd->status . '</span>';
 					break;
-				case "progress":
+				case "booking":
 					$gd->status = '<span class="badge badge-sm bg-gradient-info">' . $gd->status . '</span>';
 					break;
-				case "done":
+				case "selesai":
 					$gd->status = '<span class="badge badge-sm bg-gradient-success">selesai</span>';
 					break;
 				case "cancel":
 					$gd->status = '<span class="badge badge-sm bg-gradient-danger">' . $gd->status . '</span>';
+					break;
+				case "pending":
+					$gd->status = '<span class="badge badge-sm bg-gradient-danger">Menunggu Persetujuan</span>';
 					break;
 				default:
 					$gd->status = '<span class="badge badge-sm bg-gradient-info">Pending</span>';
@@ -151,14 +160,7 @@ class Order extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-		$this->com->columns['status']->value = "done";
-
-		foreach ($status as $s) {
-			if ($s == 'progress' || $s == 'pending') {
-				$this->com->columns['status']->value = "progress";
-				break;
-			}
-		}
+		$this->com->columns['status']->value = $status[0] ?? 'pending';
 
 		$b_user_id = $this->input->post('b_user_id');
 		$user = $this->bum->id($b_user_id);
@@ -180,11 +182,16 @@ class Order extends JI_Controller
 				die();
 			}
 			$this->com->columns['b_user_id']->value = $res_user;
+			$this->com->columns['a_pengguna_id']->value = $d['sess']->admin->id;
 		} else {
 		}
 
 		$res = $this->com->save();
 		if ($res) {
+			$resUpload = $this->se->upload_file('gambar', 'bukti', $res);
+			if ($resUpload->status == 200) {
+				$this->com->update($res, ['gambar' => $resUpload->file]);
+			}
 			//Upload Produk
 			$b_produk_id = $this->input->post('b_produk_id');
 			$b_produk_id_harga = $this->input->post('b_produk_id_harga');
@@ -376,14 +383,7 @@ class Order extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-		$du['status'] = "done";
-
-		foreach ($status as $s) {
-			if ($s == 'progress' || $s == 'pending') {
-				$du['status'] = "progress";
-				break;
-			}
-		}
+		$du['status'] = $status[0] ?? 'pending';
 
 		$total_harga = $this->input->post('total_harga');
 		$du['total_harga'] = (int) str_replace('.', '', $total_harga);
@@ -412,7 +412,10 @@ class Order extends JI_Controller
 
 		if ($id > 0) {
 			unset($du['id']);
-
+			$resUpload = $this->se->upload_file('gambar', 'kategori', $id);
+			if ($resUpload->status == 200) {
+				$du['gambar'] = $resUpload->file;
+			}
 			$res = $this->com->update($id, $du);
 			if ($res) {
 				//Upload Produk
@@ -428,8 +431,8 @@ class Order extends JI_Controller
 						foreach ($b_produk_id as $k => $v) {
 							$dip[$k]['c_order_id'] = $id;
 							$dip[$k]['b_produk_id'] = $v;
-							$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k];
-							$dip[$k]['qty'] = $qty[$k];
+							$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
+							$dip[$k]['qty'] = $qty[$k] ?? 1;
 							$dip[$k]['status'] = $status[$k];
 							$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
 							$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
@@ -673,5 +676,49 @@ class Order extends JI_Controller
 		$data = $this->com->cari($keyword);
 		array_unshift($data, $p);
 		$this->__json_select2($data);
+	}
+
+	public function get_history()
+	{
+		$data = array();
+		$this->status = 200;
+		$this->message = API_ADMIN_ERROR_CODES[$this->status];
+		$produk_id = $this->input->request("produk_id");
+		$metode_pembayaran = $this->input->request("metode_pembayaran", '');
+		$harga = 0;
+		$diskon = 0;
+		$posisi = '';
+
+		$bpim = $this->bpim->id($produk_id);
+		$bpm = $this->bpm->id($bpim->b_produk_id);
+		if (isset($bpim->posisi)) $posisi = $bpim->posisi;
+		if (isset($bpm->harga)) $harga = $bpm->harga;
+
+		$copm = $this->copm->getByProduk($produk_id);
+		$total = 0;
+		foreach ($copm as $k => $v) {
+			if (isset($v->metode_pembayaran) && $k == 1) $metode_pembayaran = $v->metode_pembayaran;
+			$total += $v->sub_harga;
+			if (isset($v->sub_harga)) $v->sub_harga = number_format($v->sub_harga, 0, ',', '.');
+		}
+
+		$diskon = $this->diskon_by_posisi[strtolower($metode_pembayaran)][$posisi] ?? 0;
+		$nominal_diskon = $diskon ? $harga - ($harga * $diskon / 100) : $harga;
+
+		$sisa = $nominal_diskon - $total;
+		if (isset($harga)) $harga = number_format($harga, 0, ',', '.');
+		if (isset($total)) $total = number_format($total, 0, ',', '.');
+		if (isset($sisa)) $sisa = number_format($sisa, 0, ',', '.');
+		if (isset($nominal_diskon)) $nominal_diskon = number_format($nominal_diskon, 0, ',', '.');
+
+		$data['harga'] = $harga;
+		$data['posisi'] = $posisi;
+		$data['metode_pembayaran'] = $metode_pembayaran;
+		$data['diskon'] = $diskon;
+		$data['nominal_diskon'] = $nominal_diskon;
+		$data['sisa'] = $sisa;
+		$data['total'] = $total;
+		$data['history'] = $copm;
+		$this->__json_out($data);
 	}
 }

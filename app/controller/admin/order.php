@@ -24,6 +24,7 @@ class Order extends \JI_Controller
 		$this->load("b_produk_concern");
 		$this->load("b_produk_harga_concern");
 		$this->load("b_produk_gambar_concern");
+		$this->load("b_produk_item_concern");
 		$this->load("b_user_concern");
 		$this->load("a_kategori_concern");
 		$this->load("c_order_concern");
@@ -32,6 +33,7 @@ class Order extends \JI_Controller
 		$this->load("admin/b_produk_model", "bpm");
 		$this->load("admin/b_produk_harga_model", "bphm");
 		$this->load("admin/b_produk_gambar_model", "bpgm");
+		$this->load("admin/b_produk_item_model", "bpim");
 		$this->load("admin/b_user_model", "bum");
 		$this->load("admin/c_order_model", "com");
 		$this->load("admin/c_order_produk_model", "copm");
@@ -65,7 +67,7 @@ class Order extends \JI_Controller
 		}
 		$pengguna = $data['sess']->admin;
 		$data['akm'] = $this->akm->getAll();
-		$data['bpm'] = $this->bpm->getAll();
+		$data['bpim'] = $this->bpim->getAll();
 
 
 		$this->setTitle('Order Baru ' . $this->config_semevar('admin_site_suffix', ''));
@@ -99,7 +101,7 @@ class Order extends \JI_Controller
 		$bum = $this->bum->id($com->b_user_id);
 		$data['com']->b_user_nama = $bum->fnama;
 		$data['akm'] = $this->akm->getAll();
-		$data['bpm'] = $this->bpm->getAll();
+		$data['bpim'] = $this->bpim->getAll();
 		$data['copm'] = $this->copm->getByOrder($com->id);
 
 		// dd($data['bphm']);
