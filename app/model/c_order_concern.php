@@ -26,20 +26,25 @@ class C_Order_Concern extends \JI_Model
     public $tbl5_as = 'bu';
     public $tbl6 = 'b_produk_item';
     public $tbl6_as = 'bpi';
+    public $tbl7 = 'a_pengguna';
+    public $tbl7_as = 'ap';
 
     const COLUMNS = [
         'kode',
         'b_user_id',
         'a_pengguna_id',
+        'a_rekening_id',
         'tgl_pesan',
         'tgl_selesai',
         'cdate',
         'status',
         'total_harga',
+        'metode',
         'metode_pembayaran',
         'diskon',
         'gambar',
         'catatan',
+        'is_setor',
         'is_active',
         'is_deleted',
     ];
@@ -47,6 +52,9 @@ class C_Order_Concern extends \JI_Model
         0,
         0,
         0,
+        0,
+        null,
+        null,
         null,
         null,
         null,
@@ -78,6 +86,9 @@ class C_Order_Concern extends \JI_Model
         $this->labels['is_deleted'] = new \Seme_Flaglabel();
         $this->labels['is_deleted']->init_is_deleted();
 
+        $this->labels['is_setor'] = new \Seme_Flaglabel();
+        $this->labels['is_setor']->init_is_setor();
+
         return $this;
     }
 
@@ -93,10 +104,12 @@ class C_Order_Concern extends \JI_Model
             ["$this->tbl_as.id", 'id', 'ID'],
             ["$this->tbl_as.kode", 'kode', 'Kode'],
             ["$this->tbl5_as.fnama", 'pembeli', 'Pembeli'],
-            ["$this->tbl3_as.nama", 'produk', 'Produk'],
+            ["CONCAT('Blok ', $this->tbl6_as.blok,' - ',$this->tbl6_as.nomor)", 'produk', 'Produk'],
             ["$this->tbl2_as.tgl_pesan", 'tgl_pesan', 'Tanggal'],
             ["$this->tbl_as.total_harga", 'total_harga', 'Total Harga'],
-            ["$this->tbl_as.status", 'status', 'Status']
+            ["$this->tbl7_as.nama", 'marketing', 'Marketing'],
+            ["$this->tbl_as.status", 'status', 'Status'],
+            ["$this->tbl_as.is_setor", 'is_setor', 'Disetorkan']
         ]);
 
         // $this->datatables['download'] = new \Seme_Datatable([

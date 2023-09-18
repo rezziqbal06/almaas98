@@ -12,6 +12,10 @@
 		border: 1px solid #ffc107;
 	} */
 
+	td {
+		vertical-align: top;
+	}
+
 	.choices[data-type*=select-multiple] .choices__button,
 	.choices[data-type*=text] .choices__button {
 		border-left: 1px solid white;

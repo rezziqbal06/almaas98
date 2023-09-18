@@ -1,7 +1,10 @@
 <?php
 class Home extends JI_Controller
 {
-
+	var $diskon_by_posisi = [
+		'cash keras' => ['sayap' => 15, 'utama' => 10, 'hook' => 7],
+		'cash bertahap' => ['sayap' => 10, 'utama' => 5, 'hook' => 2]
+	];
 	public function __construct()
 	{
 		parent::__construct();
@@ -38,12 +41,27 @@ class Home extends JI_Controller
 
 		$data['count_produk'] = $this->bpm->countAll();
 		$data['count_kustomer'] = $this->bum->countAll();
-		$data['count_booking'] = $this->com->countAll('progress');
-		$data['count_order_done'] = $this->com->countAll('done');
+		$data['count_booking'] = 0;
+		$data['count_progress'] = 0;
+		$data['count_order_done'] = 0;
+
+		$orders = $this->com->getAllOrders();
+		foreach ($orders as $o) {
+			$diskon = $this->diskon_by_posisi[strtolower($o->metode)][$o->posisi] ?? 0;
+			$nominal_diskon = $diskon ? $o->harga - ($o->harga * $diskon / 100) : $o->harga;
+			$o->total = (int) $o->total;
+			if ($o->status == 'booking') {
+				$data['count_booking']++;
+			} else if ($o->total >= $nominal_diskon) {
+				$data['count_order_done']++;
+			} else {
+				$data['count_progress']++;
+			}
+		}
 		$bulan = [];
 		$omset = [];
 		$jumlah = [];
-		$chart = $this->com->chart('done');
+		$chart = $this->com->chart('');
 		if (isset($chart[0])) {
 			foreach ($chart as $c) {
 				// if (isset($c->omset)) {

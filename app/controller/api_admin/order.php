@@ -10,6 +10,8 @@ class Order extends JI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load('a_pengguna_concern');
+		$this->load('a_rekening_concern');
 		$this->load('b_produk_concern');
 		$this->load('b_produk_harga_concern');
 		$this->load('b_produk_gambar_concern');
@@ -17,6 +19,8 @@ class Order extends JI_Controller
 		$this->load('b_user_concern');
 		$this->load('c_order_concern');
 		$this->load('c_order_produk_concern');
+		$this->load("api_admin/a_pengguna_model", 'apm');
+		$this->load("api_admin/a_rekening_model", 'arm');
 		$this->load("api_admin/b_produk_model", 'bpm');
 		$this->load("api_admin/b_produk_harga_model", 'bphm');
 		$this->load("api_admin/b_produk_gambar_model", 'bpgm');
@@ -64,16 +68,16 @@ class Order extends JI_Controller
 			$is_active = intval($is_active);
 		}
 
-		$admin_login = $d['sess']->user;
-		$b_user_id = '';
-		// Jika user adalah reseller, maka mengambil kustomernya
-		// if (isset($admin_login->utype) && $admin_login->utype == 'agen') {
-		// 	$b_user_id = $admin_login->id;
-		// }
+		$admin_login = $d['sess']->admin;
+		$a_pengguna_id = '';
+		if (isset($admin_login->a_jabatan_nama) && strtolower($admin_login->a_jabatan_nama) == 'marketing') {
+			$a_pengguna_id = $admin_login->id;
+		}
 
 		$datatable = $this->com->datatable()->initialize();
-		$dcount = $this->com->count($datatable->keyword(), $is_active);
+		$dcount = $this->com->count($a_pengguna_id, $datatable->keyword(), $is_active);
 		$ddata = $this->com->data(
+			$a_pengguna_id,
 			$datatable->page(),
 			$datatable->pagesize(),
 			$datatable->sort_column(),
@@ -88,6 +92,10 @@ class Order extends JI_Controller
 			}
 			if (isset($gd->is_active)) {
 				$gd->is_active = $this->com->label('is_active', $gd->is_active);
+			}
+
+			if (isset($gd->is_setor)) {
+				$gd->is_setor = $this->com->label('is_setor', $gd->is_setor);
 			}
 			if (isset($gd->total_harga)) {
 				$gd->total_harga = number_format((int) $gd->total_harga, 0, ',', '.');
@@ -160,7 +168,8 @@ class Order extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-		$this->com->columns['status']->value = $status[0] ?? 'pending';
+		$this->com->columns['status']->value = $status[0] ?? 'pembayaran';
+		$this->com->columns['a_pengguna_id']->value = $d['sess']->admin->id;
 
 		$b_user_id = $this->input->post('b_user_id');
 		$user = $this->bum->id($b_user_id);
@@ -261,51 +270,54 @@ class Order extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
+		$pengguna = $this->apm->id($data['detail']->a_pengguna_id);
+		if (isset($pengguna->nama)) $data['detail']->marketing = $pengguna->nama;
+
+		$pembeli = $this->bum->id($data['detail']->b_user_id);
+		if (isset($pembeli->fnama)) $data['detail']->pembeli = $pembeli->fnama;
+
+		if (isset($data['detail']->a_rekening_id)) {
+			$rekening = $this->arm->id($data['detail']->a_rekening_id);
+			if (isset($rekening->nama)) $data['detail']->nama_rekening = $rekening->nama;
+			if (isset($rekening->nomor)) $data['detail']->nomor_rekening = $rekening->nomor;
+			if (isset($rekening->icon)) $data['detail']->icon_rekening = $rekening->icon;
+		}
 
 		if (isset($data['detail']->total_harga)) {
 			$data['detail']->total_harga = number_format((int) $data['detail']->total_harga, 0, ',', '.');
 		}
 
+		if (isset($data['detail']->tgl_pesan)) {
+			$data['detail']->tgl_pesan = $this->__dateIndonesia($data['detail']->tgl_pesan);
+		}
+
+		if (isset($data['detail']->is_setor)) {
+			$data['detail']->is_setor = $this->com->label('is_setor', $data['detail']->is_setor);
+		}
+
+		switch ($data['detail']->status) {
+			case "pembayaran":
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-secondary">' . $data['detail']->status . '</span>';
+				break;
+			case "booking":
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-info">' . $data['detail']->status . '</span>';
+				break;
+			case "selesai":
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-success">selesai</span>';
+				break;
+			case "cancel":
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-danger">' . $data['detail']->status . '</span>';
+				break;
+			case "pending":
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-danger">Menunggu Persetujuan</span>';
+				break;
+			default:
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-info">Pending</span>';
+				break;
+		}
+
 		$produk = $this->copm->data($id);
-
 		foreach ($produk as $k => $p) {
-			if ($p->tgl_pesan == "0000-00-00 00:00:00") $p->tgl_pesan = "";
-			if ($p->tgl_selesai == "0000-00-00 00:00:00") $p->tgl_selesai = "";
-			if (isset($p->tgl_pesan) && strlen($p->tgl_pesan)) $p->tgl_pesan = $this->__dateIndonesia($p->tgl_pesan);
-			if (isset($p->tgl_selesai) && strlen($p->tgl_selesai)) {
-				$tgl_selesai = date("Y-m-d", strtotime($p->tgl_selesai));
-			} else {
-				$tgl_selesai = date("Y-m-d");
-			}
-			$is_show = 'block';
-			if ($p->status == 'pending' || $p->status == 'progress') {
-				$is_show = 'none';
-			}
-			// if (isset($p->tgl_selesai) && strlen($p->tgl_selesai)) $p->tgl_selesai = $this->__dateIndonesia($p->tgl_selesai);
-			$p->tgl_selesai = '<input type="date" id="tgl_selesai' . $k . '" data-k="' . $k . '" data-id="' . $p->id . '" class="form-control tgl_selesai" style="display:' . $is_show . '" value="' . $tgl_selesai . '" >';
-
-			if (isset($p->status)) {
-				$status =
-					'<div class="form-check form-check-inline">
-						<input class="form-check-input rd-status rd-pending" type="radio" name="status' . $k . '" data-k="' . $k . '" data-id="' . $p->id . '" id="status1' . $k . '" ';
-				$status .= $p->status == 'pending' ?  'checked' : '';
-				$status .= ' value="pending">
-						<label class="form-check-label" for="status1' . $k . '">pending</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input rd-status rd-progress" type="radio" name="status' . $k . '" data-k="' . $k . '" data-id="' . $p->id . '" id="status2' . $k . '" ';
-				$status .= $p->status == 'progress' ?  'checked' : '';
-				$status .= ' value="progress">
-						<label class="form-check-label" for="status2' . $k . '">progress</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input rd-status rd-done" type="radio" name="status' . $k . '" data-k="' . $k . '" data-id="' . $p->id . '" id="status3' . $k . '" ';
-				$status .= $p->status == 'done' ?  'checked' : '';
-				$status .= ' value="done">
-						<label class="form-check-label" for="status3' . $k . '">done</label>
-					</div>';
-				$p->status = $status;
-			}
 
 			if (isset($p->sub_harga)) {
 				$p->sub_harga = number_format((int) $p->sub_harga, 0, ',', '.');
@@ -338,7 +350,6 @@ class Order extends JI_Controller
 		$du = $_POST;
 		$id = (int) $id;
 		$id = isset($du['id']) ? $du['id'] : $id;
-		$du = [];
 
 		if (!$this->admin_login) {
 			$this->status = 400;
@@ -409,7 +420,10 @@ class Order extends JI_Controller
 			}
 			$du['b_user_id'] = $res_user;
 		}
-
+		unset($du['b_produk_id']);
+		unset($du['harga']);
+		unset($du['qty']);
+		unset($du['b_user_nama']);
 		if ($id > 0) {
 			unset($du['id']);
 			$resUpload = $this->se->upload_file('gambar', 'kategori', $id);
@@ -683,11 +697,18 @@ class Order extends JI_Controller
 		$data = array();
 		$this->status = 200;
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
-		$produk_id = $this->input->request("produk_id");
-		$metode_pembayaran = $this->input->request("metode_pembayaran", '');
+		$produk_id = $this->input->request("produk_id", '');
+		$metode = $this->input->request("metode", '');
 		$harga = 0;
 		$diskon = 0;
 		$posisi = '';
+
+		if (!strlen($produk_id)) {
+			$this->status = 401;
+			$this->message = "Produk ID Tidak Valid";
+			$this->__json_out($data);
+			die();
+		}
 
 		$bpim = $this->bpim->id($produk_id);
 		$bpm = $this->bpm->id($bpim->b_produk_id);
@@ -697,12 +718,12 @@ class Order extends JI_Controller
 		$copm = $this->copm->getByProduk($produk_id);
 		$total = 0;
 		foreach ($copm as $k => $v) {
-			if (isset($v->metode_pembayaran) && $k == 1) $metode_pembayaran = $v->metode_pembayaran;
+			if (isset($v->metode) && $k == 1) $metode = $v->metode;
 			$total += $v->sub_harga;
 			if (isset($v->sub_harga)) $v->sub_harga = number_format($v->sub_harga, 0, ',', '.');
 		}
 
-		$diskon = $this->diskon_by_posisi[strtolower($metode_pembayaran)][$posisi] ?? 0;
+		$diskon = $this->diskon_by_posisi[strtolower($metode)][$posisi] ?? 0;
 		$nominal_diskon = $diskon ? $harga - ($harga * $diskon / 100) : $harga;
 
 		$sisa = $nominal_diskon - $total;
@@ -713,12 +734,51 @@ class Order extends JI_Controller
 
 		$data['harga'] = $harga;
 		$data['posisi'] = $posisi;
-		$data['metode_pembayaran'] = $metode_pembayaran;
+		$data['metode'] = $metode;
 		$data['diskon'] = $diskon;
 		$data['nominal_diskon'] = $nominal_diskon;
 		$data['sisa'] = $sisa;
 		$data['total'] = $total;
 		$data['history'] = $copm;
+		$this->__json_out($data);
+	}
+
+	public function set_setor($id)
+	{
+		$d = $this->__init();
+		$data = array();
+		if (!$this->admin_login) {
+			$this->status = 400;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			header("HTTP/1.0 400 Harus login");
+			$this->__json_out($data);
+			die();
+		}
+		$id = (int) $id;
+
+		$this->status = 200;
+		$this->message = 'Batal Disetorkan';
+		$detail = $this->com->id($id);
+		if (!isset($detail->id)) {
+			$data = new \stdClass();
+			$this->status = 441;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			$this->__json_out($data);
+			die();
+		}
+
+		$is_setor = 0;
+		if ($detail->is_setor == 0) {
+			$this->message = 'Berhasil Disetorkan';
+			$is_setor = 1;
+		}
+		$res = $this->com->update($id, ['is_setor' => $is_setor]);
+		if (!$res) {
+			$this->status = 900;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+		}
+
+		// dd(count($data->indikator));
 		$this->__json_out($data);
 	}
 }

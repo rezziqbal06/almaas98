@@ -20,8 +20,8 @@ class C_Order_Produk_Concern extends \JI_Model
     public $tbl2_as = 'co';
     public $tbl3 = 'b_produk_item';
     public $tbl3_as = 'bpi';
-    public $tbl4 = 'b_produk_harga';
-    public $tbl4_as = 'bph';
+    public $tbl4 = 'b_produk';
+    public $tbl4_as = 'bp';
     public $tbl5 = 'b_user';
     public $tbl5_as = 'bu';
     public $tbl6 = 'a_pengguna';
@@ -99,6 +99,10 @@ class C_Order_Produk_Concern extends \JI_Model
             ["$this->tbl3_as.blok", 'blok', 'Blok'],
             ["$this->tbl3_as.nomor", 'nomor', 'Nomor'],
             ["$this->tbl3_as.posisi", 'posisi', 'Posisi'],
+            ["$this->tbl4_as.luas_tanah", 'luas_tanah', 'luas_tanah'],
+            ["$this->tbl4_as.luas_bangunan", 'luas_bangunan', 'luas_bangunan'],
+            ["$this->tbl4_as.harga", 'harga', 'harga'],
+            ["$this->tbl4_as.gambar", 'gambar', 'gambar'],
             ["$this->tbl_as.status", 'status', 'Status']
         ]);
 

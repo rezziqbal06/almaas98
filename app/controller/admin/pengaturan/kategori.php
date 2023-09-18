@@ -23,8 +23,12 @@ class Kategori extends \JI_Controller
 		$this->lib("seme_purifier");
 		$this->load("a_kategori_concern");
 		$this->load("b_produk_concern");
+		$this->load("b_produk_item_concern");
+		$this->load("c_order_concern");
 		$this->load("admin/a_kategori_model", "akm");
 		$this->load("admin/b_produk_model", "bpm");
+		$this->load("admin/b_produk_item_model", "bpim");
+		$this->load("admin/c_order_model", "com");
 		$this->current_parent = 'pengaturan';
 		$this->current_page = 'kategori';
 	}
@@ -62,11 +66,25 @@ class Kategori extends \JI_Controller
 		$data['akm'] = $akm;
 		$pengguna = $data['sess']->admin;
 
-		$bpm = $this->bpm->getAll();
-		if (isset($bpm[0])) $data['bpm'] = $bpm;
-		unset($bpm);
-
-
+		$bpim = $this->bpim->getByKawasan($akm->id);
+		if (isset($bpim[0])) $data['bpim'] = $bpim;
+		unset($bpim);
+		if (isset($akm->data_siteplan) && strlen($akm->data_siteplan) > 5) {
+			$data_siteplan = json_decode($akm->data_siteplan);
+			$orders = $this->com->getAllOrders();
+			foreach ($data_siteplan as $ds) {
+				if (!isset($ds->data)) continue;
+				foreach ($orders as $o) {
+					if (stripos($ds->data, "ID-" . $o->b_produk_id) !== false) {
+						$o->status = $o->status == 'pembayaran' ? 'terjual' : $o->status;
+						$ds->status = $o->status;
+						$ds->b_user_id = $o->b_user_id;
+						$ds->posisi = $o->posisi;
+					}
+				}
+			}
+			$akm->data_siteplan = json_encode($data_siteplan);
+		}
 		$this->setTitle('Kawasan - Siteplan ' . $this->config_semevar('admin_site_suffix', ''));
 
 		$this->putThemeContent("pengaturan/siteplan/baru_modal", $data);

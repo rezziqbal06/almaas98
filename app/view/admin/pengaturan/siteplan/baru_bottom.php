@@ -77,15 +77,7 @@ $("#attach").on('click', function(e){
    gritter('Rumah/Kavling belum dipilih', 'warning')
    return false;
   }
-  var blok = $("#iblok").val();
-  var nomor = $("#inomor").val();
-  var posisi = $("#iposisi").val();
-  if(!blok || !nomor){
-    gritter("Blok dan Nomor harus diisi terlebih dahulu", "warning");
-    return false;
-  }
   var rumah = $("#irumah").find('option:selected').val();
-  rumah = rumah+'|B-'+blok+'|N-'+nomor+'|PS-'+posisi;
   var status_rumah = $("#istatus").find('option:selected').val();
   $("#"+id).attr('data-rumah-id', rumah);
   $("path").removeClass('selected');
@@ -96,7 +88,7 @@ $("#attach").on('click', function(e){
   
 
   if(!data_siteplan[id]) data_siteplan[id] = {};
-  data_siteplan[id] = {"data":rumah,"blok":blok,"nomor":nomor,"posisi":posisi,"status":status_rumah}
+  data_siteplan[id] = {"data":rumah,"status":status_rumah}
 })
 
 $("#remove").on('click', function(e){
@@ -144,16 +136,75 @@ $("#isiteplan").on('change', function(e){
   }
 })
 
+function getDetail(data, type = 'click'){
+  if(data){
+    var datas = data.split('|');
+    if(datas){
+      var id = '';
+      var Tipe = '';
+      var blok = '';
+      var nomor = '';
+      var lt = '';
+      var lb = '';
+      var kamar = '';
+      var toilet = '';
+      var posisi = '';
+      $.each(datas, function(k,v){
+        if(v.includes('LB-')){
+            lb = v.replaceAll('LB-','');
+        }else if(v.includes('N-')){
+            nomor = v.replaceAll('N-','');
+        }else if(v.includes('LT-')){
+            lt = v.replaceAll('LT-','');
+        }else if(v.includes('B-')){
+            blok = v.replaceAll('B-','');
+        }else if(v.includes('PS-')){
+            posisi = v.replaceAll('PS-','');
+        }else if(v.includes('ID-')){
+            id = v.replaceAll('ID-','');
+        }
+      })
+
+      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb} ${posisi}`
+      $("#detail_rumah").text(detail)
+      if(type == 'click'){
+        $.get('<?=base_url("api_admin/pengaturan/produk_item/detail/")?>'+id).done(function(dt){
+          if(dt.status == 200){
+            if(dt.data){
+                var gambar = '<?=base_url()?>'+dt.data.tipe_rumah.gambar;
+                $("#panel_gambar").attr('href', gambar);
+                $("#gambar").attr('src', gambar);
+                $("#type").text(`Type ${dt.data.tipe_rumah.luas_tanah}/${dt.data.tipe_rumah.luas_bangunan}`);
+                $("#kawasan").html(`<i class="fa fa-map-marker mb-2 me-1"></i> ${dt.data.kategori.nama}`);
+                $("#listrik").html(`<i class="fa fa-bolt me-1"></i> ${dt.data.tipe_rumah.listrik}`);
+                $("#toilet").html(`<i class="fa fa-bath me-1"></i> ${dt.data.tipe_rumah.toilet}`);
+                $("#kamar_tidur").html(`<i class="fa fa-bed me-1"></i> ${dt.data.tipe_rumah.kamar_tidur}`);
+                $("#deskripsi").html(`${dt.data.tipe_rumah.deskripsi}`);
+                $("#angsuran").text(`Rp.${dt.data.tipe_rumah.angsuran}`);
+                $("#harga").text(`Rp.${dt.data.tipe_rumah.harga}`);
+                $("#modal_detail").modal('show')
+            }
+          }
+        });
+      }
+     
+    }
+  }
+  
+}
 
 $(document).off('click', 'path')
 $(document).on('click', 'path', function(e){
 	e.preventDefault();
 	var id = $(this).attr('id')
+	var data = $(this).attr('data-rumah-id');
   $("path").removeClass('selected');
   //$("#"+id).removeClass('booking').removeClass('tersedia').removeClass('terjual');
   $("#"+id).addClass('selected');
   $("#id_path").val(id);
+  getDetail(data)
 })
+
 <?php if (isset($akm->siteplan) && strlen($akm->siteplan)) : ?>
     var siteplan_url = '<?=base_url($akm->siteplan)?>'
     $.get(siteplan_url).done(function(data){
@@ -183,37 +234,8 @@ $(document).on('mouseenter', 'path', function(e){
 	e.preventDefault();
   var detail = '';
 	var data = $(this).attr('data-rumah-id');
-  if(data){
-    var datas = data.split('|');
-    if(datas){
-      var id = '';
-      var Tipe = '';
-      var blok = '';
-      var nomor = '';
-      var lt = '';
-      var lb = '';
-      var kamar = '';
-      var toilet = '';
-      var posisi = '';
-      $.each(datas, function(k,v){
-        if(v.includes('LB-')){
-            lb = v.replaceAll('LB-','');
-        }else if(v.includes('N-')){
-            nomor = v.replaceAll('N-','');
-        }else if(v.includes('LT-')){
-            lt = v.replaceAll('LT-','');
-        }else if(v.includes('B-')){
-            blok = v.replaceAll('B-','');
-        }else if(v.includes('PS-')){
-            posisi = v.replaceAll('PS-','');
-        }
-      })
-
-      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb} ${posisi}`
-      $("#detail_rumah").text(detail)
-    }
-  }
-  
+  getDetail(data,'hover');
+ 
 })
 
 $(document).ready(function() {

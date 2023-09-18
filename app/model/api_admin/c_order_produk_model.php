@@ -41,7 +41,7 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
   {
     $this->db->join($this->tbl2, $this->tbl2_as, 'id', $this->tbl_as, 'c_order_id', 'left');
     $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl_as, 'b_produk_id', 'left');
-    $this->db->join($this->tbl4, $this->tbl4_as, 'id', $this->tbl_as, 'b_produk_id_harga', 'left');
+    $this->db->join($this->tbl4, $this->tbl4_as, 'id', $this->tbl3_as, 'b_produk_id', 'left');
     $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl2_as, 'b_user_id', 'left');
     $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'a_pengguna_id', 'left');
     return $this;

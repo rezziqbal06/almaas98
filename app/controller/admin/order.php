@@ -26,10 +26,12 @@ class Order extends \JI_Controller
 		$this->load("b_produk_gambar_concern");
 		$this->load("b_produk_item_concern");
 		$this->load("b_user_concern");
+		$this->load("a_rekening_concern");
 		$this->load("a_kategori_concern");
 		$this->load("c_order_concern");
 		$this->load("c_order_produk_concern");
 		$this->load("admin/a_kategori_model", "akm");
+		$this->load("admin/a_rekening_model", "arm");
 		$this->load("admin/b_produk_model", "bpm");
 		$this->load("admin/b_produk_harga_model", "bphm");
 		$this->load("admin/b_produk_gambar_model", "bpgm");
@@ -68,6 +70,7 @@ class Order extends \JI_Controller
 		$pengguna = $data['sess']->admin;
 		$data['akm'] = $this->akm->getAll();
 		$data['bpim'] = $this->bpim->getAll();
+		$data['arm'] = $this->arm->getAll();
 
 
 		$this->setTitle('Order Baru ' . $this->config_semevar('admin_site_suffix', ''));
@@ -103,6 +106,7 @@ class Order extends \JI_Controller
 		$data['akm'] = $this->akm->getAll();
 		$data['bpim'] = $this->bpim->getAll();
 		$data['copm'] = $this->copm->getByOrder($com->id);
+		$data['arm'] = $this->arm->getAll();
 
 		// dd($data['bphm']);
 		$this->setTitle('Order Edit #' . $com->id . ' ' . $this->config_semevar('admin_site_suffix', ''));

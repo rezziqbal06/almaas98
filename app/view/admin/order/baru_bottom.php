@@ -256,8 +256,8 @@ function setTotal(){
 function getHistory(id){
   return new Promise(function(resolve, reject){
     var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id
-    var metode_pembayaran = $("#imetode_pembayaran").val();
-    if(metode_pembayaran) url += '&metode_pembayaran='+metode_pembayaran;
+    var metode = $("#imetode").val();
+    if(metode) url += '&metode='+metode;
     var s = '';
     $.get(url).done(function(dt){
       if(dt.status == 200){
@@ -273,17 +273,17 @@ function getHistory(id){
           if(dt.data.diskon) s += `<tr class="table-success"><td colspan="2"><b>Diskon (${dt.data.diskon}%)</b></td><td class="text-end">${dt.data.nominal_diskon}</td><td></td></tr>`
           if(dt.data.sisa) s += `<tr class="table-warning"><td colspan="2"><b>Sisa</b></td><td class="text-end"><b>${dt.data.sisa}</b></td><td></td></tr>`
           s += `</table></div>`
-          if(dt.data.metode_pembayaran){
-            $("#imetode_pembayaran").val(dt.data.metode_pembayaran);
-            $("#imetode_pembayaran option[value!='"+dt.data.metode_pembayaran+"']").prop("disabled");
+          if(dt.data.metode){
+            $("#imetode").val(dt.data.metode);
+            $("#imetode option[value!='"+dt.data.metode+"']").prop("disabled");
           }else{
-            $("#imetode_pembayaran option").prop("disabled", false);
+            $("#imetode option").prop("disabled", false);
           }
           resolve(s);
         }else{
-          $("#imetode_pembayaran option").prop("disabled", false);
-          if(dt.data.metode_pembayaran){
-            $("#imetode_pembayaran").val(dt.data.metode_pembayaran);
+          $("#imetode option").prop("disabled", false);
+          if(dt.data.metode){
+            $("#imetode").val(dt.data.metode);
             s += '<div class="table table-responsive"><table class="table table-striped">';
             s += `<tr><td colspan="2"><b>Harga</b></td><td class="text-end">${dt.data.harga}</td><td></td></tr>`
             if(dt.data.diskon) s += `<tr class="table-success"><td colspan="2"><b>Diskon (${dt.data.diskon}%)</b></td><td class="text-end">${dt.data.nominal_diskon}</td><td></td></tr>`
@@ -313,7 +313,7 @@ $(document).on('click', '.btn-remove-produk', function(e){
 	removeProduk(id);
 });
 
-$("#imetode_pembayaran").on('change', function(e){
+$("#imetode").on('change', function(e){
   e.preventDefault();
   var id = $("#ib_produk_id_0").find("option:selected").val();
 
@@ -326,6 +326,18 @@ $("#imetode_pembayaran").on('change', function(e){
   }).catch(function(){
     $(".panel_history").html('').slideUp();
   });  
+})
+
+
+$("#imetode_pembayaran").on('change', function(e){
+  e.preventDefault();
+  var value = $(this).find("option:selected").val();
+  if(value == 'transfer'){
+    $("#panel_a_rekening_id").slideDown();
+  }else{
+    $("#panel_a_rekening_id").slideUp();
+    $("#ia_rekening_id").val('');
+  }
 })
 
 $(document).off('change', '[name="b_produk_id[]"]');

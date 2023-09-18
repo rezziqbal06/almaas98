@@ -39,7 +39,7 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
 	{
 		$this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id');
 		$this->db->select_as("COALESCE($this->tbl2_as.kode, '')", 'kode');
-		$this->db->select_as("COALESCE($this->tbl3_as.nama, '')", 'produk');
+		$this->db->select_as("COALESCE(CONCAT('Blok ',$this->tbl3_as.blok,' - ',$this->tbl3_as.nomor), '')", 'produk');
 		$this->db->select_as("COALESCE($this->tbl5_as.fnama, '')", 'pembeli');
 		$this->db->from($this->tbl, $this->tbl_as);
 		$this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "c_order_id", "left");

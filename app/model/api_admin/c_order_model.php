@@ -20,11 +20,11 @@ class C_Order_Model extends \Model\C_Order_Concern
     $this->point_of_view = 'admin';
   }
 
-  private function filters($keyword = '', $is_active = '')
+  private function filters($a_pengguna_id = '', $keyword = '', $is_active = '')
   {
-    // if (strlen($b_user_id)) {
-    //   $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
-    // }
+    if (strlen($a_pengguna_id)) {
+      $this->db->where_as("$this->tbl_as.a_pengguna_id", $this->db->esc($a_pengguna_id));
+    }
     if (strlen($is_active)) {
       $this->db->where_as("$this->tbl_as.is_active", $this->db->esc($is_active));
     }
@@ -43,27 +43,29 @@ class C_Order_Model extends \Model\C_Order_Concern
     $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl2_as, 'b_produk_id', 'left');
     $this->db->join($this->tbl4, $this->tbl4_as, 'id', $this->tbl2_as, 'b_produk_id_harga', 'left');
     $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl_as, 'b_user_id', 'left');
+    $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'b_produk_id', 'left');
+    $this->db->join($this->tbl7, $this->tbl7_as, 'id', $this->tbl_as, 'a_pengguna_id', 'left');
     return $this;
   }
 
 
 
-  public function data($page = 0, $pagesize = 10, $sortCol = "id", $sortDir = "ASC", $keyword = '', $is_active = '')
+  public function data($a_pengguna_id, $page = 0, $pagesize = 10, $sortCol = "id", $sortDir = "ASC", $keyword = '', $is_active = '')
   {
     $this->datatables[$this->point_of_view]->selections($this->db);
     $this->db->from($this->tbl, $this->tbl_as);
     $this->join_company();
-    $this->filters($keyword, $is_active)->scoped();
+    $this->filters($a_pengguna_id, $keyword, $is_active)->scoped();
     $this->db->group_by("$this->tbl_as.id")->order_by($sortCol, $sortDir)->limit($page, $pagesize);
     return $this->db->get("object", 0);
   }
 
-  public function count($b_user_id = '', $keyword = '', $is_active = '')
+  public function count($a_pengguna_id = '', $keyword = '', $is_active = '')
   {
     $this->db->select_as("COUNT($this->tbl_as.id)", "jumlah", 0);
     $this->db->from($this->tbl, $this->tbl_as);
     $this->join_company();
-    $this->filters($keyword, $is_active)->scoped();
+    $this->filters($a_pengguna_id, $keyword, $is_active)->scoped();
     // $this->db->group_by("$this->tbl_as.kode");
     $d = $this->db->get_first("object", 0);
     if (isset($d->jumlah)) {

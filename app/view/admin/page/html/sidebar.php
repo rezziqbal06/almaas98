@@ -21,6 +21,7 @@ $admin_foto = '';
 if (isset($sess->admin->foto)) $admin_foto = $sess->admin->foto;
 if (empty($admin_foto)) $admin_foto = 'media/pengguna/default.png';
 $admin_foto = $this->cdn_url($admin_foto);
+
 ?>
 <aside class="sidenav bg-nav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
 	<div class="sidenav-header">
@@ -44,13 +45,13 @@ $admin_foto = $this->cdn_url($admin_foto);
 			<li class="nav-item mt-3">
 				<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6"></h6>
 			</li>
-			<?php if ($sess->admin->is_admin_master) : ?>
+			<?php if ($sess->admin->is_admin_master || in_array($sess->admin->a_jabatan_nama, ['Direktur', 'Marketing'])) : ?>
 				<li class="nav-item">
 					<a class="nav-link " href="<?= base_url_admin() ?>order">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
 							<i class="ni ni-cart text-primary text-sm opacity-10"></i>
 						</div>
-						<span class="nav-link-text ms-1">Order</span>
+						<span class="nav-link-text ms-1">Survei/Order</span>
 					</a>
 				</li>
 
@@ -62,7 +63,8 @@ $admin_foto = $this->cdn_url($admin_foto);
 						<span class="nav-link-text ms-1">Pelanggan</span>
 					</a>
 				</li>
-
+			<?php endif ?>
+			<?php if ($sess->admin->is_admin_master || in_array($sess->admin->a_jabatan_nama, ['Direktur'])) : ?>
 				<li class="nav-item">
 					<a class="nav-link " href="<?= base_url_admin() ?>akun/pegawai">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -71,6 +73,8 @@ $admin_foto = $this->cdn_url($admin_foto);
 						<span class="nav-link-text ms-1">Pegawai</span>
 					</a>
 				</li>
+			<?php endif ?>
+			<?php if ($sess->admin->is_admin_master) : ?>
 				<li class="nav-item mt-3">
 					<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Pengaturan</h6>
 				</li>

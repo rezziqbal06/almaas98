@@ -6,7 +6,7 @@
             <?php $icon = ["app", "single-02", "cart", "cart"]; ?>
             <?php $color = ["danger", "warning", "info", "success"]; ?>
             <?php foreach ($title as $k => $v) : ?>
-                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-md-3 mb-2 mb-md-0">
                     <div class="card">
                         <div class="card-body p-3">
                             <div class="row">
@@ -100,14 +100,14 @@
             <div class="col-md-5">
                 <div class="card">
                     <div class="card-header">
-                        Jumlah Order Perbulan
+                        Jumlah Survei Perbulan
                     </div>
                     <div class="card-body">
                         <canvas id="line-chart-gradient-jumlah" class="chart-canvas" height="300px"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 d-none">
 
                 <div class="card">
                     <div class="card-header">

@@ -95,7 +95,7 @@ gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
 gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 
 initLineChart(ctx1, "line", "Omset", <?=$chart->bulan?>, <?=$chart->omset?>, "#5e72e4", gradientStroke1)
-initLineChart(ctx2, "bar", "Order", <?=$chart->bulan?>, <?=$chart->jumlah?>, "#3A416F", "#3A416F")
+initLineChart(ctx2, "bar", "Survei", <?=$chart->bulan?>, <?=$chart->jumlah?>, "#3A416F", "#3A416F")
 
 
 App.datatables();

@@ -83,6 +83,19 @@ class Seme_Flaglabel
     }
 
     /**
+     * Procedure for generate  is_setor label flag
+     *
+     * @return object     Current object of this class
+     */
+    public function init_is_setor()
+    {
+        $this->labels[0] = new \Seme_Label('Belum', 'warning');
+        $this->labels[1] = new \Seme_Label('Selesai', 'success');
+
+        return $this;
+    }
+
+    /**
      * Get html bootstrap label for a key value
      *
      * @param  string $value  A value that defined as key of array labels

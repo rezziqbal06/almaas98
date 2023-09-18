@@ -6,15 +6,35 @@ class Produk_Item extends JI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load('a_kategori_concern');
 		$this->load('b_produk_concern');
 		$this->load('b_produk_item_concern');
 		$this->load('b_produk_gambar_concern');
 		$this->load('c_order_produk_concern');
+		$this->load("api_admin/a_kategori_model", 'akm');
 		$this->load("api_admin/b_produk_model", 'bpm');
 		$this->load("api_admin/b_produk_item_model", 'bpim');
 		$this->load("api_admin/b_produk_gambar_model", 'bpgm');
 		$this->load("api_admin/c_order_produk_model", 'copm');
 		$this->lib("seme_upload", 'se');
+	}
+
+	function __formatNominal($nominal)
+	{
+		$formats = [
+			1000000000 => 'miliar',
+			1000000 => 'juta',
+			1000 => 'ribu'
+		];
+
+		foreach ($formats as $divisor => $format) {
+			if ($nominal >= $divisor) {
+				$result = $nominal / $divisor;
+				return number_format($result, 0) . ' ' . $format;
+			}
+		}
+
+		return number_format($nominal, 0);
 	}
 
 	/**
@@ -133,6 +153,13 @@ class Produk_Item extends JI_Controller
 		$this->status = 200;
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
 		$data = $this->bpim->id($id);
+		$data->tipe_rumah = $this->bpm->id($data->b_produk_id);
+		$data->kategori = $this->akm->id($data->tipe_rumah->a_kategori_id);
+		if (isset($data->tipe_rumah->harga)) {
+			$data->tipe_rumah->angsuran = $data->tipe_rumah->harga / (3 * 12);
+			$data->tipe_rumah->angsuran = $this->__formatNominal((int) $data->tipe_rumah->angsuran);
+			$data->tipe_rumah->harga = number_format($data->tipe_rumah->harga, 0, ',', '.');
+		}
 		if (!isset($data->id)) {
 			$data = new \stdClass();
 			$this->status = 441;

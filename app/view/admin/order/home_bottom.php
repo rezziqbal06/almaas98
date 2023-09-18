@@ -52,28 +52,91 @@ if(jQuery('#drTable').length>0){
 						var id = $(this).find("td").html();
 						ieid = id;
 						$.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
-							if(dt.data.produk){
-								var s = '';
-								$.each(dt.data.produk, function(k,v){
-									s += `<tr>
-										<td>${(k+1)}</td>
-										<td>${v.produk}</td>
-										<td>${v.spesifikasi}</td>
-										<td>${v.qty}</td>
-										<td>${v.tgl_pesan}</td>
-										<td>${v.status}</td>
-										<td>${v.tgl_selesai}</td>
-										<td class="text-end">${v.sub_harga}</td>
-									</tr>`
-								})
-								s += `<tr class="table-warning">
-									<td colspan="7">Total</td>
-									<td class="text-end">${dt.data.detail.total_harga}</td>
-								</tr>`
-								$("#table_produk").html(s);
-								
-
+							console.log(dt.data.detail.is_setor)
+							if(dt.data.detail.is_setor.includes('Selesai')){
+								$(".asetorkan").html('<i class="fa fa-money"></i> Batal Setoran')
+							}else{
+								$(".asetorkan").html('<i class="fa fa-money"></i> Setorkan')
 							}
+							if(dt.data.detail){
+								var detail = dt.data.detail;
+								var s = `
+									<table class="w-100">
+										<tr>
+											<td class="text-grey">Kode</td>
+											<td>${detail?.kode}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Pembeli</td>
+											<td class="text-primary">${detail?.pembeli}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Marketing</td>
+											<td>${detail?.marketing}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Tanggal</td>
+											<td>${detail?.tgl_pesan}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Status</td>
+											<td>${detail?.status}</td>
+										</tr>
+									</table>
+								`;
+								$("#table_header").html(s);
+								var s2 = `
+									<table class="w-100">
+										<tr>
+											<td class="text-grey">Metode</td>
+											<td>${detail?.metode}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Nominal</td>
+											<td class="text-primary">Rp. ${detail?.total_harga}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Metode Pembayaran</td>
+											<td>${detail?.metode_pembayaran}</td>
+										</tr>`
+										if(detail?.metode_pembayaran == 'transfer'){
+								s2 +=	`<tr>
+											<td class="text-grey">Rekening Tujuan</td>
+											<td><img src="<?=base_url("media/bank/")?>${detail?.icon_rekening}.png" width="70px" class="img-fluid" alt=""><br>${detail?.nomor_rekening} <br>a.n ${detail?.nama_rekening}</td>
+										</tr>`
+										}
+								s2 +=	`<tr>
+											<td class="text-grey">Bukti</td>
+											<td><a href="<?=base_url()?>${detail?.gambar}" target="_blank"><img src="<?=base_url()?>${detail?.gambar}" alt="" class="img-fluid rounded"></a></td>
+										</tr>
+										<tr class="mt-2">
+											<td class="text-grey">Disetorkan</td>
+											<td>${detail?.is_setor}</td>
+										</tr>
+										<tr>
+											<td class="text-grey">Catatan</td>
+											<td>${detail?.catatan}</td>
+										</tr>
+									</table>
+								`;
+								$("#table_transaksi").html(s2);
+							}
+							if(dt.data.produk[0]){
+								var produk = dt.data.produk[0]
+								var s = '';
+								s += `<div class="row">
+										<div class="col-4 col-md-2">
+											<img src="<?=base_url()?>${produk?.gambar}" class="img-fluid rounded" alt="">
+										</div>
+										<div class="col-8 col-md-10">
+											<p class="m-0">Blok ${produk?.blok} - ${produk?.nomor} Tipe ${produk?.luas_tanah}/${produk?.luas_bangunan}</p>
+											<small class="text-grey">${produk?.posisi}</small>
+											<p class="m-0"></p>
+										</div>
+									</div>`
+								$("#table_produk").html(s);
+							}
+							
 						})
 						
 						$("#aedit").attr("href","<?=base_url_admin("order/edit/")?>"+ieid);
@@ -374,4 +437,21 @@ $(document).on('change', '.tgl_selesai', function(e){
 	var tgl_selesai = $("#tgl_selesai"+k).val()
 
 	setStatus(status, tgl_selesai, id)
+})
+
+$(document).off('click', '.asetorkan')
+$(document).on('click', '.asetorkan', function(e){
+	e.preventDefault();
+	$.get('<?=base_url("api_admin/order/set_setor/")?>'+ieid).done(function(dt){
+		if(dt.status == 200){
+			gritter(dt.message, 'success');
+			drTable.ajax.reload();
+			$("#modal_option").modal('hide');
+			$("#modal_produk").modal('hide');
+		}else{
+			gritter(dt.message, 'warning');
+		}
+	}).fail(function(){
+		gritter('Gagal, coba beberapa saat lagi', 'danger');
+	})
 })

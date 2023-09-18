@@ -2,6 +2,14 @@
 	.pe-1 {
 		padding-left: 1rem !important;
 	}
+
+	.is_owner {
+		color: var(--primary) !important;
+	}
+
+	option:disabled {
+		background-color: #e2e2e2 !important;
+	}
 </style>
 <div id="page-content">
 	<!-- Static Layout Header -->
@@ -34,9 +42,9 @@
 							<label for="ieb_user_id_cari" class="control-label">Cari Pembeli</label>
 							<select id="ieb_user_id_cari" class="form-control select2"></select>
 						</div>
-						<div class="col-md-4 mb-2 d-none">
+						<div class="col-md-4 mb-2">
 							<label for="ieb_user_nama" class="control-label">Pembeli</label>
-							<input id="ieb_user_nama" type="text" name="b_user_nama" class="form-control" required>
+							<input id="ieb_user_nama" type="text" name="b_user_nama" class="form-control" required readonly>
 							<input type="hidden" id="ieb_user_id" name="b_user_id">
 						</div>
 						<div class="col-md-4 mb-2">
@@ -64,9 +72,63 @@
 							</div>
 						</div>
 					</div>
+					<div class="row pt-2">
+						<div class="col-md-6 mb-2">
+							<label for="imetode" class="control-label">Metode Pembayaran</label>
+							<select id="imetode" type="text" name="metode" class="form-control " required>
+								<option value="">-- pilih metode --</option>
+								<option value="Cash Keras">Cash Keras</option>
+								<option value="Cash Bertahap">Cash Bertahap</option>
+							</select>
+						</div>
+						<div class="col-md-6 mb-2">
+							<label for="imetode_pembayaran" class="control-label">Metode Pembayaran</label>
+							<select id="imetode_pembayaran" type="text" name="metode_pembayaran" class="form-control " required>
+								<option value="">-- pilih metode pembayaran --</option>
+								<option value="cash">Cash</option>
+								<option value="transfer">Transfer</option>
+							</select>
+						</div>
+						<div class="col-md-6 mb-2">
+							<input id="idiskon" type="hidden" name="diskon" class="form-control " readonly />
+						</div>
+					</div>
+					<div class="row pt-2">
+						<div class="col-12">
+							<div class=" panel_history" style="display: none;"></div>
+						</div>
+						<div class="col-md-6 mb-3">
+							<label for="iharga_0" data-count="0">Nominal</label>
+							<input type="text" name="harga[]" id="iharga_0" data-count="0" class="form-control">
+						</div>
+						<div id="panel_a_rekening_id" class="col-md-6 mb-2" style="display: none;">
+							<label for="ia_rekening_id" class="control-label">Rekening Tujuan</label>
+							<select id="ia_rekening_id" type="text" name="a_rekening_id" class="form-control">
+								<option value="">-- pilih rekening tujuan --</option>
+								<?php if (isset($arm[0]->id)) : ?>
+									<?php foreach ($arm as $k => $v) : ?>
+										<option value="<?= $v->id ?>"><img src="<?= base_url("media/bank/$v->icon.png") ?>" width="50px" alt=""><?= strtoupper($v->icon) ?> - <?= $v->nomor ?> a.n <?= $v->nama ?></option>
+									<?php endforeach ?>
+								<?php endif ?>
+							</select>
+						</div>
+						<div class="col-md-6 mb-2">
+							<label for="igambar" class="control-label">Bukti Pembayaran/Transfer</label>
+							<input id="igambar" type="file" name="gambar" accept=".png, .jpg, .jpeg" class="form-control">
+						</div>
+						<div class="col-md-2 mb-2">
+							<img id="img-igambar" src="" alt="" class="img-fluid rounded">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 mb-3">
+							<label for="icatatan" data-count="0">Catatan</label>
+							<textarea type="text" name="catatan" id="icatatan" data-count="0" class="form-control"><?= $com->catatan ?? '' ?></textarea>
+						</div>
+					</div>
 				</div>
 				<div class="form-group">
-					<div class="row">
+					<div class="row d-none">
 						<div class="col-md-8">&nbsp;</div>
 						<div class="col-md-4">
 							<label for="itotal_harga">Total</label>

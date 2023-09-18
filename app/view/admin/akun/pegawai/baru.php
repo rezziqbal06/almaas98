@@ -52,7 +52,7 @@
                         <label for="ia_jabatan_nama" class="control-label">Profesi*</label>
                         <select name="a_jabatan_nama" id="ia_jabatan_nama" class="form-control select2" required>
                             <option value="Marketing">Marketing</option>
-							<option value="Direktur">Direktur</option>
+                            <option value="Direktur">Direktur</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -84,14 +84,14 @@
                         <label for="itgl_kerja_mulai" class="control-label">Tanggal Mulai Kerja</label>
                         <input id="itgl_kerja_mulai" type="text" class="form-control datepicker" name="tgl_kerja_mulai" placeholder="Tanggal Mulai Kerja" />
                     </div>
-                    <!-- <div class="col-md-4">
+                    <div class="col-md-4">
                         <label for="iemail" class="control-label">Email</label>
                         <input id="iemail" type="email" class="form-control" name="email" placeholder="Email" />
-                    </div> -->
-                    <!-- <div class="col-md-4">
+                    </div>
+                    <div class="col-md-4">
                         <label for="iusername" class="control-label">Username</label>
                         <input id="iusername" type="username" class="form-control" name="username" placeholder="Username" />
-                    </div> -->
+                    </div>
                     <!-- <div class="col-md-4">
                         <label for="ipassword" class="control-label">Password</label>
                         <input id="ipassword" type="password" class="form-control" name="password" value="123456" placeholder="password" />

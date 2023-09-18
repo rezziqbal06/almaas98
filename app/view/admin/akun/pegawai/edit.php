@@ -85,18 +85,18 @@
 						<label for="ietgl_kerja_mulai" class="control-label">Tanggal Mulai Kerja</label>
 						<input id="ietgl_kerja_mulai" type="text" class="form-control datepicker" name="tgl_kerja_mulai" placeholder="Mulai Kerja" />
 					</div>
+					<div class="col-md-4">
+						<label for="ieemail" class="control-label">Email</label>
+						<input id="ieemail" type="email" class="form-control" name="email" placeholder="Email" />
+					</div>
+					<div class="col-md-4">
+						<label for="ieusername" class="control-label">Username</label>
+						<input id="ieusername" type="username" class="form-control" name="username" placeholder="Username" />
+					</div>
 					<!-- <div class="col-md-4">
-                        <label for="ieemail" class="control-label">Email</label>
-                        <input id="ieemail" type="email" class="form-control" name="email" placeholder="Email" />
-                    </div> -->
-					<!-- <div class="col-md-4">
-                        <label for="ieusername" class="control-label">Username</label>
-                        <input id="ieusername" type="username" class="form-control" name="username" placeholder="Username" />
-                    </div> -->
-					<!-- <div class="col-md-4">
-                        <label for="iepassword" class="control-label">Password</label>
-                        <input id="iepassword" type="password" class="form-control" name="password" value="123456" placeholder="password" />
-                    </div> -->
+						<label for="iepassword" class="control-label">Password</label>
+						<input id="iepassword" type="password" class="form-control" name="password" value="123456" placeholder="password" />
+					</div> -->
 				</div>
 
 				<div class="form-group row">

@@ -51,6 +51,7 @@ class C_Jadwal_Model extends \Model\C_Jadwal_Concern
 		$this->db->select_as("$this->tbl3_as.nama", 'kawasan', 0);
 		$this->joins();
 		if (strlen($day)) $this->db->where_as("$this->tbl_as.day", $day, "AND");
+		$this->db->where("$this->tbl_as.is_deleted", $this->db->esc('0'));
 		$this->db->order_by("$this->tbl3_as.nama", 'asc');
 		return $this->db->get("object", 0);
 	}

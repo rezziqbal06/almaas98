@@ -16,6 +16,9 @@
 					<div class="col-xs-12 btn-group-vertical">
 						<a id="adetail" href="#" class="btn btn-info btn-left"><i class="fa fa-info"></i> Detail</a>
 						<a id="aedit" href="#" class="btn btn-primary btn-left"><i class="fa fa-pencil"></i> Edit</a>
+						<?php if ($sess->admin->a_jabatan_nama == 'Direktur') : ?>
+							<a id="" href="#" class="btn btn-warning btn-left asetorkan text-white"><i class="fa fa-money"></i> Setorkan</a>
+						<?php endif ?>
 						<button id="bhapus" type="button" class="btn btn-danger btn-left btn-submit"><i class="fa fa-trash-o icon-submit"></i> Hapus</button>
 					</div>
 				</div>
@@ -45,21 +48,19 @@
 
 			<!-- Modal Body -->
 			<div class="modal-body">
-				<table class="table table-responsive table-striped rounded">
-					<thead>
-						<tr>
-							<th>No</th>
-							<th>Produk</th>
-							<th>Spesifikasi</th>
-							<th>qty</th>
-							<th>Tgl Pesan</th>
-							<th>Status</th>
-							<th>Tgl Selesai</th>
-							<th>Sub Harga</th>
-						</tr>
-					</thead>
-					<tbody id="table_produk"></tbody>
-				</table>
+				<div id="table_header" class=""></div>
+				<hr>
+				<div id="table_produk" class=""></div>
+				<hr>
+				<div id="table_transaksi" class=""></div>
+
+				<?php if ($sess->admin->a_jabatan_nama == 'Direktur') : ?>
+					<div class="row">
+						<div class="col-xs-12 btn-group-vertical">
+							<a id="" href="#" class="btn btn-warning btn-left asetorkan text-white"><i class="fa fa-money"></i> Setorkan</a>
+						</div>
+					</div>
+				<?php endif ?>
 				<!-- END Modal Body -->
 			</div>
 		</div>
