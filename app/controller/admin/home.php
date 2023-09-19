@@ -39,6 +39,8 @@ class Home extends JI_Controller
 			die();
 		}
 
+		$data['is_from_login'] = $this->input->request('first', 0);
+
 		$data['count_produk'] = $this->bpm->countAll();
 		$data['count_kustomer'] = $this->bum->countAll();
 		$data['count_booking'] = 0;
@@ -46,18 +48,21 @@ class Home extends JI_Controller
 		$data['count_order_done'] = 0;
 
 		$orders = $this->com->getAllOrders();
-		foreach ($orders as $o) {
-			$diskon = $this->diskon_by_posisi[strtolower($o->metode)][$o->posisi] ?? 0;
-			$nominal_diskon = $diskon ? $o->harga - ($o->harga * $diskon / 100) : $o->harga;
-			$o->total = (int) $o->total;
-			if ($o->status == 'booking') {
-				$data['count_booking']++;
-			} else if ($o->total >= $nominal_diskon) {
-				$data['count_order_done']++;
-			} else {
-				$data['count_progress']++;
+		if (isset($orders[0]->metode)) {
+			foreach ($orders as $o) {
+				$diskon = $this->diskon_by_posisi[strtolower($o->metode)][$o->posisi] ?? 0;
+				$nominal_diskon = $diskon ? $o->harga - ($o->harga * $diskon / 100) : $o->harga;
+				$o->total = (int) $o->total;
+				if ($o->status == 'booking') {
+					$data['count_booking']++;
+				} else if ($o->total >= $nominal_diskon) {
+					$data['count_order_done']++;
+				} else {
+					$data['count_progress']++;
+				}
 			}
 		}
+
 		$bulan = [];
 		$omset = [];
 		$jumlah = [];

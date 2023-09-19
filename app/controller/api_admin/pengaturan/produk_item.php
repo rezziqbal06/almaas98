@@ -462,11 +462,11 @@ class Produk_Item extends JI_Controller
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
 		$ordered = $this->copm->getAllGroupByUser();
 		$produk_item = $this->bpim->getAll();
-		if (count($ordered)) {
-			foreach ($produk_item as $k => $v) {
-				$v->status = "tersedia";
-				$v->b_user_id = null;
-				if (isset($v->harga)) $v->harga = number_format($v->harga, 0, ',', '.');
+		foreach ($produk_item as $k => $v) {
+			$v->status = "tersedia";
+			$v->b_user_id = null;
+			if (isset($v->harga)) $v->harga = number_format($v->harga, 0, ',', '.');
+			if (count($ordered)) {
 				foreach ($ordered as $o) {
 					if ($o->b_produk_id == $v->id) {
 						$v->status = $o->status;

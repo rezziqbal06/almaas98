@@ -54,6 +54,18 @@
     },
     {
       "src": "{{cdn_url}}skin/admin/js/jquery.debounce-1.0.5.js"
+    },
+    {
+      "type": "module",
+      "src": "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"
+    },
+    {
+      "type": "module",
+      "src": "https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging.js"
+    },
+    {
+      "type": "module",
+      "src": "{{cdn_url}}skin/admin/js/init-firebase.js"
     }
     
   ]

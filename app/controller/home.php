@@ -45,6 +45,7 @@ class Home extends JI_Controller
 		// 	redir(base_url('login'), 0);
 		// 	die();
 		// }
+		$data['is_from_login'] = $this->input->request('first', 0);
 		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
 		$this->setOGImage(base_url("media/logo.png"));
 		$bpm_popular = $this->bpm->getPopular();
@@ -68,11 +69,6 @@ class Home extends JI_Controller
 		$data['akm'] = $akm;
 		unset($akm);
 
-		$abm = $this->abm->getAll();
-		if (isset($abm[0]->id)) $data['abm'] = $abm;
-
-		$data['abm'] = $abm;
-		unset($abm);
 
 		$abm = $this->abm->getAll();
 		if (isset($abm[0]->id)) $data['abm'] = $abm;

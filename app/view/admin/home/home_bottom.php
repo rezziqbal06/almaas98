@@ -1,3 +1,10 @@
+
+
+<?php if($is_from_login) : ?>
+    $(document).ready(function(){
+    })
+<?php endif ?>
+
 var drTable = {};
 var ieid = '';
 function initLineChart(context, type_chart, label_title, labels, data, color, backgroundColor){
@@ -78,6 +85,7 @@ function initLineChart(context, type_chart, label_title, labels, data, color, ba
     },
     });
 }
+<?php if (in_array($sess->admin->a_jabatan_nama, ['Direktur', 'Admin'])) : ?>
 
 var ctx1 = document.getElementById("line-chart-gradient-omset").getContext("2d");
 var ctx2 = document.getElementById("line-chart-gradient-jumlah").getContext("2d");
@@ -97,7 +105,7 @@ gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
 initLineChart(ctx1, "line", "Omset", <?=$chart->bulan?>, <?=$chart->omset?>, "#5e72e4", gradientStroke1)
 initLineChart(ctx2, "bar", "Survei", <?=$chart->bulan?>, <?=$chart->jumlah?>, "#3A416F", "#3A416F")
 
-
+<?php endif ?>
 App.datatables();
 
 if(jQuery('#drTable').length>0){

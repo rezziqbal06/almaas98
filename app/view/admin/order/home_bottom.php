@@ -79,9 +79,14 @@ if(jQuery('#drTable').length>0){
 											<td>${detail?.tgl_pesan}</td>
 										</tr>
 										<tr>
+											<td class="text-grey">Kunjungan Ke</td>
+											<td>${detail?.kunjungan_ke}</td>
+										</tr>
+										<tr>
 											<td class="text-grey">Status</td>
 											<td>${detail?.status}</td>
 										</tr>
+										
 									</table>
 								`;
 								$("#table_header").html(s);

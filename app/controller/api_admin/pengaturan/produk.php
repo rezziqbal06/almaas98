@@ -140,15 +140,17 @@ class Produk extends JI_Controller
 					$dig[] = $go;
 				}
 			}
-			$res_gambar = $this->bpgm->setMass($dig);
-			if ($res_gambar) {
-				$this->status = 200;
-				$this->message = API_ADMIN_ERROR_CODES[$this->status];
-			} else {
-				$this->status = 110;
-				$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			if (count($dig) > 0) {
+				$res_gambar = $this->bpgm->setMass($dig);
+				if ($res_gambar) {
+					$this->status = 200;
+					$this->message = API_ADMIN_ERROR_CODES[$this->status];
+				} else {
+					$this->status = 110;
+					$this->message = API_ADMIN_ERROR_CODES[$this->status];
 
-				$res_hapus = $this->bpm->del($res);
+					$res_hapus = $this->bpm->del($res);
+				}
 			}
 
 			//Upload Harga

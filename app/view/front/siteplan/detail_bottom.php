@@ -91,7 +91,7 @@ function getDetail(data, type = 'click'){
     var datas = data.split('|');
     if(datas){
       var id = '';
-      var Tipe = '';
+      var tipe = '';
       var blok = '';
       var nomor = '';
       var lt = '';
@@ -112,10 +112,12 @@ function getDetail(data, type = 'click'){
             posisi = v.replaceAll('PS-','');
         }else if(v.includes('ID-')){
             id = v.replaceAll('ID-','');
+        }else if(v.includes('TP-')){
+            tipe = v.replaceAll('TP-','');
         }
       })
 
-      detail = `Blok ${blok} No ${nomor} Type ${lt}/${lb} ${posisi}`
+      detail = `Blok ${blok} No ${nomor} Type ${tipe} ${posisi}`
       $("#detail_rumah").text(detail)
       if(type == 'click'){
         $.get('<?=base_url("api_admin/pengaturan/produk_item/detail/")?>'+id).done(function(dt){
@@ -124,7 +126,7 @@ function getDetail(data, type = 'click'){
                 var gambar = '<?=base_url()?>'+dt.data.tipe_rumah.gambar;
                 $("#panel_gambar").attr('href', gambar);
                 $("#gambar").attr('src', gambar);
-                $("#type").text(`Type ${dt.data.tipe_rumah.luas_tanah}/${dt.data.tipe_rumah.luas_bangunan}`);
+                $("#type").text(`Type ${dt.data.tipe_rumah.tipe}`);
                 $("#kawasan").html(`<i class="fa fa-map-marker mb-2 me-1"></i> ${dt.data.kategori.nama}`);
                 $("#listrik").html(`<i class="fa fa-bolt me-1"></i> ${dt.data.tipe_rumah.listrik}`);
                 $("#toilet").html(`<i class="fa fa-bath me-1"></i> ${dt.data.tipe_rumah.toilet}`);

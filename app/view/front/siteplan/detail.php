@@ -178,7 +178,7 @@
                                         <option value="">Semua Tipe</option>
                                         <?php if (isset($bpm[0]->id)) : ?>
                                             <?php foreach ($bpm as $k => $v) : ?>
-                                                <option value="LT-<?= $v->luas_tanah ?? 0 ?>|LB-<?= $v->luas_bangunan ?? 0 ?>">Type <?= $v->luas_tanah ?? 0 ?>/<?= $v->luas_bangunan ?? 0 ?></option>
+                                                <option value="TP-<?= $v->tipe ?? 0 ?>">Type <?= $v->tipe ?? 0 ?></option>
                                             <?php endforeach ?>
                                         <?php endif ?>
                                     </select>

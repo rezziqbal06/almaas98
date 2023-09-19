@@ -113,7 +113,7 @@
                                 <select id="irumah" type="file" class="form-control select2">
                                     <?php if (isset($bpim[0]->id)) : ?>
                                         <?php foreach ($bpim as $k => $v) : ?>
-                                            <option value="ID-<?= $v->id ?? 0 ?>|TP-<?= $v->tipe ?? 0 ?>|LT-<?= $v->luas_tanah ?? 0 ?>|LB-<?= $v->luas_bangunan ?? 0 ?>|L-<?= $v->lantai ?? 0 ?>|K-<?= $v->kamar_tidur ?? 0 ?>|T-<?= $v->toilet ?? 0 ?>|G-<?= $v->garasi ?? 0 ?>|B-<?= $v->blok ?? 0 ?>|N-<?= $v->nomor ?? 0 ?>|PS-<?= $v->posisi ?>" data-id="<?= $v->id ?>">Blok <?= $v->blok ?><?= $v->nomor ?> Type <?= $v->luas_tanah ?? 0 ?>/<?= $v->luas_bangunan ?? 0 ?></option>
+                                            <option value="ID-<?= $v->id ?? 0 ?>|TP-<?= $v->tipe ?? 0 ?>|LT-<?= $v->luas_tanah ?? 0 ?>|LB-<?= $v->luas_bangunan ?? 0 ?>|L-<?= $v->lantai ?? 0 ?>|K-<?= $v->kamar_tidur ?? 0 ?>|T-<?= $v->toilet ?? 0 ?>|G-<?= $v->garasi ?? 0 ?>|B-<?= $v->blok ?? 0 ?>|N-<?= $v->nomor ?? 0 ?>|PS-<?= $v->posisi ?>" data-id="<?= $v->id ?>">Blok <?= $v->blok ?><?= $v->nomor ?> Type <?= $v->tipe ?? 0 ?></option>
                                         <?php endforeach ?>
                                     <?php endif ?>
                                 </select>

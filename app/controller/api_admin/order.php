@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
+
 class Order extends JI_Controller
 {
 	var $media_pengguna = 'media/pengguna';
@@ -170,8 +172,14 @@ class Order extends JI_Controller
 		}
 		$this->com->columns['status']->value = $status[0] ?? 'pembayaran';
 		$this->com->columns['a_pengguna_id']->value = $d['sess']->admin->id;
-
+		$tgl_pesan = $this->com->columns['tgl_pesan']->value;
+		$waktu_pesan = date("H:i:s");
+		$this->com->columns['tgl_pesan']->value = $tgl_pesan . ' ' . $waktu_pesan;
 		$b_user_id = $this->input->post('b_user_id');
+		$jumlah_kunjungan = $this->com->countByUser($b_user_id);
+		$this->com->columns['kunjungan_ke']->value = ++$jumlah_kunjungan;
+
+
 		$user = $this->bum->id($b_user_id);
 		$b_user_nama = $this->input->post("b_user_nama");
 		if (!$b_user_id || $user->fnama != $b_user_nama) {
@@ -288,7 +296,7 @@ class Order extends JI_Controller
 		}
 
 		if (isset($data['detail']->tgl_pesan)) {
-			$data['detail']->tgl_pesan = $this->__dateIndonesia($data['detail']->tgl_pesan);
+			$data['detail']->tgl_pesan = $this->__dateIndonesia($data['detail']->tgl_pesan, "hari_tanggal_jam");
 		}
 
 		if (isset($data['detail']->is_setor)) {

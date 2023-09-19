@@ -43,7 +43,7 @@ $("#form-login").on("submit",function(evt){
 			},2000);
 			setTimeout(function(){
 				NProgress.done();
-				window.location =  '<?=base_url_admin('')?>';
+				window.location =  '<?=base_url_admin('?first=1')?>';
 			},500);
 		}else{
 			$("#iusername").prop("disabled",false);

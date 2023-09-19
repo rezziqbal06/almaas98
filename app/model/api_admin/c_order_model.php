@@ -78,4 +78,17 @@ class C_Order_Model extends \Model\C_Order_Concern
   {
     return $this->db->insert_multi($this->tbl, $dis);
   }
+
+  public function countByUser($b_user_id = '', $is_deleted = 0)
+  {
+    $this->db->select_as("COUNT($this->tbl_as.id)", "jumlah", 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc($is_deleted));
+    $d = $this->db->get_first("object", 0);
+    if (isset($d->jumlah)) {
+      return $d->jumlah;
+    }
+    return 0;
+  }
 }

@@ -2,6 +2,10 @@ NProgress.start();
 
 setTimeout(function(){
 	NProgress.done();
+	
+	<?php if($is_from_login) : ?>
+	
+	<?php endif ?>
 },500)
 
 $(document).off('click', '.btn-kategori');
