@@ -53,6 +53,10 @@ if(jQuery('#drTable').length>0){
 								$.each(dt.data, function(k,v){
 									if(k == 'gambar'){
 										$('#img-iegambar').attr('src', '<?=base_url()?>'+v);
+									}else if(k == 'a_pengguna_id'){
+										$("#ie"+k).val(v).select2({dropdownParent: $("#modal_edit")});
+									}else if(k == 'tipe'){
+										$("[name='"+k+"'][value='"+v+"']").prop('checked', true)
 									}else{
 										$("#ie"+k).val(v);
 									}
@@ -291,4 +295,10 @@ $(document).on('change', 'input[type="file"]', function(e){
 	readURLImage(this, 'img-'+id);
 });
 
-$(".select2").select2();
+$(".select2-tambah").select2({
+	dropdownParent: $("#modal_tambah")
+});
+
+$(".select2-edit").select2({
+	dropdownParent: $("#modal_edit")
+});

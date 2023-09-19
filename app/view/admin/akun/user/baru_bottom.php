@@ -59,7 +59,7 @@ $("#inegara").on("change",function(e){
 $("#iprovinsi").select2({
 	ajax: {
 		method: 'post',
-		url: '<?=$this->config->semevar->api_address."/provinsi/get/"?>',
+		url: '<?=$this->config->semevar->api_address."provinsi/get/"?>',
 		dataType: 'json',
     delay: 250,
 		data: function (params) {
@@ -86,7 +86,7 @@ $("#iprovinsi").select2({
 $("#ikabkota").select2({
 	ajax: {
 		method: 'post',
-		url: '<?=$this->config->semevar->api_address."/kabkota/get/"?>',
+		url: '<?=$this->config->semevar->api_address."kabkota/get/"?>',
 		dataType: 'json',
     delay: 250,
 		data: function (params) {
@@ -113,7 +113,7 @@ $("#ikabkota").select2({
 $("#ikecamatan").select2({
 	ajax: {
 		method: 'post',
-		url: '<?=$this->config->semevar->api_address."/kecamatan/get/"?>',
+		url: '<?=$this->config->semevar->api_address."kecamatan/get/"?>',
 		dataType: 'json',
     delay: 250,
 		data: function (params) {
@@ -141,7 +141,7 @@ $("#ikecamatan").select2({
 $("#ikelurahan").select2({
 	ajax: {
 		method: 'post',
-		url: '<?=$this->config->semevar->api_address."/kelurahan/get/"?>',
+		url: '<?=$this->config->semevar->api_address."kelurahan/get/"?>',
 		dataType: 'json',
     delay: 250,
 		data: function (params) {

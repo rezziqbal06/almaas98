@@ -35,6 +35,7 @@ class A_Pengguna_Concern extends \JI_Model
         'pendidikan_terakhir',
         'tgl_kerja_mulai',
         'tgl_kerja_akhir',
+        'fcm_token',
         'is_active',
         'is_deleted'
     ];
@@ -52,6 +53,7 @@ class A_Pengguna_Concern extends \JI_Model
         '',
         '',
         '',
+        NULL,
         NULL,
         NULL,
         1,

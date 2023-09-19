@@ -54,7 +54,7 @@ class C_Jadwal_Model extends \Model\C_Jadwal_Concern
 
   public function data($page = 0, $pagesize = 10, $sortCol = "hari", $sortDir = "ASC", $keyword = '', $is_active = '')
   {
-    if ($sortCol == "hari") $sortCol = "day";
+    if ($sortCol == "cj.hari") $sortCol = "cj.day";
     $this->datatables[$this->point_of_view]->selections($this->db);
     $this->joins();
     $this->filters($keyword, $is_active)->scoped();

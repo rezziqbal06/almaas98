@@ -58,6 +58,20 @@ class Jadwal extends JI_Controller
 			if (isset($gd->is_active)) {
 				$gd->is_active = $this->cjm->label('is_active', $gd->is_active);
 			}
+
+			if (isset($gd->tipe)) {
+				switch ($gd->tipe) {
+					case "libur":
+						$gd->tipe = '<span class="badge badge-sm bg-gradient-warning">' . $gd->tipe . '</span>';
+						break;
+					case "piket":
+						$gd->tipe = '<span class="badge badge-sm bg-gradient-success">' . $gd->tipe . '</span>';
+						break;
+					default:
+						$gd->tipe = '<span class="badge badge-sm bg-gradient-success">' . $gd->tipe . '</span>';
+						break;
+				}
+			}
 			if (isset($gd->gambar)) {
 				$gd->gambar = '<img src="' . base_url($gd->gambar) . '" class="img-fluid rounded" width="150"/>';
 			}
@@ -132,6 +146,7 @@ class Jadwal extends JI_Controller
 		$this->status = 200;
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
 		$data = $this->cjm->id($id);
+		if (!$data->a_kategori_id) $data->a_kategori_id = '';
 		if (!isset($data->id)) {
 			$data = new \stdClass();
 			$this->status = 441;
@@ -170,6 +185,7 @@ class Jadwal extends JI_Controller
 		$du['hari'] = $this->hari[$_POST['day']];
 		$du['stime'] = $_POST['stime'] ?? '08:00';
 		$du['etime'] = $_POST['etime'] ?? '20:00';
+		$du['tipe'] = $_POST['tipe'] ?? 'piket';
 		$du['is_active'] = $_POST['is_active'];
 
 		if (!$this->admin_login) {

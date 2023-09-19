@@ -44,13 +44,14 @@ class C_Jadwal_Model extends \Model\C_Jadwal_Concern
 		return $this->db->where_as("$this->tbl_as.is_deleted", 1, 'AND', '<>')->get('', 0);
 	}
 
-	public function getHariIni($day = 1)
+	public function getHariIni($day = 1, $tipe = "piket")
 	{
 		$this->db->select_as("$this->tbl_as.id", 'id', 0);
 		$this->db->select_as("$this->tbl2_as.nama", 'nama', 0);
 		$this->db->select_as("$this->tbl3_as.nama", 'kawasan', 0);
 		$this->joins();
 		if (strlen($day)) $this->db->where_as("$this->tbl_as.day", $day, "AND");
+		if (strlen($tipe)) $this->db->where_as("$this->tbl_as.tipe", $this->db->esc($tipe), "AND");
 		$this->db->where("$this->tbl_as.is_deleted", $this->db->esc('0'));
 		$this->db->order_by("$this->tbl3_as.nama", 'asc');
 		return $this->db->get("object", 0);

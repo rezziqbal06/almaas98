@@ -63,6 +63,26 @@
                     <?php endif ?>
                 </div>
             </div>
+            <div class="d-grid gap-2 col-12 mx-auto mt-3">
+                <a href="<?= base_url_admin() ?>order/baru" class="btn btn-success" type="button"><i class="ni ni-book-bookmark text-white me-3"></i> Tambah Survey</a>
+                <a href="<?= base_url_admin() ?>akun/user/baru" class="btn btn-warning" type="button"><i class="ni ni-single-02 text-white me-3"></i> Tambah Pelanggan</a>
+            </div>
+            <?php if (isset($libur_hari_ini[0]->id)) : ?>
+                <div class="card d-none">
+                    <div class="card-header">
+                        Libur Hari Ini
+                        <div class="icon icon-shape bg-warning shadow-info text-center float-end rounded-circle">
+                            <i class="ni ni-calendar-grid-58 text-lg opacity-10" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <?php $temp = ''; ?>
+                        <?php foreach ($libur_hari_ini as $k => $v) : ?>
+                            <h5 value="<?= $v->id ?>"><?= $v->nama ?></h5>
+                        <?php endforeach ?>
+                    </div>
+                </div>
+            <?php endif ?>
         </div>
         <div class="col-md-8">
             <div class="card">

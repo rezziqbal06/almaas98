@@ -92,6 +92,8 @@ class User extends JI_Controller
 			die();
 		}
 		$this->bum->columns['password']->value = md5('123456');
+		$this->bum->columns['a_pengguna_id']->value = $d['sess']->admin->id;
+		$this->bum->columns['cdate']->value = "NOW()";
 
 		$res = $this->bum->save();
 		if ($res) {

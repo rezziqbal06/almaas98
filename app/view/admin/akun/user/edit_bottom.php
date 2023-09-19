@@ -186,8 +186,12 @@ $("#iekelurahan").select2({
   foreach($bum as $k => $v){ ?>
     <?php if(isset($v) && strlen($v)){?>
     $("[name='<?=$k?>']").val('<?=$v?>');
-    <?php if($k == 'a_jabatan_id' || $k == 'a_unit_id' || $k == 'a_ruangan_id'){ ?>
+    <?php if($k == 'a_jabatan_id' || $k == 'a_unit_id' || $k == 'a_ruangan_id' || $k == 'sumber_iklan'){ ?>
       $("[name='<?=$k?>']").val('<?=$v?>').select2();
+    <?php } ?>
+    <?php if($k == 'provinsi' || $k == 'kabkota' || $k == 'kecamatan' || $k == 'kelurahan'){ ?>
+      var newOption = $("<option selected='selected'></option>").val('<?=$v?>').text('<?=$v?>')
+      $("[name='<?=$k?>']").append(newOption).trigger('change');
     <?php } ?>
     <?php } ?>
   <?php }

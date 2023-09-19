@@ -24,6 +24,7 @@ class B_User_Concern extends \JI_Model
     const COLUMNS = [
         'a_jabatan_id',
         'a_unit_id',
+        'a_pengguna_id',
         'google_id',
         'kode',
         'email',
@@ -62,6 +63,7 @@ class B_User_Concern extends \JI_Model
         'fcm_token',
         'device',
         'apikey',
+        'sumber_iklan',
         'is_active',
         'is_deleted',
         'b_user_id'
@@ -91,6 +93,7 @@ class B_User_Concern extends \JI_Model
         '',
         '',
         '',
+        '',
         null,
         null,
         null,
@@ -108,7 +111,8 @@ class B_User_Concern extends \JI_Model
         '',
         '',
         '',
-        '',
+        1,
+        0,
         null
     ];
     const REQUIREDS = [

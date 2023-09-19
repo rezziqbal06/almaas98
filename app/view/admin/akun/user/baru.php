@@ -62,10 +62,7 @@
                             </select>
                         </div>
                     <?php } ?>
-                    <div class="col-md-12">
-                        <label for="ipenilaian" class="control-label">Penilaian</label>
-                        <textarea type="text" name="penilaian" id="ipenilaian" class="form-control" placeholder="Penilaian"></textarea>
-                    </div>
+
                 </div>
 
                 <!-- <div class="form-group row">
@@ -74,7 +71,7 @@
                         <select id="ialamat_select" class="form-control select2"></select>
                     </div>
                 </div> -->
-                <!-- <div class="form-group row">
+                <div class="form-group row">
                     <div class="col-md-4">
                         <label for="iprovinsi">Provinsi</label>
                         <select id="iprovinsi" class="form-control" name="provinsi"></select>
@@ -108,7 +105,7 @@
                 </div>
                 <div class="form-group row">
 
-                </div> -->
+                </div>
                 <div class="form-group row">
                     <div class="col-md-4">
                         <label for="iitelp" class="control-label">Telepon</label>
@@ -121,6 +118,22 @@
                     <div class="col-md-4">
                         <label for="iusername" class="control-label">Username</label>
                         <input id="iusername" type="username" class="form-control" name="username" placeholder="Username" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="isumber_iklan">Sumber Iklan</label>
+                        <select id="isumber_iklan" class="form-control" name="sumber_iklan">
+                            <option value="Teman">Teman</option>
+                            <option value="Saudara">Saudara</option>
+                            <option value="Website Resmi Almaas">Website Resmi Almaas</option>
+                            <option value="Website Rumah.com">Website Rumah.com</option>
+                            <option value="Website Rumah123.com">Website Rumah123.com</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Whatsapp">Whatsapp</option>
+                            <option value="Tiktok">Tiktok</option>
+                            <option value="Youtube">Youtube</option>
+                            <option value="Twitter">Twitter</option>
+                        </select>
                     </div>
                     <!-- <div class="col-md-4">
                         <label for="ipassword" class="control-label">Password</label>

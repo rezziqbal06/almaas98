@@ -119,8 +119,11 @@ class Home extends JI_Controller
 		$data['orders'] = $orders;
 
 		$day = date("N");
-		$jadwal_hari_ini = $this->cjm->getHariIni($day);
-		$data['jadwal_hari_ini'] = $jadwal_hari_ini;
+		$jadwal_hari_ini = $this->cjm->getHariIni($day, 'piket');
+		$data['jadwal_hari_ini'] = $jadwal_hari_ini ?? [];
+
+		$libur_hari_ini = $this->cjm->getHariIni($day, 'libur');
+		$data['libur_hari_ini'] = $libur_hari_ini ?? [];
 		$this->setTitle('Dashboard ' . $this->config->semevar->site_suffix);
 
 		$this->putJsFooter($this->cdn_url('skin/admin/') . 'js/pages/index');

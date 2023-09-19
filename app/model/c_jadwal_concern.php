@@ -29,6 +29,7 @@ class C_Jadwal_Concern extends \JI_Model
         'date',
         'stime',
         'etime',
+        'tipe',
         'is_active',
         'is_deleted',
         'cdate',
@@ -41,13 +42,14 @@ class C_Jadwal_Concern extends \JI_Model
         null,
         '08:00',
         '20:00',
+        'piket',
         1,
         0,
         'NOW()',
     ];
     const REQUIREDS = [
         'a_pengguna_id',
-        'a_kategori_id'
+        'day'
     ];
     const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
@@ -78,6 +80,7 @@ class C_Jadwal_Concern extends \JI_Model
         $this->datatables['admin'] = new \Seme_Datatable([
             ["$this->tbl_as.id", 'id', 'ID'],
             ["$this->tbl2_as.nama", 'nama', 'Nama'],
+            ["$this->tbl_as.tipe", 'tipe', 'Tipe'],
             ["$this->tbl_as.hari", 'hari', 'Hari'],
             ["$this->tbl3_as.nama", 'kawasan', 'Kawasan'],
             ["$this->tbl_as.is_active", 'is_active', 'Status']

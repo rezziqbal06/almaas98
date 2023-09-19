@@ -49,9 +49,9 @@
 					<div class="row">
 						<div class="form-group">
 							<div class="row">
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label for="ia_pengguna_id" class="control-label">Nama</label>
-									<select id="ia_pengguna_id" type="text" name="a_pengguna_id" class="form-control " required>
+									<select id="ia_pengguna_id" type="text" name="a_pengguna_id" class="form-control select2-tambah" required>
 										<?php if (isset($apm[0]->id)) : ?>
 											<?php foreach ($apm as $k => $v) : ?>
 												<option value="<?= $v->id ?>"><?= $v->nama ?></option>
@@ -59,9 +59,10 @@
 										<?php endif ?>
 									</select>
 								</div>
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label for="ia_kategori_id" class="control-label">Kawasan</label>
-									<select id="ia_kategori_id" type="text" name="a_kategori_id" class="form-control " required>
+									<select id="ia_kategori_id" type="text" name="a_kategori_id" class="form-control ">
+										<option value="">-- pilih kawasan --</option>
 										<?php if (isset($akm[0]->id)) : ?>
 											<?php foreach ($akm as $k => $v) : ?>
 												<option value="<?= $v->id ?>"><?= $v->nama ?></option>
@@ -69,7 +70,7 @@
 										<?php endif ?>
 									</select>
 								</div>
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label for="iday">Hari</label>
 									<select id="iday" class="form-control " name="day" style="width: 100%" required>
 										<option value="1">Setiap Senin</option>
@@ -80,6 +81,18 @@
 										<option value="6">Setiap Sabtu</option>
 										<option value="7">Setiap Minggu</option>
 									</select>
+								</div>
+								<div class="col-md-6 mb-2">
+									<label for="itipe">Tipe</label>
+									<br>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="tipe" id="itipe1" checked value="piket">
+										<label class="form-check-label" for="itipe1">piket</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="tipe" id="itipe2" value="libur">
+										<label class="form-check-label" for="itipe2">libur</label>
+									</div>
 								</div>
 								<div class="col-md-2 mb-2">
 									<label for="iis_active" class="control-label">Status</label>
@@ -123,9 +136,9 @@
 						<div class="form-group">
 							<input type="hidden" name="id" id="ieid">
 							<div class="row">
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label for="iea_pengguna_id" class="control-label">Nama</label>
-									<select id="iea_pengguna_id" type="text" name="a_pengguna_id" class="form-control " required>
+									<select id="iea_pengguna_id" type="text" name="a_pengguna_id" class="form-control select2-edit" required>
 										<?php if (isset($apm[0]->id)) : ?>
 											<?php foreach ($apm as $k => $v) : ?>
 												<option value="<?= $v->id ?>"><?= $v->nama ?></option>
@@ -133,9 +146,10 @@
 										<?php endif ?>
 									</select>
 								</div>
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label for="iea_kategori_id" class="control-label">Kawasan</label>
-									<select id="iea_kategori_id" type="text" name="a_kategori_id" class="form-control " required>
+									<select id="iea_kategori_id" type="text" name="a_kategori_id" class="form-control ">
+										<option value="">-- pilih kawasan --</option>
 										<?php if (isset($akm[0]->id)) : ?>
 											<?php foreach ($akm as $k => $v) : ?>
 												<option value="<?= $v->id ?>"><?= $v->nama ?></option>
@@ -143,7 +157,7 @@
 										<?php endif ?>
 									</select>
 								</div>
-								<div class="col-md-12 mb-2">
+								<div class="col-md-6 mb-2">
 									<label for="ieday">Hari</label>
 									<select id="ieday" class="form-control " name="day" style="width: 100%" required>
 										<option value="1">Setiap Senin</option>
@@ -154,6 +168,18 @@
 										<option value="6">Setiap Sabtu</option>
 										<option value="7">Setiap Minggu</option>
 									</select>
+								</div>
+								<div class="col-md-6 mb-2">
+									<label for="ietipe">Tipe</label>
+									<br>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="tipe" id="ietipe1" checked value="piket">
+										<label class="form-check-label" for="ietipe1">piket</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="tipe" id="ietipe2" value="libur">
+										<label class="form-check-label" for="ietipe2">libur</label>
+									</div>
 								</div>
 								<div class="col-md-2 mb-2">
 									<label for="ieis_active" class="control-label">Status</label>
