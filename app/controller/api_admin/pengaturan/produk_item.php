@@ -141,13 +141,13 @@ class Produk_Item extends JI_Controller
 	{
 		$d = $this->__init();
 		$data = array();
-		if (!$this->admin_login) {
-			$this->status = 400;
-			$this->message = API_ADMIN_ERROR_CODES[$this->status];
-			header("HTTP/1.0 400 Harus login");
-			$this->__json_out($data);
-			die();
-		}
+		// if (!$this->admin_login) {
+		// 	$this->status = 400;
+		// 	$this->message = API_ADMIN_ERROR_CODES[$this->status];
+		// 	header("HTTP/1.0 400 Harus login");
+		// 	$this->__json_out($data);
+		// 	die();
+		// }
 		$id = (int) $id;
 
 		$this->status = 200;
@@ -443,13 +443,13 @@ class Produk_Item extends JI_Controller
 	{
 		$d = $this->__init();
 		$data = array();
-		if (!$this->admin_login) {
-			$this->status = 400;
-			$this->message = API_ADMIN_ERROR_CODES[$this->status];
-			header("HTTP/1.0 400 Harus login");
-			$this->__json_out($data);
-			die();
-		}
+		// if (!$this->admin_login) {
+		// 	$this->status = 400;
+		// 	$this->message = API_ADMIN_ERROR_CODES[$this->status];
+		// 	header("HTTP/1.0 400 Harus login");
+		// 	$this->__json_out($data);
+		// 	die();
+		// }
 		$b_user_id = $this->input->request('b_user_id');
 		if (!isset($b_user_id)) {
 			$this->status = 441;

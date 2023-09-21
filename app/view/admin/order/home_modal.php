@@ -16,6 +16,7 @@
 					<div class="col-xs-12 btn-group-vertical">
 						<a id="adetail" href="#" class="btn btn-info btn-left"><i class="fa fa-info"></i> Detail</a>
 						<a id="aedit" href="#" class="btn btn-primary btn-left"><i class="fa fa-pencil"></i> Edit</a>
+						<a id="bkwitansi" href="#" class="btn btn-success btn-left"><i class="fa fa-print"></i> Cetak Kwitansi</a>
 						<?php if ($sess->admin->a_jabatan_nama == 'Direktur') : ?>
 							<a id="" href="#" class="btn btn-warning btn-left asetorkan text-white"><i class="fa fa-money"></i> Setorkan</a>
 						<?php endif ?>
@@ -62,6 +63,22 @@
 					</div>
 				<?php endif ?>
 				<!-- END Modal Body -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modal kwitansi -->
+<div id="modal_kwitansi" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+
+			<!-- Modal Body -->
+			<div class="modal-body">
+				<div class="row">
+
+				</div>
+
 			</div>
 		</div>
 	</div>

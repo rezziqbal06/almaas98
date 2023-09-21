@@ -50,124 +50,6 @@ class Login extends \JI_Controller
 		$this->loadLayout('col-1', $data);
 		$this->render();
 	}
-	public function proses()
-	{
-		$data = $this->__init();
-		$data['reff'] = '';
-		if (isset($_SERVER['HTTP_REFERER'])) {
-			$allowed_host = ($_SERVER['HTTP_HOST']);
-			$host = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
-			if (substr($host, 0 - strlen($allowed_host)) == $allowed_host) {
-				$data['reff'] = str_replace("/logout", " ", $_SERVER['HTTP_REFERER']);
-			}
-		}
-		$username = $this->input->post("username");
-		$password = $this->input->post("password");
-		if (strlen($username) > 3 && strlen($password) > 3) {
-			$res = $this->bum->auth($username, $password);
-			if (isset($res->id)) {
-				if (empty($res->is_active)) {
-					$data['pesan_info'] = 'Akun anda telah dinonaktifkan';
-
-					$this->setTitle('Login ' . $this->config->semevar->site_title);
-					$this->setDescription('Silakan login untuk masuk ke dashboard ' . $this->config->semevar->nama);
-
-					$this->putJsFooter($this->cdn_url('skin/admin/') . 'js/pages/login');
-					$this->putThemeContent("login/home", $data);
-					$this->putJsContent('login/home_bottom', $data);
-					$this->loadLayout('login', $data);
-					$this->render();
-					return;
-				}
-
-				//check password
-				$pv1 = 1;
-				$pv2 = 1;
-				if (md5($password) != $res->password) {
-					$pv1 = 0;
-				}
-				if (!password_verify($password, $res->password)) {
-					$pv2 = 0;
-				}
-				if (empty($pv1) && empty($pv2)) {
-					$data['pesan_info'] = 'Kombinasi username atau password tidak cocok';
-					$this->setTitle('Login ' . $this->config->semevar->site_title);
-					$this->setDescription('Silakan login untuk masuk ke dashboard ' . $this->config->semevar->nama);
-
-					$this->putJsFooter($this->cdn_url('skin/admin/') . 'js/pages/login');
-					$this->putThemeContent("login/home", $data);
-					$this->putJsContent('login/home_bottom', $data);
-					$this->loadLayout('login', $data);
-					$this->render();
-					return;
-				}
-
-				//upgrade password encryption
-				if (!empty($pv1) && empty($pv2)) {
-					$this->bum->update($res->id, array("password" => $this->__passGen($password)));
-				}
-
-				$sess = $data['sess'];
-				if (!is_object($sess)) $sess = new stdClass();
-				if (!isset($sess->user)) $sess->user = new stdClass();
-				$sess->user = $res;
-				$sess->user->utype = 'Member';
-
-
-				$sess->user->menus = new stdClass();
-				$sess->user->menus->left = array();
-				$sess->user->modules = array();
-
-				//get modules
-				$modules = $this->amod->getAllParent('front');
-				foreach ($modules as &$module) {
-					$childs = $this->amod->getChild($module->identifier, 'front');
-					$mos = array();
-					if (count($childs) > 0) {
-						$sess->user->modules[] = $module;
-						foreach ($sess->user->modules as $m) {
-							foreach ($childs as $cs) {
-								$sess->user->modules[] = $module;
-							}
-						}
-					}
-					$module->childs = $mos;
-				}
-				unset($module);
-
-				//set module to session
-				$allowed_all = 1;
-				foreach ($modules as $mo) {
-					$sess->user->menus->left[$mo->identifier] = $mo;
-				}
-				unset($mo);
-
-				$this->setKey($sess);
-
-				$reff = $this->input->request('reff');
-				if (strlen($reff) > 10) {
-					redir($reff);
-				} else {
-					redir(base_url());
-				}
-				return;
-			} else {
-				$data['pesan_info'] = 'Username atau password salah';
-			}
-		} else {
-
-			$data['pesan_info'] = 'Username atau password salah';
-		}
-
-		$this->setTitle('Login ' . $this->config->semevar->site_title);
-		$this->setDescription('Silakan login untuk masuk ke dashboard ' . $this->config->semevar->nama);
-
-		$this->putJsFooter($this->cdn_url('skin/admin/') . 'js/pages/login');
-		$this->putThemeContent("login/home", $data);
-		$this->putJsContent('login/home_bottom', $data);
-		$this->loadLayout('login', $data);
-		$this->render();
-	}
 	public function auth()
 	{
 		$dt = new stdClass();
@@ -203,7 +85,6 @@ class Login extends \JI_Controller
 					$this->__json_out($dt);
 					return;
 				}
-
 				//upgrade password  encryption
 				if (!empty($pv1) && empty($pv2)) {
 					$this->bum->update($res->id, array("password" => $this->__passGen($password)));
@@ -254,6 +135,8 @@ class Login extends \JI_Controller
 				if (strlen($reff)) {
 					$data['redirect_url'] = $reff;
 				}
+			} else {
+				$this->message = "Akun tidak ditemukan";
 			}
 		}
 		$this->__json_out($data);

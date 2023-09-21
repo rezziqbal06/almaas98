@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
+
 class Home extends JI_Controller
 {
 
@@ -45,6 +47,12 @@ class Home extends JI_Controller
 		// 	redir(base_url('login'), 0);
 		// 	die();
 		// }
+		if (isset($_SESSION['id_for_booking'])) {
+			$id = $_SESSION['id_for_booking'];
+			unset($_SESSION['id_for_booking']);
+			redir(base_url('booking/' . $id));
+			die();
+		}
 		$data['is_from_login'] = $this->input->request('first', 0);
 		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
 		$this->setOGImage(base_url("media/logo.png"));

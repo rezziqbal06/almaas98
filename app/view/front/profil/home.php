@@ -44,7 +44,7 @@
 	</div>
 	<?php //dd($ue); 
 	?>
-	<div class="bg-white row rounded p-3 m-3 mb-5">
+	<div class="bg-white row rounded p-3 mt-3 mb-3 me-3 ms-3">
 		<div class="col-12">
 			<h3 class="text-secondary m-0"><?= $ue->fnama ?? '' ?></h3>
 			<p class="m-0 text-grey"><small><?= $ue->nik ?? '' ?> </small></p>
@@ -57,11 +57,11 @@
 			</div>
 			<div>
 				<small class="text-grey">Berjalan</small>
-				<h4><?= $count_berjalan ?? 0 ?></h4>
+				<h4><?= $count_progress ?? 0 ?></h4>
 			</div>
 			<div>
 				<small class="text-grey">Lunas</small>
-				<h4><?= $count_lunas ?? 0 ?></h4>
+				<h4><?= $count_order_done ?? 0 ?></h4>
 			</div>
 		</div>
 		<p class="mt-2 text-grey text-end"><small><?= $ue->email ?? '' ?></small></p>
@@ -70,3 +70,26 @@
 			<div id="btn-logout"><span class="fa fa-door-open"></span></div>
 		</div>
 	</div>
+	<?php if (isset($com[0])) : ?>
+		<div class="bg-white rounded p-3 me-3 ms-3 mt-0 mb-5">
+			<h4>Histori Transaksi</h4>
+			<hr style="background-color:grey">
+			<br>
+			<?php foreach ($com as $k => $v) : ?>
+				<a href="#" class="history_transaksi" data-status="<?= $v->status_transaksi ?>" data-kode="<?= $v->kode ?? '' ?>">
+					<div class="row mb-2">
+						<div class="col-2 col-mb-1 mb-3">
+							<img src="<?= base_url($v->gambar_produk) ?>" alt="" class="img-fluid rounded">
+						</div>
+						<div class="col-10 col-mb-11 mb-3">
+							<small class="text-grey"><?= $v->kode ?? '' ?></small>
+							<p class="m-0">Blok <?= $v->blok ?? '' ?> <?= $v->nomor ?? '' ?> - <?= $v->posisi ?? '' ?> Type <?= $v->tipe ?? '' ?></p>
+							<small><?= $v->status ?></small>
+							<p class=" fs-6 mb-1 <?= $v->st_color ?>"><?= $v->status_transaksi ?></p>
+						</div>
+						<hr style="background-color:grey">
+					</div>
+				</a>
+			<?php endforeach ?>
+		</div>
+	<?php endif ?>

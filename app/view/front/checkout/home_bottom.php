@@ -1,0 +1,283 @@
+NProgress.start();
+
+setTimeout(function(){
+	NProgress.done();
+},500)
+
+$(document).off('click', '.btn-kategori');
+$(document).on('click', '.btn-kategori', function(e){
+	e.preventDefault();
+	var kategori_id = $(this).attr('data-id');
+	$(".btn-kategori").removeClass("text-bold text-primary");
+	$(this).addClass("text-bold text-primary");
+	$.get('<?=base_url("api_front/produk/?a_kategori_id=")?>'+kategori_id).done(function(dt){
+		if(dt.status == 200){
+			var s = ""
+			$.each(dt.data, function(k,v){
+			s += `	<div class="col-6 col-md-2 p-3 kartu-produk" data-kategori-id="${v.a_kategori_id}">
+					<a href="<?= base_url("produk/") ?>${v.slug}" class="btn-kategori" data-id="${v.id}" data-kategori-id="${v.a_kategori_id}" alt="${v.nama}">
+						<div class="kartu-gambar-produk">
+							<img src="<?= base_url("") ?>${v.gambar}" alt="${v.nama}" aria-describedby="${v.nama}" class="img-fluid">
+						</div>
+						<p class="text-center mt-3"><b>${v.nama}</b></p>
+					</a>
+				</div>`
+			})
+			$("#panel_produk").slideUp();
+			setTimeout(function(){
+				$("#panel_produk").html(s).slideDown();
+			},333)
+		}else{
+
+		}
+	})
+});
+
+$('#banner').slick({
+    autoplay: true,
+    autoplaySpeed: 2000,
+    fade: true,
+    cssEase: 'linear',
+	dots: true, // Enable dots (indicator bullets)
+	appendDots: '.carousel-indicators ul', // Append dots to the specified element
+    customPaging : function(slider, i) {
+      // Custom function to create the dot indicators
+      return '<button class="dot"></button>';
+    }
+  });
+
+  
+$('#kustomer').slick({
+    autoplay: true,
+    autoplaySpeed: 2000,
+    fade: false,
+    cssEase: 'linear',
+	slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+  });
+
+
+
+  $("#tambah").on('click', function(e){
+    e.preventDefault();
+    var qty = $("[name='qty']").val()
+    qty = parseInt(qty) + 1
+    $("[name='qty']").val(qty)
+  })
+
+  $("#kurang").on('click', function(e){
+    e.preventDefault();
+    var qty = $("[name='qty']").val()
+    qty = parseInt(qty) - 1
+    if(qty == 0){
+      return false
+    }
+    $("[name='qty']").val(qty)
+  })
+
+  
+$("#fhitung").on("submit",function(e){
+	e.preventDefault();
+  NProgress.start();
+	var fd = new FormData($(this)[0]);
+
+	var url = '<?= base_url("api_front/produk/hitung_harga/")?>';
+
+	$.ajax({
+		type: $(this).attr('method'),
+		url: url,
+		data: fd,
+		processData: false,
+		contentType: false,
+		success: function(respon){
+      NProgress.done();
+			if(respon.status==200){
+          if(respon.data){
+            $("#harga_peritem").text("Rp. "+respon.data.harga)
+            $("#harga_total").text("Rp. "+respon.data.total)
+            $("#pesan").prop('disabled', false)
+          }
+			}else{
+				gritter('<h4>Gagal</h4><p>'+respon.message+'</p>','warning');
+			}
+		},
+		error:function(){
+      NProgress.done();
+			setTimeout(function(){
+				gritter('<h4>Error</h4><p>Tidak dapat menambah data, silahkan coba beberapa saat lagi</p>','danger');
+			}, 666);
+			return false;
+		}
+	});
+});
+
+$(document).off('click', '.image-selected');
+$(document).on('click', '.image-selected', function(e){
+	e.preventDefault();
+	var count = $(this).attr('data-count');
+	$(".gambar-item").removeClass('selected');
+	$("#gambar-item-"+count).addClass('selected');
+  var src = $("#gambar-item-"+count).attr('src')
+  $(".display-gambar").attr('src',src)
+});
+
+function pesanProduk(){
+  var url = '<?=base_url("produk/").$produk->slug?>';
+  var specs = '';
+  var qty = $("[name='qty']").val();
+  $("[name='specs[]']").map(function(){
+    specs += `- ${$(this).val()}\n`
+  })
+  var harga_peritem = $("#harga_peritem").text()
+  var harga_total = $("#harga_total").text()
+
+  var nama = $("#inama").val();
+  var alamat = $("#ialamat").val();
+
+  var text = '';
+  text = `Pesan <?=$produk->nama?>, dengan spesifikasi:\n${specs}\nqty: ${qty} pcs\nharga: ${harga_peritem}\ntotal: ${harga_total}`;
+  text += `\n\nnama: ${nama}`
+  text += `\nalamat: ${alamat}`
+  console.log(text);
+  text = encodeURIComponent(text);
+  var waLink = 'https://wa.me/<?= $this->config->semevar->site_wa ?>'+"/?text="+text;
+  window.open(waLink);
+}
+
+$("#pesan").on('click', function(e){
+  e.preventDefault();
+  $("#modal_pesan").modal('show');
+})
+
+$("#fpesan").on('submit', function(e){
+  e.preventDefault();
+  pesanProduk()
+})
+
+$("#angsuran").mask("#.##0", {reverse: true});
+
+function setSimulasi(harga, tenor=36){
+    var angsuran = harga/tenor;
+    $("#angsuran").val(angsuran).trigger('input');
+    angsuran = $("#angsuran").val();
+    var s = '';
+    if(!tenor){
+      return false;
+    }
+    for(var i = 0;i < tenor; i++){
+      s += `<tr><td>${(i+1)}</td><td>Rp. ${angsuran}</td></tr>`
+    }
+    $("#panel_simulasi").html(s);
+}
+
+$("#simulasi").on('click', function(e){
+  e.preventDefault();
+  var harga = <?=$produk->harga_asli ?? 0?>;
+  setSimulasi(harga);
+  $("#modal_simulasi").modal('show');
+})
+
+$("#btn-simulasi").on('click', function(e){
+  e.preventDefault();
+  var harga = <?=$produk->harga_asli ?? 0?>;
+  var tenor = $("#tenor").val();
+  setSimulasi(harga,tenor);
+})
+
+
+$("#siteplan").on('click', function(e){
+  e.preventDefault();
+  var kategori_id = $(this).attr('data-id');
+  window.location = '<?=base_url('siteplan/')?>'+kategori_id
+})
+
+$(".select2").select2();
+
+$("#fbukti").on('submit', function(e){
+  e.preventDefault();
+  var c = confirm('Apakah anda yakin?')
+  if(!c){
+    return false;
+  }
+  NProgress.start();
+	var fd = new FormData($(this)[0]);
+	var gambar = getImageData('ibuktiprev');
+  if(gambar){
+		fd.append('gambar', gambar.blob, 'gambar.'+gambar.extension);
+	}
+	var url = '<?= base_url("api_front/order/upload_bukti/")?>';
+
+	$.ajax({
+		type: $(this).attr('method'),
+		url: url,
+		data: fd,
+		processData: false,
+		contentType: false,
+		success: function(respon){
+			if(respon.status==200){
+        console.log(respon);
+				setTimeout(function(){
+					window.location = '<?=base_url('checkout/berhasil/')?>';
+				},500);
+			}else{
+				gritter('<h4>Gagal</h4><p>'+respon.message+'</p>','warning');
+				$('.icon-submit').removeClass('fa-circle-o-notch fa-spin');
+				$('.btn-submit').prop('disabled',false);
+				NProgress.done();
+			}
+		},
+		error:function(){
+			setTimeout(function(){
+				gritter('<h4>Error</h4><p>Tidak dapat booking, silahkan coba beberapa saat lagi</p>','danger');
+			}, 666);
+
+			$('.icon-submit').removeClass('fa-circle-o-notch fa-spin');
+			$('.btn-submit').prop('disabled',false);
+			NProgress.done();
+			return false;
+		}
+	});
+});
+
+
+$("#upload_bukti").on('click', function(e){
+  e.preventDefault();
+  $("#fbukti").trigger('submit');
+})
+
+
+$(document).off('change', 'input[type="file"]');
+$(document).on('change', 'input[type="file"]', function(e){
+	e.preventDefault();
+	setCompressedImage(e)
+	var id = $(this).attr('id');
+	readURLImage(this, 'img-'+id);
+});

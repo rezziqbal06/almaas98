@@ -17,7 +17,7 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
   {
     parent::__construct();
     $this->db->from($this->tbl, $this->tbl_as);
-    $this->point_of_view = 'admin';
+    $this->point_of_view = 'front';
   }
 
   private function filters($c_order_id = "", $keyword = '', $is_active = '')

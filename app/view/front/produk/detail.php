@@ -24,7 +24,7 @@
 				<a href="<?= base_url($produk->gambar) ?>" target="_blank" class="d-none d-md-block"><img id="" class="display-gambar w-100" src="<?= base_url($produk->gambar) ?>" data-zoom-image="<?= base_url($produk->gambar) ?>" alt="<?= $produk->nama ?>" style="border-radius:0 0 32px 32px;"></a>
 			</div>
 			<div class="col-md-8">
-				<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->luas_tanah ?? '150' ?>/<?= $produk->luas_bangunan ?? '70' ?></b></p>
+				<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->tipe ?? '' ?></b></p>
 				<small class="text-grey"><i class="fa fa-map-marker mb-2 me-1"></i> <?= $produk->kawasan ?? '' ?></small>
 				<div class="d-flex justify-content-start flex-wrap text-grey">
 					<div class="me-3"><i class="fa fa-bolt me-1"></i> <small><?= $produk->listrik ?? 1300 ?> watt</small></div>
@@ -75,7 +75,7 @@
 			<button id="siteplan" data-id="<?= $produk->a_kategori_id ?>" class="btn btn-info bg-info"><b>LIHAT KETERSEDIAAN (SITEPLAN)</b></button>
 		</div>
 		<div class="col-md-6 d-grid">
-			<a href="<?= base_url("booking/$produk->slug") ?>" id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-secondary disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></a>
+			<a href="<?= base_url("booking/$produk->id") ?>" id="booking" data-id="<?= $produk->id ?>" class="btn  <?= isset($is_sold) && $is_sold ? 'btn-secondary disabled' : 'btn-accent' ?>"><b><?= isset($is_sold) && $is_sold ? 'TELAH TERJUAL' : 'BOOKING SEKARANG' ?></b></a>
 		</div>
 	</div>
 </section>

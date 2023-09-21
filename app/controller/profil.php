@@ -11,11 +11,15 @@ class Profil extends JI_Controller
 		$this->current_page = 'dashboard';
 		$this->load('a_kategori_concern');
 		$this->load('b_user_concern');
+		$this->load('c_order_concern');
+		$this->load('c_order_produk_concern');
 
 		// $this->load('front/a_pengguna_model', 'apm');
 		// $this->load('front/a_company_model', 'acm');
 		$this->load('front/a_kategori_model', 'ajm');
 		$this->load('front/b_user_model', 'bum');
+		$this->load('front/c_order_model', 'com');
+		$this->load('front/c_order_produk_model', 'copm');
 	}
 
 	public function index()
@@ -30,6 +34,44 @@ class Profil extends JI_Controller
 		$user_exist = $this->bum->getUserById($data['sess']->user->id);
 		if (isset($user_exist)) $data['ue'] = $user_exist;
 		unset($user_exist);
+
+		$com = $this->com->getByUser($data['sess']->user->id);
+		if (isset($com[0]->id)) {
+			foreach ($com as $k => $v) {
+				$v->status_transaksi = 'Menunggu Pembayaran';
+				$v->st_color = 'text-danger';
+				if (isset($v->is_setor) && $v->is_setor) {
+					$v->status_transaksi = 'Pembayaran Terkonfirmasi';
+					$v->st_color = 'text-success';
+				} else if (strlen($v->gambar) > 5) {
+					$v->status_transaksi = "Menunggu Konfirmasi Admin";
+					$v->st_color = 'text-info';
+				}
+			}
+		}
+
+		$data['com'] = $com;
+
+		$data['count_booking'] = 0;
+		$data['count_progress'] = 0;
+		$data['count_order_done'] = 0;
+
+		$orders = $this->com->getAllOrders($data['sess']->user->id);
+		if (isset($orders[0]->metode)) {
+			foreach ($orders as $o) {
+				$diskon = $this->diskon_by_posisi[strtolower($o->metode)][$o->posisi] ?? 0;
+				$nominal_diskon = $diskon ? $o->harga - ($o->harga * $diskon / 100) : $o->harga;
+				$o->total = (int) $o->total;
+				if ($o->status == 'booking') {
+					$data['count_booking']++;
+				} else if ($o->total >= $nominal_diskon) {
+					$data['count_order_done']++;
+				} else {
+					$data['count_progress']++;
+				}
+			}
+		}
+
 
 
 		$this->setTitle('Profil ' . $this->config->semevar->site_suffix);

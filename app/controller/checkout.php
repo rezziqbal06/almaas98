@@ -1,5 +1,5 @@
 <?php
-class Produk extends JI_Controller
+class Checkout extends JI_Controller
 {
 
 	public function __construct()
@@ -10,16 +10,22 @@ class Produk extends JI_Controller
 		$this->current_page = 'dashboard';
 
 		$this->load('a_kategori_concern');
-		$this->load('a_banner_concern');
+		$this->load('a_rekening_concern');
 		$this->load('a_partner_concern');
 		$this->load('b_produk_concern');
+		$this->load('c_order_concern');
+		$this->load('c_order_produk_concern');
 		$this->load('b_produk_gambar_concern');
+		$this->load('b_produk_item_concern');
 
 		$this->load('front/a_kategori_model', 'akm');
-		$this->load('front/a_banner_model', 'abm');
+		$this->load('front/a_rekening_model', 'arm');
 		$this->load('front/a_partner_model', 'apm');
 		$this->load('front/b_produk_model', 'bpm');
+		$this->load('front/c_order_model', 'com');
+		$this->load('front/c_order_produk_model', 'copm');
 		$this->load('front/b_produk_gambar_model', 'bpgm');
+		$this->load('front/b_produk_item_model', 'bpim');
 	}
 
 	public function index()
@@ -29,16 +35,7 @@ class Produk extends JI_Controller
 		// 	redir(base_url('login'), 0);
 		// 	die();
 		// }
-		$data['filter'] = $this->input->request('f', '');
 
-		$this->current_page = 'explore';
-		$this->setTitle("Beranda" . $this->config->semevar->site_suffix);
-
-		$this->putThemeContent("explore/home", $data);
-		$this->putThemeContent("explore/home_modal", $data);
-		$this->putJsContent("explore/home_bottom", $data);
-		$this->loadLayout('col-1-bar', $data);
-		$this->render();
 	}
 
 	function __formatNominal($nominal)
@@ -59,15 +56,35 @@ class Produk extends JI_Controller
 		return number_format($nominal, 0);
 	}
 
-	public function detail($slug)
+	public function detail($kode)
 	{
 		$data = $this->__init();
-		// if (!$this->user_login) {
-		// 	redir(base_url('login'), 0);
-		// 	die();
-		// }
+		if (!$this->user_login) {
+			redir(base_url('login'), 0);
+			die();
+		}
+		$com = $this->com->getByKode($kode);
+		$copm = $this->copm->getByOrder($com->id);
+		$bpim = $this->bpim->id($copm->b_produk_id);
+		$data['bpim'] = $bpim;
+		$data['copm'] = $copm;
+		$data['com'] = $com;
 
-		$produk = $this->bpm->getBySlug($slug);
+		$status = 'Menunggu pembayaran';
+		if (isset($com->gambar) && strlen($com->gambar) > 4) {
+			$status = 'Menunggu konfirmasi admin';
+			if (isset($com->is_setor) && $com->is_setor) {
+				$status = 'Telah dibooking';
+			}
+		}
+
+		$data['status'] = $status;
+		$produk = $this->bpm->id($bpim->b_produk_id);
+		if (!isset($produk->id)) {
+			redir(base_url(''));
+			die();
+		}
+
 		if (isset($produk->id)) $data['produk'] = $produk;
 		if (isset($produk->luas_tanah)) $produk->luas_tanah = (int)$produk->luas_tanah;
 		if (isset($produk->luas_bangunan)) $produk->luas_bangunan = (int)$produk->luas_bangunan;
@@ -77,44 +94,43 @@ class Produk extends JI_Controller
 			$produk->angsuran = $this->__formatNominal((int) $produk->angsuran);
 			$produk->harga = number_format($produk->harga, 0, ',', '.');
 		}
-		$bpm_related = $this->bpm->getByKategori($produk->a_kategori_id, $produk->id);
-		if (isset($bpm_related[0]->id)) $data['bpm_related'] = $bpm_related;
-
-		$data['bpm_related'] = $bpm_related;
-		unset($bpm_related);
-
-		$bpgm = $this->bpgm->getByProduk($produk->id);
-		if (isset($bpgm[0]->id)) $data['bpgm'] = $bpgm;
-
-		$data['bpgm'] = $bpgm;
 
 		$akm = $this->akm->id($produk->a_kategori_id);
-		$is_sold = true;
-		$data_siteplan = '';
-		if (isset($akm->data_siteplan)) $data_siteplan = $akm->data_siteplan;
-		$tipe = "TP-" . $produk->tipe;
-		// dd($tipe . $data_siteplan);
-		if (strlen($data_siteplan)) $data_siteplan = json_decode($data_siteplan);
-		foreach ($data_siteplan as $ds) {
-			if (isset($ds->data) && stripos($ds->data, $tipe) !== false && $ds->status == 'tersedia') {
-				$is_sold = false;
-				break;
-			}
-		}
+		$data['akm'] = $akm;
+		$arm = $this->arm->id($com->a_rekening_id);
+		$data['arm'] = $arm;
 
-		$data['is_sold'] = $is_sold;
-		$this->setTitle($produk->tipe . $this->config->semevar->site_suffix);
+		$this->setTitle('Pembayaran ' . $produk->tipe . $this->config->semevar->site_suffix);
 		$this->setDescription($this->convertToMetaDescription($produk->deskripsi) . $this->config->semevar->site_suffix);
 		$this->setKeyword($produk->meta_keyword ?? '');
 		$this->setOGImage(base_url($produk->gambar));
 
 		unset($produk);
 		unset($bpm);
-		unset($bpm_related);
+		unset($arm);
 		unset($akm);
-		$this->putThemeContent("produk/detail", $data);
-		$this->putThemeContent("produk/detail_modal", $data);
-		$this->putJsContent("produk/detail_bottom", $data);
+		$this->putThemeContent("checkout/home", $data);
+		$this->putThemeContent("checkout/home_modal", $data);
+		$this->putJsContent("checkout/home_bottom", $data);
+		$this->loadLayout('col-1', $data);
+		$this->render();
+	}
+
+	public function berhasil()
+	{
+		$data = $this->__init();
+		if (!$this->user_login) {
+			redir(base_url('login'), 0);
+			die();
+		}
+		if (!isset($_SESSION['is_berhasil_upload'])) {
+			redir(base_url('profil'));
+			die();
+		}
+		unset($_SESSION['is_berhasil_upload']);
+
+
+		$this->putThemeContent("checkout/berhasil", $data);
 		$this->loadLayout('col-1', $data);
 		$this->render();
 	}

@@ -185,6 +185,8 @@ $routes['siteplan/(:num)'] = 'siteplan/detail/$1';
 $routes['blog/(:any)'] = 'blog/detail/$1';
 $routes['asesmen/(:any)/(:num)'] = 'asesmen/edit/$1/$2';
 $routes['admin/pengaturan/kawasan'] = 'admin/pengaturan/kategori';
+$routes['checkout/(:any)'] = 'checkout/detail/$1';
+$routes['checkout/berhasil'] = 'checkout/berhasil';
 
 
 /********************************/

@@ -170,11 +170,10 @@ class Order extends JI_Controller
 			$this->__json_out($data);
 			die();
 		}
-		$this->com->columns['status']->value = $status[0] ?? 'pembayaran';
-		$this->com->columns['a_pengguna_id']->value = $d['sess']->admin->id;
-		$tgl_pesan = $this->com->columns['tgl_pesan']->value;
-		$waktu_pesan = date("H:i:s");
-		$this->com->columns['tgl_pesan']->value = $tgl_pesan . ' ' . $waktu_pesan;
+		$this->com->columns['status']->value = $status[0] ?? 'booking';
+		$this->com->columns['a_pengguna_id']->value = $d['sess']->admin->id ?? 0;
+		$tgl_pesan = date("Y-m-d H:i:s");
+		$this->com->columns['tgl_pesan']->value = $tgl_pesan;
 		$b_user_id = $this->input->post('b_user_id');
 		$jumlah_kunjungan = $this->com->countByUser($b_user_id);
 		$this->com->columns['kunjungan_ke']->value = ++$jumlah_kunjungan;
@@ -211,7 +210,6 @@ class Order extends JI_Controller
 			}
 			//Upload Produk
 			$b_produk_id = $this->input->post('b_produk_id');
-			$b_produk_id_harga = $this->input->post('b_produk_id_harga');
 			$harga = $this->input->post('harga');
 			$qty = $this->input->post('qty');
 			if (isset($b_produk_id) && is_array($b_produk_id) && count($b_produk_id)) {
@@ -219,15 +217,14 @@ class Order extends JI_Controller
 				foreach ($b_produk_id as $k => $v) {
 					$dip[$k]['c_order_id'] = $res;
 					$dip[$k]['b_produk_id'] = $v;
-					$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k];
-					$dip[$k]['qty'] = $qty[$k];
 					$dip[$k]['status'] = $status[$k];
 					$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
-					$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
+					$dip[$k]['tgl_pesan'] = $tgl_pesan;
 					$dip[$k]['cdate'] = "NOW()";
 				}
 				$res_produk = $this->copm->setMass($dip);
 				if ($res_produk) {
+					$data = $this->com->id($res);
 					$this->status = 200;
 					$this->message = API_ADMIN_ERROR_CODES[$this->status];
 				} else {
@@ -789,6 +786,48 @@ class Order extends JI_Controller
 		}
 
 		// dd(count($data->indikator));
+		$this->__json_out($data);
+	}
+
+	public function upload_bukti()
+	{
+		$d = $this->__init();
+
+		$id = $this->input->post('id');
+		$data = array();
+		if (!$this->admin_login) {
+			$this->status = 400;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			header("HTTP/1.0 400 Harus login");
+			$this->__json_out($data);
+			die();
+		}
+		$id = (int) $id;
+
+		$this->status = 200;
+		$this->message = 'Berhasil diupload';
+		$detail = $this->com->id($id);
+		if (!isset($detail->id)) {
+			$data = new \stdClass();
+			$this->status = 441;
+			$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			$this->__json_out($data);
+			die();
+		}
+		$resUpload = $this->se->upload_file('gambar', 'bukti', $id);
+		if ($resUpload->status == 200) {
+			$res = $this->com->update($id, ['gambar' => $resUpload->file]);
+			if (!$res) {
+				$this->status = 900;
+				$this->message = API_ADMIN_ERROR_CODES[$this->status];
+			} else {
+				$_SESSION['is_berhasil_upload'] = true;
+			}
+		} else {
+			$this->status = $resUpload->status;
+			$this->message = $resUpload->message;
+		}
+
 		$this->__json_out($data);
 	}
 }

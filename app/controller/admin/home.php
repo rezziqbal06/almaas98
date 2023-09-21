@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
+
 class Home extends JI_Controller
 {
 	var $diskon_by_posisi = [

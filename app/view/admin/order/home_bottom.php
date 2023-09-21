@@ -1,6 +1,7 @@
 var drTable = {};
 var ieid = '';
 var nIndikator;
+var order;
 
 function addIndikator(type='tambah'){
 	nIndikator = $("#panel_indikator_"+type).children().length;
@@ -52,10 +53,15 @@ if(jQuery('#drTable').length>0){
 						var id = $(this).find("td").html();
 						ieid = id;
 						$.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
+							order = dt.data;
 							console.log(dt.data.detail.is_setor)
 							if(dt.data.detail.is_setor.includes('Selesai')){
+								$("#bhapus").hide();
+								$("#bkwitansi").show();
 								$(".asetorkan").html('<i class="fa fa-money"></i> Batal Setoran')
 							}else{
+								$("#bhapus").show();
+								$("#bkwitansi").hide();
 								$(".asetorkan").html('<i class="fa fa-money"></i> Setorkan')
 							}
 							if(dt.data.detail){
@@ -460,3 +466,9 @@ $(document).on('click', '.asetorkan', function(e){
 		gritter('Gagal, coba beberapa saat lagi', 'danger');
 	})
 })
+
+$("#bkwitansi").on('click', function(e){
+	e.preventDefault();
+	
+	$("#modal_kwitansi").modal('show')
+});

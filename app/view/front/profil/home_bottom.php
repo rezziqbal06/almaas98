@@ -145,3 +145,15 @@ $("#fchange-password").on("submit",function(e){
   }
 
 });
+
+$(document).off('click','.history_transaksi');
+$(document).on('click','.history_transaksi', function(e){
+	e.preventDefault();
+	var st = $(this).attr('data-status');
+	var kode = $(this).attr('data-kode');
+	if(st == 'Menunggu Pembayaran'){
+		window.location = "<?=base_url("checkout/")?>"+kode;
+	}else{
+		return false;
+	}
+});

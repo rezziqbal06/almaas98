@@ -41,7 +41,7 @@
 						<div class="kartu-gambar-produk">
 							<img src="<?= base_url("") ?><?= $produk->gambar ?? '' ?>" alt="<?= $produk->nama ?? '' ?>" aria-describedby="<?= $produk->nama ?? '' ?>" class="img-fluid">
 						</div>
-						<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->luas_tanah ?? '150' ?>/<?= $produk->luas_bangunan ?? '70' ?></b></p>
+						<p class="fs-5 mt-2 mb-1"><b>Type <?= $produk->tipe ?? '' ?></b></p>
 						<small class="text-grey"><i class="fa fa-map-marker mb-2"></i> <?= $produk->kawasan ?? '' ?></small>
 						<div class="d-flex justify-content-start flex-wrap">
 							<div class="me-3"><b class="text-primary"><?= $produk->harga ?></b>/bulan</div>

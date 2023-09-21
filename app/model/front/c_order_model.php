@@ -60,4 +60,51 @@ class C_Order_Model extends \Model\C_Order_Concern
         $this->db->order_by($sortCol, $sortDir)->limit($page, $pagesize);
         return $this->db->get("object", 0);
     }
+
+    public function getByKode($kode)
+    {
+        $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+        $this->db->select_as("$this->tbl5_as.fnama", 'b_user_nama', 0);
+        $this->db->from($this->tbl, $this->tbl_as);
+        $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl_as, 'b_user_id', 'left');
+        $this->db->where_as("$this->tbl_as.kode", $this->db->esc($kode));
+        return $this->db->get_first();
+    }
+
+    public function getByUser($id)
+    {
+        $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+        $this->db->select_as("$this->tbl6_as.blok", 'blok', 0);
+        $this->db->select_as("$this->tbl6_as.nomor", 'nomor', 0);
+        $this->db->select_as("$this->tbl6_as.posisi", 'posisi', 0);
+        $this->db->select_as("$this->tbl3_as.tipe", 'tipe', 0);
+        $this->db->select_as("$this->tbl3_as.gambar", 'gambar_produk', 0);
+        $this->db->from($this->tbl, $this->tbl_as);
+        $this->db->join($this->tbl2, $this->tbl2_as, 'c_order_id', $this->tbl_as, 'id', 'left'); //c_order_produk
+        $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'b_produk_id', 'left'); //b_produk_item
+        $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl6_as, 'b_produk_id', 'left'); //b_produk
+        $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl_as, 'b_user_id', 'left');
+        $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($id));
+        return $this->db->get();
+    }
+
+    public function getAllOrders($b_user_id)
+    {
+        $this->db->select_as("SUM($this->tbl_as.total_harga)", 'total', 0);
+        $this->db->select_as("MAX($this->tbl_as.b_user_id)", 'b_user_id', 0);
+        $this->db->select_as("MAX($this->tbl_as.status)", 'status', 0);
+        $this->db->select_as("$this->tbl_as.metode", 'metode', 0);
+        $this->db->select_as("$this->tbl2_as.b_produk_id", 'b_produk_id', 0);
+        $this->db->select_as("$this->tbl3_as.harga", 'harga', 0);
+        $this->db->select_as("$this->tbl6_as.posisi", 'posisi', 0);
+        $this->db->from($this->tbl, $this->tbl_as);
+        $this->db->join($this->tbl2, $this->tbl2_as, 'c_order_id', $this->tbl_as, 'id', 'left');
+        $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'b_produk_id', 'left');
+        $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl6_as, 'b_produk_id', 'left');
+        $this->db->where_as("$this->tbl_as.b_user_id", $this->db->esc($b_user_id));
+        $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+        $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+        $this->db->group_by("CONCAT($this->tbl_as.b_user_id,'-',$this->tbl2_as.b_produk_id)");
+        return $this->db->get("", 0);
+    }
 }
