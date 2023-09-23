@@ -70,7 +70,30 @@ class Laporan extends JI_Controller
 		$edate = $this->input->request('edate', '');
 
 		//Jumlah Surveyon
-		$surveyon = $this->bum->listCount($a_kategori_id, $sdate, $edate);
+		$count_surveyon = [];
+		$list_surveyon = $this->bum->listData($a_kategori_id, $sdate, $edate);
+		if (isset($list_surveyon[0]->nama)) {
+			$tempKawasan = '';
+			$nomorSurveyon = 0;
+			foreach ($list_surveyon as $k => $ls) {
+				if ($k == 0) {
+					$tempKawasan = $ls->kawasan;
+					$count_surveyon[$nomorSurveyon] = new stdClass();
+					$count_surveyon[$nomorSurveyon]->jumlah = 1;
+					$count_surveyon[$nomorSurveyon]->kawasan = $tempKawasan;
+				} else {
+					if ($tempKawasan != $ls->kawasan) {
+						$tempKawasan = $ls->kawasan;
+						$nomorSurveyon++;
+						$count_surveyon[$nomorSurveyon] = new stdClass();
+						$count_surveyon[$nomorSurveyon]->jumlah = 1;
+						$count_surveyon[$nomorSurveyon]->kawasan = $tempKawasan;
+					} else {
+						$count_surveyon[$nomorSurveyon]->jumlah++;
+					}
+				}
+			}
+		}
 
 		//Omset per bulan
 		$omset = $this->com->omset($a_kategori_id, $sdate, $edate);
@@ -109,7 +132,8 @@ class Laporan extends JI_Controller
 			}
 		}
 		$data['omset'] = $omset;
-		$data['surveyon'] = $surveyon;
+		$data['list_surveyon'] = $list_surveyon;
+		$data['count_surveyon'] = $count_surveyon;
 		$data['unit_booking'] = $unit_booking;
 		$data['unit_terjual'] = $unit_terjual;
 		$data['unit_tersedia'] = $unit_tersedia;
