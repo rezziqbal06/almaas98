@@ -1,7 +1,7 @@
 <?php if (in_array($sess->admin->a_jabatan_nama, ['Direktur', 'Admin'])) : ?>
     <section>
         <div class="row">
-            <?php $title = ["Rumah", "Kustomer", "Booking", "Order Selesai"]; ?>
+            <?php $title = ["Unit Tersedia", "Kustomer", "Booking", "Order Selesai"]; ?>
             <?php $value = [$count_produk, $count_kustomer, $count_booking, $count_order_done]; ?>
             <?php $icon = ["app", "single-02", "cart", "cart"]; ?>
             <?php $color = ["danger", "warning", "info", "success"]; ?>
