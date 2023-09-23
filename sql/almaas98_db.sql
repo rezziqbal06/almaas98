@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 19, 2023 at 01:15 AM
+-- Generation Time: Sep 23, 2023 at 07:52 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -242,6 +242,7 @@ CREATE TABLE `a_pengguna` (
   `tgl_kontrak_akhir` date DEFAULT NULL,
   `karyawan_status` enum('Kontrak','Magang','Tetap','Harian Lepas') NOT NULL,
   `nama_perusahaan` varchar(128) NOT NULL DEFAULT '',
+  `fcm_token` text NOT NULL,
   `is_karyawan` int(1) UNSIGNED NOT NULL DEFAULT 0,
   `is_active` int(1) UNSIGNED NOT NULL DEFAULT 1,
   `is_deleted` int(1) NOT NULL DEFAULT 0,
@@ -253,31 +254,31 @@ CREATE TABLE `a_pengguna` (
 -- Dumping data for table `a_pengguna`
 --
 
-INSERT INTO `a_pengguna` (`id`, `a_company_id`, `a_company_nama`, `a_company_kode`, `a_jabatan_id`, `a_jabatan_nama`, `username`, `password`, `email`, `nama`, `foto`, `welcome_message`, `scope`, `nip`, `alamat`, `alamat2`, `alamat_kecamatan`, `alamat_kabkota`, `alamat_provinsi`, `alamat_negara`, `alamat_kodepos`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `status_pernikahan`, `telp_rumah`, `telp_hp`, `bank_rekening_nomor`, `bank_rekening_nama`, `bank_nama`, `npwp`, `kerja_terakhir`, `kerja_terakhir_jabatan`, `kerja_terakhir_gaji`, `pendidikan_terakhir`, `pendidikan_terakhir_jenjang`, `pendidikan_terakhir_tahun`, `ibu_nama`, `ibu_pekerjaan`, `tgl_kerja_mulai`, `tgl_kerja_akhir`, `tgl_kontrak_akhir`, `karyawan_status`, `nama_perusahaan`, `is_karyawan`, `is_active`, `is_deleted`, `a_pengguna_id`, `is_admin_master`) VALUES
-(1, NULL, 'Almaas98', '-', NULL, 'Admin', 'mimind', '$2y$10$bTB1dRnKfzVmP.Z3y1r2OuhkyotKFMhfxeAsAn7cpb/sY8LF00Zzi', 'admin@gmail.com', 'Administrator Almaas 98', 'media/pengguna/2023/09/62-1-.png', 'Selamat Beraktifitas', 'all', '-', '', '', '', '', '', '', '', '', NULL, 1, 'belum menikah', '', '', '', '', '', '', '', '', '0', '', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 1),
-(406, NULL, 'Almaas98', '-', NULL, 'Sales', '', '', '', 'Zamzam Ramadhan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '087893928384', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Tetap', '', 0, 1, 1, NULL, 0),
-(407, NULL, 'Almaas98', '-', NULL, 'Sales', 'ujang', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ujang', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '081923871298', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-08-23', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 1, NULL, 0),
-(411, NULL, 'Almaas98', '-', NULL, 'Marketing', 'muhammadhelmin.j', 'e10adc3949ba59abbe56e057f20f883e', '', 'Muhammad Helmi N.J', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085797441388', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(419, NULL, 'Almaas98', '-', NULL, 'Marketing', 'mochamadzamzamramadhan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Mochamad Zamzam Ramadhan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '082219651903', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(420, NULL, 'Almaas98', '-', NULL, 'Marketing', 'syahrulfebriant', 'e10adc3949ba59abbe56e057f20f883e', '', 'Syahrul Febriant', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '089649230205', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(421, NULL, 'Almaas98', '-', NULL, 'Marketing', 'harishidayat', 'e10adc3949ba59abbe56e057f20f883e', '', 'Haris Hidayat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '083841336668', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(422, NULL, 'Almaas98', '-', NULL, 'Marketing', 'aldiaprianto', 'e10adc3949ba59abbe56e057f20f883e', '', 'Aldi aprianto', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '088802345300', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(423, NULL, 'Almaas98', '-', NULL, 'Marketing', 'yogisetiawan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Yogi setiawan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085810500566', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(424, NULL, 'Almaas98', '-', NULL, 'Marketing', 'rikoajipamungkas', 'e10adc3949ba59abbe56e057f20f883e', '', 'Riko aji pamungkas', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '85727493763', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(425, NULL, 'Almaas98', '-', NULL, 'Marketing', 'arishidayat', 'e10adc3949ba59abbe56e057f20f883e', '', 'Aris Hidayat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085759693908', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(426, NULL, 'Almaas98', '-', NULL, 'Marketing', 'madamibrahim', 'e10adc3949ba59abbe56e057f20f883e', '', 'M Adam ibrahim', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085215220536', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(427, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ilhamedwarramadhan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ilham Edwar Ramadhan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085559766045', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(428, NULL, 'Almaas98', '-', NULL, 'Marketing', 'jajangslamet', 'e10adc3949ba59abbe56e057f20f883e', '', 'Jajang slamet', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085759412607', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(429, NULL, 'Almaas98', '-', NULL, 'Marketing', 'irwansyahpramadita', 'e10adc3949ba59abbe56e057f20f883e', '', 'Irwansyah Pramadita', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '087739939741', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(430, NULL, 'Almaas98', '-', NULL, 'Marketing', 'dederismawan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Dede Rismawan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '081212066727', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(431, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ruslan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ruslan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '081315591066', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(432, NULL, 'Almaas98', '-', NULL, 'Marketing', 'abdiagnaputra', 'e10adc3949ba59abbe56e057f20f883e', '', 'Abdi agna putra', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '089525858833', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(433, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ridwanrahayu', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ridwan rahayu', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '0881022179650', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(434, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ferirahmat', 'e10adc3949ba59abbe56e057f20f883e', '', 'Feri Rahmat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085175193377', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(435, NULL, 'Almaas98', '-', NULL, 'Marketing', 'acengibrahim', 'e10adc3949ba59abbe56e057f20f883e', '', 'Aceng Ibrahim', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '083879793647', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0),
-(436, NULL, 'Almaas98', '-', NULL, 'Marketing', 'mikhsananugrah', 'e10adc3949ba59abbe56e057f20f883e', '', 'M Ikhsan anugrah ', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '0895110038222', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-07-18', '0000-00-00', NULL, 'Magang', '', 0, 1, 0, NULL, 0),
-(437, NULL, 'Almaas98', '-', NULL, 'Direktur', 'payayat', '$2y$10$bdO1gGNMIhpt5yz.9nftL.ulvw4TsDyKdfXzv0iXgjwF5uV84sb76', '', 'Pa Yayat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '87872838280', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Tetap', '', 0, 1, 0, NULL, 0),
-(438, NULL, 'Almaas98', '-', NULL, 'Marketing', 'rezzamuhammadiqbal', 'e10adc3949ba59abbe56e057f20f883e', '', 'Rezza Muhammad Iqbal', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085789701750', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', 0, 1, 0, NULL, 0);
+INSERT INTO `a_pengguna` (`id`, `a_company_id`, `a_company_nama`, `a_company_kode`, `a_jabatan_id`, `a_jabatan_nama`, `username`, `password`, `email`, `nama`, `foto`, `welcome_message`, `scope`, `nip`, `alamat`, `alamat2`, `alamat_kecamatan`, `alamat_kabkota`, `alamat_provinsi`, `alamat_negara`, `alamat_kodepos`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `status_pernikahan`, `telp_rumah`, `telp_hp`, `bank_rekening_nomor`, `bank_rekening_nama`, `bank_nama`, `npwp`, `kerja_terakhir`, `kerja_terakhir_jabatan`, `kerja_terakhir_gaji`, `pendidikan_terakhir`, `pendidikan_terakhir_jenjang`, `pendidikan_terakhir_tahun`, `ibu_nama`, `ibu_pekerjaan`, `tgl_kerja_mulai`, `tgl_kerja_akhir`, `tgl_kontrak_akhir`, `karyawan_status`, `nama_perusahaan`, `fcm_token`, `is_karyawan`, `is_active`, `is_deleted`, `a_pengguna_id`, `is_admin_master`) VALUES
+(1, NULL, 'Almaas98', '-', NULL, 'Admin', 'mimind', '$2y$10$bTB1dRnKfzVmP.Z3y1r2OuhkyotKFMhfxeAsAn7cpb/sY8LF00Zzi', 'admin@gmail.com', 'Administrator Almaas 98', 'media/pengguna/2023/09/62-1-.png', 'Selamat Beraktifitas', 'all', '-', '', '', '', '', '', '', '', '', NULL, 1, 'belum menikah', '', '', '', '', '', '', '', '', '0', '', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 1),
+(406, NULL, 'Almaas98', '-', NULL, 'Sales', '', '', '', 'Zamzam Ramadhan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '087893928384', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Tetap', '', '', 0, 1, 1, NULL, 0),
+(407, NULL, 'Almaas98', '-', NULL, 'Sales', 'ujang', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ujang', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '081923871298', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-08-23', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 1, NULL, 0),
+(411, NULL, 'Almaas98', '-', NULL, 'Marketing', 'muhammadhelmin.j', 'e10adc3949ba59abbe56e057f20f883e', '', 'Muhammad Helmi N.J', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085797441388', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(419, NULL, 'Almaas98', '-', NULL, 'Marketing', 'mochamadzamzamramadhan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Mochamad Zamzam Ramadhan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '082219651903', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(420, NULL, 'Almaas98', '-', NULL, 'Marketing', 'syahrulfebriant', 'e10adc3949ba59abbe56e057f20f883e', '', 'Syahrul Febriant', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '089649230205', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(421, NULL, 'Almaas98', '-', NULL, 'Marketing', 'harishidayat', 'e10adc3949ba59abbe56e057f20f883e', '', 'Haris Hidayat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '083841336668', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(422, NULL, 'Almaas98', '-', NULL, 'Marketing', 'aldiaprianto', 'e10adc3949ba59abbe56e057f20f883e', '', 'Aldi aprianto', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '088802345300', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(423, NULL, 'Almaas98', '-', NULL, 'Marketing', 'yogisetiawan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Yogi setiawan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085810500566', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(424, NULL, 'Almaas98', '-', NULL, 'Marketing', 'rikoajipamungkas', 'e10adc3949ba59abbe56e057f20f883e', '', 'Riko aji pamungkas', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '85727493763', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(425, NULL, 'Almaas98', '-', NULL, 'Marketing', 'arishidayat', 'e10adc3949ba59abbe56e057f20f883e', '', 'Aris Hidayat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085759693908', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(426, NULL, 'Almaas98', '-', NULL, 'Marketing', 'madamibrahim', 'e10adc3949ba59abbe56e057f20f883e', '', 'M Adam ibrahim', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085215220536', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(427, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ilhamedwarramadhan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ilham Edwar Ramadhan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085559766045', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(428, NULL, 'Almaas98', '-', NULL, 'Marketing', 'jajangslamet', 'e10adc3949ba59abbe56e057f20f883e', '', 'Jajang slamet', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085759412607', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(429, NULL, 'Almaas98', '-', NULL, 'Marketing', 'irwansyahpramadita', 'e10adc3949ba59abbe56e057f20f883e', '', 'Irwansyah Pramadita', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '087739939741', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(430, NULL, 'Almaas98', '-', NULL, 'Marketing', 'dederismawan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Dede Rismawan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '081212066727', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(431, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ruslan', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ruslan', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '081315591066', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(432, NULL, 'Almaas98', '-', NULL, 'Marketing', 'abdiagnaputra', 'e10adc3949ba59abbe56e057f20f883e', '', 'Abdi agna putra', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '089525858833', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(433, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ridwanrahayu', 'e10adc3949ba59abbe56e057f20f883e', '', 'Ridwan rahayu', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '0881022179650', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(434, NULL, 'Almaas98', '-', NULL, 'Marketing', 'ferirahmat', '$2y$10$KBFMAd8hsUpjigt0jSpIGOY.Z6UGwevDiy7R9N0b7WTfM4Pp3OwQO', '', 'Feri Rahmat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085175193377', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(435, NULL, 'Almaas98', '-', NULL, 'Marketing', 'acengibrahim', 'e10adc3949ba59abbe56e057f20f883e', '', 'Aceng Ibrahim', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '083879793647', '', '', '', '', '', '', NULL, 'SMA', 'SMA', 1971, '', '', '2023-05-08', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0),
+(436, NULL, 'Almaas98', '-', NULL, 'Marketing', 'mikhsananugrah', 'e10adc3949ba59abbe56e057f20f883e', '', 'M Ikhsan anugrah ', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '0895110038222', '', '', '', '', '', '', NULL, 'SMK', 'SMA', 1971, '', '', '2023-07-18', '0000-00-00', NULL, 'Magang', '', '', 0, 1, 0, NULL, 0),
+(437, NULL, 'Almaas98', '-', NULL, 'Direktur', 'payayat', '$2y$10$bdO1gGNMIhpt5yz.9nftL.ulvw4TsDyKdfXzv0iXgjwF5uV84sb76', '', 'Pa Yayat', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '87872838280', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Tetap', '', '', 0, 1, 0, NULL, 0),
+(438, NULL, 'Almaas98', '-', NULL, 'Marketing', 'rezzamuhammadiqbal', 'e10adc3949ba59abbe56e057f20f883e', '', 'Rezza Muhammad Iqbal', '', '', 'none', '-', '', '', '', '', '', '', ' ', '', NULL, 1, 'belum menikah', NULL, '085789701750', '', '', '', '', '', '', NULL, 'S1', 'SMA', 1971, '', '', '0000-00-00', '0000-00-00', NULL, 'Kontrak', '', '', 0, 1, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -372,6 +373,7 @@ CREATE TABLE `b_produk` (
   `blok` varchar(56) NOT NULL,
   `status` varchar(128) NOT NULL,
   `nomor` varchar(56) NOT NULL,
+  `stock_unit` int(11) NOT NULL,
   `luas_bangunan` int(18) NOT NULL,
   `luas_tanah` int(18) NOT NULL,
   `lantai` int(2) NOT NULL,
@@ -393,19 +395,20 @@ CREATE TABLE `b_produk` (
 -- Dumping data for table `b_produk`
 --
 
-INSERT INTO `b_produk` (`id`, `a_kategori_id`, `nama`, `slug`, `gambar`, `deskripsi`, `cdate`, `spesifikasi`, `harga`, `tipe`, `blok`, `status`, `nomor`, `luas_bangunan`, `luas_tanah`, `lantai`, `kamar_tidur`, `toilet`, `garasi`, `listrik`, `air`, `a_three_d_id`, `lat`, `lang`, `gmaps`, `count_read`, `is_active`, `is_deleted`) VALUES
-(10, 16, 'Blok E 44', 'blok-e-44', 'media/produk/2023/09/62-10-1.jpeg', '<p><strong>Lorem ipsum dolor sit amet, c</strong>onsectetur adipiscing elit. Per nisl ullamcorper dis risus sed nascetur at tincidunt, elementum habitasse rhoncus fusce lacus lectus himenaeos nulla egestas, phasellus laoreet quis a feugiat mattis litora.</p>', '2023-06-07 23:09:15', '{\"Bahan\":[\"Bludru\",\"Kulit\"],\"QTY\":[\" < 30\",\"30 - 100\",\" > 100\"]}', 459000000, '60/60', '', 'Tersedia', '', 30, 60, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(12, 16, 'Blok E 42', 'blok-e-42', 'media/produk/2023/09/62-12-1.jpeg', '', '2023-09-10 11:32:31', '', 466650000, '60/62', '', 'Tersedia', '', 30, 62, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(21, 16, 'Blok C 55', 'blok-c-55', 'media/produk/2023/09/62-21-1.jpeg', '', '2023-09-10 12:52:32', '', 520200000, '72/64', '', 'Tersedia', '', 36, 64, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(31, 16, 'Blok F 21', 'blok-f-21', 'media/produk/2023/09/62-31-1.jpeg', '', '2023-09-10 13:29:20', '', 612000000, '90/70', '', 'Tersedia', '', 45, 70, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(37, 16, 'Blok B 09', 'blok-b-09', 'media/produk/2023/09/62-37-1.jpeg', '', '2023-09-10 13:39:03', '', 619650000, '90/72', '', 'Tersedia', '', 45, 72, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(50, 16, 'Jalan Utama 16', 'jalan-utama-16', 'media/produk/2023/09/62-50-1.jpeg', '', '2023-09-10 14:00:46', '', 638350000, '90/77', '', 'Tersedia', '', 45, 77, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(56, 16, 'Jalan Utama 02', 'jalan-utama-02', 'media/produk/2023/09/62-56-1.jpeg', '', '2023-09-10 14:07:33', '', 688500000, '100/80', '', 'Tersedia', '', 50, 80, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(66, 16, 'Blok F 27', 'blok-f-27', 'media/produk/2023/09/62-66-1.jpeg', '', '2023-09-10 14:17:02', '', 703800000, '100/84', '', 'Tersedia', '', 50, 84, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(67, 16, 'Blok A 06', 'blok-a-06', 'media/produk/2023/09/62-67-1.jpeg', '', '2023-09-10 14:20:36', '', 711450000, '100/86', '', 'Tersedia', '', 50, 86, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(68, 16, 'Blok H 28', 'blok-h-28', 'media/produk/2023/09/62-68-1.jpeg', '', '2023-09-10 14:23:03', '', 719100000, '100/88', '', 'Tersedia', '', 50, 88, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(71, 16, 'Jalan Utama 60', 'jalan-utama-60', 'media/produk/2023/09/62-71-1.jpeg', '', '2023-09-10 14:28:42', '', 765000000, '110/190', '', 'Tersedia', '', 55, 90, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
-(76, 16, 'Blok D 18', 'blok-d-18', 'media/produk/2023/09/62-76-1.jpeg', '', '2023-09-10 14:34:33', '', 875925000, '120/109', '', 'Tersedia', '', 60, 109, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0);
+INSERT INTO `b_produk` (`id`, `a_kategori_id`, `nama`, `slug`, `gambar`, `deskripsi`, `cdate`, `spesifikasi`, `harga`, `tipe`, `blok`, `status`, `nomor`, `stock_unit`, `luas_bangunan`, `luas_tanah`, `lantai`, `kamar_tidur`, `toilet`, `garasi`, `listrik`, `air`, `a_three_d_id`, `lat`, `lang`, `gmaps`, `count_read`, `is_active`, `is_deleted`) VALUES
+(10, 16, 'Blok E 44', 'blok-e-44', 'media/produk/2023/09/62-10-1.jpeg', '<p><strong>Lorem ipsum dolor sit amet, c</strong>onsectetur adipiscing elit. Per nisl ullamcorper dis risus sed nascetur at tincidunt, elementum habitasse rhoncus fusce lacus lectus himenaeos nulla egestas, phasellus laoreet quis a feugiat mattis litora.</p>', '2023-06-07 23:09:15', '{\"Bahan\":[\"Bludru\",\"Kulit\"],\"QTY\":[\" < 30\",\"30 - 100\",\" > 100\"]}', 459000000, '60/60', '', 'Tersedia', '', 0, 30, 60, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(12, 16, 'Blok E 42', 'blok-e-42', 'media/produk/2023/09/62-12-1.jpeg', '', '2023-09-10 11:32:31', '', 466650000, '60/62', '', 'Tersedia', '', 0, 30, 62, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(21, 16, 'Blok C 55', 'blok-c-55', 'media/produk/2023/09/62-21-1.jpeg', '', '2023-09-10 12:52:32', '', 520200000, '72/64', '', 'Tersedia', '', 0, 36, 64, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(31, 16, 'Blok F 21', 'blok-f-21', 'media/produk/2023/09/62-31-1.jpeg', '', '2023-09-10 13:29:20', '', 612000000, '90/70', '', 'Tersedia', '', 0, 45, 70, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(37, 16, 'Blok B 09', 'blok-b-09', 'media/produk/2023/09/62-37-1.jpeg', '', '2023-09-10 13:39:03', '', 619650000, '90/72', '', 'Tersedia', '', 0, 45, 72, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(50, 16, 'Jalan Utama 16', 'jalan-utama-16', 'media/produk/2023/09/62-50-1.jpeg', '', '2023-09-10 14:00:46', '', 638350000, '90/77', '', 'Tersedia', '', 0, 45, 77, 2, 2, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(56, 16, 'Jalan Utama 02', 'jalan-utama-02', 'media/produk/2023/09/62-56-1.jpeg', '', '2023-09-10 14:07:33', '', 688500000, '100/80', '', 'Tersedia', '', 0, 50, 80, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(66, 16, 'Blok F 27', 'blok-f-27', 'media/produk/2023/09/62-66-1.jpeg', '', '2023-09-10 14:17:02', '', 703800000, '100/84', '', 'Tersedia', '', 0, 50, 84, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(67, 16, 'Blok A 06', 'blok-a-06', 'media/produk/2023/09/62-67-1.jpeg', '', '2023-09-10 14:20:36', '', 711450000, '100/86', '', 'Tersedia', '', 0, 50, 86, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(68, 16, 'Blok H 28', 'blok-h-28', 'media/produk/2023/09/62-68-1.jpeg', '', '2023-09-10 14:23:03', '', 719100000, '100/88', '', 'Tersedia', '', 0, 50, 88, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(71, 16, 'Jalan Utama 60', 'jalan-utama-60', 'media/produk/2023/09/62-71-1.jpeg', '', '2023-09-10 14:28:42', '', 765000000, '110/190', '', 'Tersedia', '', 0, 55, 90, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(76, 16, 'Blok D 18', 'blok-d-18', 'media/produk/2023/09/62-76-1.jpeg', '', '2023-09-10 14:34:33', '', 875925000, '120/109', '', 'Tersedia', '', 0, 60, 109, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0),
+(78, 16, 'Blok a', 'blok-a', '', '', '2023-09-19 14:33:59', '', 756000, '120/100', '', '', '', 3, 50, 100, 2, 3, 1, 1, '1300', 'Sibel', 1, '', '', '', 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -857,6 +860,7 @@ CREATE TABLE `b_user` (
   `fcm_token` varchar(255) NOT NULL DEFAULT ' ',
   `device` varchar(24) NOT NULL DEFAULT 'web',
   `apikey` varchar(28) NOT NULL DEFAULT '',
+  `sumber_iklan` varchar(255) NOT NULL,
   `is_agree` int(1) UNSIGNED NOT NULL DEFAULT 0,
   `is_confirmed` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '1 ya, 0 belum konfirmasi, flag setelah konfirmasi',
   `is_premium` int(1) UNSIGNED NOT NULL DEFAULT 0,
@@ -870,12 +874,12 @@ CREATE TABLE `b_user` (
 -- Dumping data for table `b_user`
 --
 
-INSERT INTO `b_user` (`id`, `b_user_id`, `a_unit_id`, `a_jabatan_id`, `a_pengguna_id`, `google_id`, `kode`, `kode_lama`, `email`, `username`, `foto`, `welcome_message`, `password`, `fnama`, `lnama`, `alamat`, `alamat2`, `kelurahan`, `kecamatan`, `kabkota`, `provinsi`, `negara`, `kodepos`, `nik`, `kelamin`, `tlahir`, `bdate`, `cdate`, `adate`, `edate`, `telp`, `fb`, `fb_id`, `ig`, `ig_id`, `deposit`, `reward_poin`, `image`, `reg_from`, `know_from`, `umur`, `npwp`, `penilaian`, `rating`, `api_reg_date`, `api_reg_token`, `api_web_date`, `api_web_token`, `api_mobile_date`, `api_mobile_token`, `fcm_token`, `device`, `apikey`, `is_agree`, `is_confirmed`, `is_premium`, `is_wa_verified`, `is_wa_send`, `is_active`, `is_deleted`) VALUES
-(1, NULL, 0, 0, 0, '', '', NULL, 'rezzibal@gmail.com', 'rezziqbal', '', '', 'b5dd431cc61866b146777675f00b0e10', 'Rezza', '', '', '', '', '', '', '', '', '', '3204460304980004', 0, '', '2023-09-05', '2023-09-05 12:25:25', '2023-09-05', '2023-09-05', '085789701750', '', NULL, '', NULL, 0, 0, '', 'online', NULL, 30, '', 'Mantap', 0, '2023-09-05', '', '0000-00-00', '', '0000-00-00', '', '', '', '', 0, 0, 0, 1, 1, 1, 0),
-(2, NULL, 0, 0, 0, '', '', NULL, '', '', '', '', '', 'Buldany', '', '', '', '', '', '', '', '', '', '', 0, '', '2023-06-14', '2023-06-14 13:04:20', NULL, NULL, '', '', NULL, '', NULL, 0, 0, '', 'online', NULL, 30, '', '', 0, NULL, '', '0000-00-00', '', '0000-00-00', '', '', '', '', 0, 0, 0, 1, 1, 1, 0),
-(3, NULL, NULL, NULL, 0, '', NULL, NULL, '', '', '', '', NULL, 'Buldany', ' ', '', NULL, '', '', '', '', 'Indonesia', '', '', 1, '-', '1970-01-01', '0000-00-00 00:00:00', NULL, NULL, '', '', NULL, '', NULL, 0, 0, ' ', 'online', NULL, 20, '', '', 5, NULL, NULL, NULL, NULL, NULL, NULL, ' ', 'web', '', 0, 0, 0, 1, 1, 1, 1),
-(4, NULL, NULL, NULL, 0, '', NULL, NULL, '', '', '', '', NULL, 'Asep', ' ', '', NULL, '', '', '', '', 'Indonesia', '', '', 1, '-', '1970-01-01', '0000-00-00 00:00:00', NULL, NULL, '', '', NULL, '', NULL, 0, 0, ' ', 'online', NULL, 20, '', '', 5, NULL, NULL, NULL, NULL, NULL, NULL, ' ', 'web', '', 0, 0, 0, 1, 1, 1, 0),
-(5, NULL, NULL, NULL, 0, '', NULL, NULL, 'farid@gmail.com', 'farid@gmail.com', '', '', '$2y$10$6fZeAZ9.1eDyuA2hloqgBepcoMr95pJ/vJ7fa7K54eaJkNeLoYzC6', 'Farid AHmad Fadhilah', ' ', '', '', '', '', '', '', 'Indonesia', '', '', 1, '-', '1970-01-01', '2023-09-06 16:13:13', NULL, NULL, '085780701750', '', NULL, '', NULL, 0, 0, ' ', 'online', NULL, 20, '', '', 5, NULL, NULL, NULL, NULL, NULL, NULL, ' ', 'web', '', 0, 0, 0, 1, 1, 1, 0);
+INSERT INTO `b_user` (`id`, `b_user_id`, `a_unit_id`, `a_jabatan_id`, `a_pengguna_id`, `google_id`, `kode`, `kode_lama`, `email`, `username`, `foto`, `welcome_message`, `password`, `fnama`, `lnama`, `alamat`, `alamat2`, `kelurahan`, `kecamatan`, `kabkota`, `provinsi`, `negara`, `kodepos`, `nik`, `kelamin`, `tlahir`, `bdate`, `cdate`, `adate`, `edate`, `telp`, `fb`, `fb_id`, `ig`, `ig_id`, `deposit`, `reward_poin`, `image`, `reg_from`, `know_from`, `umur`, `npwp`, `penilaian`, `rating`, `api_reg_date`, `api_reg_token`, `api_web_date`, `api_web_token`, `api_mobile_date`, `api_mobile_token`, `fcm_token`, `device`, `apikey`, `sumber_iklan`, `is_agree`, `is_confirmed`, `is_premium`, `is_wa_verified`, `is_wa_send`, `is_active`, `is_deleted`) VALUES
+(1, NULL, 0, 0, 0, '', '', NULL, 'rezziqbal@gmail.com', 'rezziqbal', '', '', '$2y$10$Wd/sIJ9/jMI/rXmZfRQC1.v.mTW50HroHpbBOxeQlxlHbqND/5sf6', 'Rezza', '', '', '', '', '', '', '', '', '', '3204460304980004', 0, '', '2023-09-05', '2023-09-05 12:25:25', '2023-09-05', '2023-09-05', '085789701750', '', NULL, '', NULL, 0, 0, '', 'online', NULL, 30, '', 'Mantap', 0, '2023-09-05', '', '0000-00-00', '', '0000-00-00', '', '', '', '', '', 0, 0, 0, 1, 1, 1, 0),
+(2, NULL, 0, 0, 0, '', '', NULL, '', '', '', '', '', 'Buldany', '', '', '', '', '', '', '', '', '', '', 0, '', '2023-06-14', '2023-06-14 13:04:20', NULL, NULL, '', '', NULL, '', NULL, 0, 0, '', 'online', NULL, 30, '', '', 0, NULL, '', '0000-00-00', '', '0000-00-00', '', '', '', '', '', 0, 0, 0, 1, 1, 1, 0),
+(3, NULL, NULL, NULL, 0, '', NULL, NULL, '', '', '', '', NULL, 'Buldany', ' ', '', NULL, '', '', '', '', 'Indonesia', '', '', 1, '-', '1970-01-01', '0000-00-00 00:00:00', NULL, NULL, '', '', NULL, '', NULL, 0, 0, ' ', 'online', NULL, 20, '', '', 5, NULL, NULL, NULL, NULL, NULL, NULL, ' ', 'web', '', '', 0, 0, 0, 1, 1, 1, 1),
+(4, NULL, NULL, NULL, 0, '', NULL, NULL, '', '', '', '', NULL, 'Asep', ' ', '', NULL, '', '', '', '', 'Indonesia', '', '', 1, '-', '1970-01-01', '0000-00-00 00:00:00', NULL, NULL, '', '', NULL, '', NULL, 0, 0, ' ', 'online', NULL, 20, '', '', 5, NULL, NULL, NULL, NULL, NULL, NULL, ' ', 'web', '', '', 0, 0, 0, 1, 1, 1, 0),
+(5, NULL, NULL, NULL, 0, '', NULL, NULL, 'farid@gmail.com', 'farid@gmail.com', '', '', '$2y$10$6fZeAZ9.1eDyuA2hloqgBepcoMr95pJ/vJ7fa7K54eaJkNeLoYzC6', 'Farid AHmad Fadhilah', ' ', '', '', '', '', '', '', 'Indonesia', '', '', 1, '-', '1970-01-01', '2023-09-06 16:13:13', NULL, NULL, '085780701750', '', NULL, '', NULL, 0, 0, ' ', 'online', NULL, 20, '', '', 5, NULL, NULL, NULL, NULL, NULL, NULL, ' ', 'web', '', '', 0, 0, 0, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -933,6 +937,7 @@ CREATE TABLE `c_jadwal` (
   `stime` varchar(15) NOT NULL,
   `etime` varchar(15) NOT NULL,
   `cdate` datetime NOT NULL,
+  `tipe` varchar(28) NOT NULL DEFAULT 'piket',
   `is_active` int(1) NOT NULL DEFAULT 1,
   `is_deleted` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -941,17 +946,20 @@ CREATE TABLE `c_jadwal` (
 -- Dumping data for table `c_jadwal`
 --
 
-INSERT INTO `c_jadwal` (`id`, `a_pengguna_id`, `a_kategori_id`, `day`, `hari`, `date`, `stime`, `etime`, `cdate`, `is_active`, `is_deleted`) VALUES
-(1, 425, 16, 1, 'tes', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:11:49', 1, 1),
-(2, 425, 16, 2, 'selasa', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:16:42', 1, 0),
-(3, 432, 16, 1, 'senin', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:05', 1, 0),
-(4, 435, 16, 1, 'senin', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:17', 1, 0),
-(5, 421, 16, 3, 'rabu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:34', 1, 0),
-(6, 426, 16, 4, 'kamis', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:50', 1, 0),
-(7, 424, 16, 6, 'sabtu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:20:27', 1, 0),
-(8, 411, 16, 7, 'minggu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:20:39', 1, 0),
-(9, 434, 17, 6, 'sabtu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 07:00:03', 1, 0),
-(10, 423, 17, 6, 'sabtu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 07:00:20', 1, 0);
+INSERT INTO `c_jadwal` (`id`, `a_pengguna_id`, `a_kategori_id`, `day`, `hari`, `date`, `stime`, `etime`, `cdate`, `tipe`, `is_active`, `is_deleted`) VALUES
+(1, 425, 16, 1, 'tes', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:11:49', 'piket', 1, 1),
+(2, 425, 16, 2, 'selasa', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:16:42', 'piket', 1, 0),
+(3, 432, 16, 1, 'senin', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:05', 'piket', 1, 0),
+(4, 435, 16, 1, 'senin', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:17', 'piket', 1, 0),
+(5, 421, 16, 3, 'rabu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:34', 'piket', 1, 0),
+(6, 426, 16, 4, 'kamis', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:19:50', 'piket', 1, 0),
+(7, 424, 16, 6, 'sabtu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:20:27', 'piket', 1, 0),
+(8, 411, 16, 7, 'minggu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 05:20:39', 'piket', 1, 0),
+(9, 434, 17, 6, 'sabtu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 07:00:03', 'piket', 1, 0),
+(10, 438, 0, 6, 'sabtu', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-16 07:00:20', 'libur', 1, 0),
+(11, 432, 0, 1, 'senin', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-19 20:26:27', 'libur', 1, 0),
+(12, 419, 0, 2, 'selasa', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-19 20:26:54', 'libur', 1, 0),
+(13, 411, 16, 5, 'jumat', '0000-00-00 00:00:00', '08:00', '20:00', '2023-09-22 06:34:00', 'piket', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -974,6 +982,7 @@ CREATE TABLE `c_order` (
   `diskon` decimal(3,1) NOT NULL,
   `gambar` varchar(255) NOT NULL,
   `catatan` text NOT NULL,
+  `kunjungan_ke` int(11) DEFAULT NULL,
   `is_setor` int(1) NOT NULL DEFAULT 0,
   `is_active` int(11) NOT NULL DEFAULT 1,
   `is_deleted` int(1) NOT NULL DEFAULT 0,
@@ -984,11 +993,13 @@ CREATE TABLE `c_order` (
 -- Dumping data for table `c_order`
 --
 
-INSERT INTO `c_order` (`id`, `kode`, `b_user_id`, `a_pengguna_id`, `a_rekening_id`, `cdate`, `tgl_pesan`, `tgl_selesai`, `status`, `metode_pembayaran`, `metode`, `diskon`, `gambar`, `catatan`, `is_setor`, `is_active`, `is_deleted`, `total_harga`) VALUES
-(10, 'ORD-A9-20230916-0', 1, 427, 0, '2023-09-16 23:21:33', '2023-09-16 00:00:00', '0000-00-00 00:00:00', 'booking', 'cash', 'Cash Keras', '0.0', '', '', 0, 1, 0, '1000000.00'),
-(11, 'ORD-A9-20230918-11', 1, 427, 0, '2023-09-18 07:02:29', '2023-09-18 00:00:00', '0000-00-00 00:00:00', 'pembayaran', 'cash', 'Cash Keras', '0.0', '', '', 0, 1, 0, '300000000.00'),
-(12, 'ORD-A9-20230918-12', 1, 427, 1, '2023-09-18 16:18:55', '2023-09-18 00:00:00', '0000-00-00 00:00:00', 'pembayaran', 'transfer', 'Cash Keras', '0.0', 'media/kategori/2023/09/62-12-.jpg', '<p>Pelunasan Bangunan diantaranya :</p><ul><li>Genting</li><li>Semen</li><li>Batubata</li><li>Borongan</li></ul>', 0, 1, 0, '268160000.00'),
-(13, 'ORD-A9-20230918-13', 4, 437, 1, '2023-09-18 22:41:50', '2023-09-18 00:00:00', '0000-00-00 00:00:00', 'booking', 'transfer', 'Cash Bertahap', '0.0', 'media/bukti/2023/09/62-13-.jpeg', '<p>mantap sekalih banget</p>', 0, 1, 0, '1000000.00');
+INSERT INTO `c_order` (`id`, `kode`, `b_user_id`, `a_pengguna_id`, `a_rekening_id`, `cdate`, `tgl_pesan`, `tgl_selesai`, `status`, `metode_pembayaran`, `metode`, `diskon`, `gambar`, `catatan`, `kunjungan_ke`, `is_setor`, `is_active`, `is_deleted`, `total_harga`) VALUES
+(14, 'ORD-A9-20230919-0', 4, 437, 0, '2023-09-19 16:25:28', '2023-09-19 11:25:28', '0000-00-00 00:00:00', 'booking', 'cash', 'Cash Keras', '0.0', 'media/bukti/2023/09/62-14-.jpeg', '<p>tes</p>', 0, 0, 1, 1, '1000000.00'),
+(15, 'ORD-A9-20230919-15', 4, 437, 0, '2023-09-19 16:28:37', '2023-09-19 16:28:37', '0000-00-00 00:00:00', 'booking', 'cash', 'Cash Keras', '0.0', 'media/bukti/2023/09/62-15-.jpeg', '<p>tes</p>', 1, 0, 1, 1, '1000000.00'),
+(16, 'ORD-A9-20230919-16', 5, 437, 0, '2023-09-19 16:31:35', '2023-09-19 16:31:35', '0000-00-00 00:00:00', 'pembayaran', 'cash', 'Cash Keras', '0.0', 'media/bukti/2023/09/62-16-.jpeg', '<p><i>tes</i></p>', 1, 0, 1, 0, '1000000.00'),
+(17, 'ORD-A9-20230919-17', 5, 437, 0, '2023-09-19 16:32:27', '2023-09-19 16:32:27', '0000-00-00 00:00:00', 'pembayaran', 'cash', 'Cash Keras', '0.0', 'media/bukti/2023/09/62-17-.jpeg', '<p>tes</p>', 2, 0, 1, 0, '400000000.00'),
+(20, 'ORD-A9-20230920-18', 1, 1, 0, '2023-09-20 20:44:05', '2023-09-20 20:44:05', '0000-00-00 00:00:00', 'booking', '', '', '0.0', '', '', 1, 0, 1, 0, '1000000.00'),
+(21, 'ORD-A9-20230921-21', 1, 1, 0, '2023-09-21 15:37:36', '2023-09-21 15:37:36', '0000-00-00 00:00:00', 'booking', '', '', '0.0', 'media/bukti/2023/09/62-21-.jpeg', '', 2, 0, 1, 0, '1000000.00');
 
 -- --------------------------------------------------------
 
@@ -1020,10 +1031,12 @@ CREATE TABLE `c_order_produk` (
 --
 
 INSERT INTO `c_order_produk` (`id`, `c_order_id`, `d_item_produk_id`, `qty`, `b_produk_id`, `b_produk_id_harga`, `cdate`, `tgl_pesan`, `tgl_selesai`, `status`, `rating`, `penilaian`, `is_active`, `is_deleted`, `sub_harga`, `ongkir`) VALUES
-(20, 10, '', 0, 1, 0, '2023-09-16 23:21:33', '2023-09-16 00:00:00', '0000-00-00 00:00:00', 'booking', 0, '', 1, 0, '1000000.00', '0.00'),
-(21, 11, '', 0, 1, 0, '2023-09-18 07:02:29', '2023-09-18 00:00:00', '0000-00-00 00:00:00', 'pembayaran', 0, '', 1, 0, '300000000.00', '0.00'),
-(27, 12, '', 0, 1, 0, '2023-09-18 18:55:30', '2023-09-18 00:00:00', '0000-00-00 00:00:00', 'pembayaran', 0, '', 1, 0, '268160000.00', '0.00'),
-(31, 13, '', 0, 3, 0, '2023-09-18 22:51:13', '2023-09-18 00:00:00', '0000-00-00 00:00:00', 'booking', 0, '', 1, 0, '1000000.00', '0.00');
+(32, 14, '', 0, 1, 0, '2023-09-19 16:25:28', '2023-09-19 00:00:00', '0000-00-00 00:00:00', 'booking', 0, '', 1, 0, '1000000.00', '0.00'),
+(33, 15, '', 0, 3, 0, '2023-09-19 16:28:37', '2023-09-19 00:00:00', '0000-00-00 00:00:00', 'booking', 0, '', 1, 1, '1000000.00', '0.00'),
+(34, 16, '', 0, 2, 0, '2023-09-19 16:31:35', '2023-09-19 00:00:00', '0000-00-00 00:00:00', 'pembayaran', 0, '', 1, 0, '1000000.00', '0.00'),
+(35, 17, '', 0, 2, 0, '2023-09-19 16:32:27', '2023-09-19 00:00:00', '0000-00-00 00:00:00', 'pembayaran', 0, '', 1, 0, '400000000.00', '0.00'),
+(36, 20, '', 0, 3, 0, '2023-09-20 20:44:05', '2023-09-20 20:44:05', '0000-00-00 00:00:00', 'booking', 0, '', 1, 0, '1000000.00', '0.00'),
+(37, 21, '', 0, 5, 0, '2023-09-21 15:37:36', '2023-09-21 15:37:36', '0000-00-00 00:00:00', 'booking', 0, '', 1, 0, '1000000.00', '0.00');
 
 --
 -- Indexes for dumped tables
@@ -1220,7 +1233,7 @@ ALTER TABLE `a_three_d`
 -- AUTO_INCREMENT for table `b_produk`
 --
 ALTER TABLE `b_produk`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `b_produk_gambar`
@@ -1244,7 +1257,7 @@ ALTER TABLE `b_produk_item`
 -- AUTO_INCREMENT for table `b_user`
 --
 ALTER TABLE `b_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `b_user_module`
@@ -1262,19 +1275,19 @@ ALTER TABLE `c_asesmen`
 -- AUTO_INCREMENT for table `c_jadwal`
 --
 ALTER TABLE `c_jadwal`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `c_order`
 --
 ALTER TABLE `c_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `c_order_produk`
 --
 ALTER TABLE `c_order_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Constraints for dumped tables
