@@ -39,12 +39,12 @@ class C_Order_Model extends \Model\C_Order_Concern
 
   private function join_company()
   {
-    $this->db->join($this->tbl2, $this->tbl2_as, 'c_order_id', $this->tbl_as, 'id', 'left');
-    $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl2_as, 'b_produk_id', 'left');
-    $this->db->join($this->tbl4, $this->tbl4_as, 'id', $this->tbl2_as, 'b_produk_id_harga', 'left');
+    $this->db->join($this->tbl2, $this->tbl2_as, 'c_order_id', $this->tbl_as, 'id', 'left'); //c_order_produk
     $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl_as, 'b_user_id', 'left');
     $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'b_produk_id', 'left');
     $this->db->join($this->tbl7, $this->tbl7_as, 'id', $this->tbl_as, 'a_pengguna_id', 'left');
+    $this->db->join($this->tbl3, $this->tbl3_as, 'id', $this->tbl6_as, 'b_produk_id', 'left'); //b_produk_id
+    $this->db->join($this->tbl8, $this->tbl8_as, 'id', $this->tbl3_as, 'a_kategori_id', 'left'); //a_kategori_id
     return $this;
   }
 
@@ -90,5 +90,60 @@ class C_Order_Model extends \Model\C_Order_Concern
       return $d->jumlah;
     }
     return 0;
+  }
+
+
+  public function omset($a_kategori_id = '', $sdate = '', $edate = '')
+  {
+    $this->db->select_as("COUNT(*)", 'jumlah', 0);
+    $this->db->select_as("DATE_FORMAT($this->tbl_as.tgl_pesan, '%M')", 'bulan', 0);
+    $this->db->select_as("SUM($this->tbl_as.total_harga)", 'omset', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    $this->db->where_as("YEAR($this->tbl_as.tgl_pesan)", "YEAR(" . $this->db->esc(date("Y-m-d")) . ")");
+    if (strlen($a_kategori_id)) $this->db->where_as("$this->tbl3_as.a_kategori_id", $this->db->esc($a_kategori_id));
+    if (strlen($sdate) == 10 && strlen($edate) == 10) {
+      $this->db->between("DATE($this->tbl_as.tgl_pesan)", 'DATE("' . $sdate . '")', 'DATE("' . $edate . '")');
+    } elseif (strlen($sdate) != 10 && strlen($edate) == 10) {
+      $this->db->where_as("DATE($this->tbl_as.tgl_pesan)", 'DATE("' . $edate . '")', "AND", '<=');
+    } elseif (strlen($sdate) == 10 && strlen($edate) != 10) {
+      $this->db->where_as("DATE($this->tbl_as.tgl_pesan)", 'DATE("' . $sdate . '")', "AND", '>=');
+    }
+    $this->db->group_by("MONTH($this->tbl_as.tgl_pesan)");
+    return $this->db->get("", 0);
+  }
+
+  public function unitTerjual($a_kategori_id = '', $sdate = '', $edate = '')
+  {
+    $this->db->select_as("CONCAT('Blok ', $this->tbl6_as.blok, ' ', $this->tbl6_as.nomor,' - ', $this->tbl6_as.posisi)", 'unit', 0);
+    $this->db->select_as("$this->tbl6_as.id", 'unit_id', 0);
+    $this->db->select_as("$this->tbl6_as.nomor", 'nomor', 0);
+    $this->db->select_as("$this->tbl6_as.posisi", 'posisi', 0);
+    $this->db->select_as("$this->tbl3_as.tipe", 'tipe', 0);
+    $this->db->select_as("$this->tbl3_as.luas_tanah", 'luas_tanah', 0);
+    $this->db->select_as("$this->tbl3_as.luas_bangunan", 'luas_bangunan', 0);
+    $this->db->select_as("$this->tbl3_as.lantai", 'lantai', 0);
+    $this->db->select_as("$this->tbl8_as.nama", 'kawasan', 0);
+    $this->db->select_as("$this->tbl7_as.nama", 'marketing', 0);
+    $this->db->select_as("$this->tbl5_as.fnama", 'konsumen', 0);
+    $this->db->select_as("$this->tbl_as.tgl_pesan", 'tgl_pesan', 0);
+    $this->db->select_as("$this->tbl_as.status", 'status', 0);
+    $this->db->select_as("$this->tbl_as.total_harga", 'total_harga', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    if (strlen($a_kategori_id)) $this->db->where_as("$this->tbl3_as.a_kategori_id", $this->db->esc($a_kategori_id));
+    if (strlen($sdate) == 10 && strlen($edate) == 10) {
+      $this->db->between("DATE($this->tbl_as.tgl_pesan)", 'DATE("' . $sdate . '")', 'DATE("' . $edate . '")');
+    } elseif (strlen($sdate) != 10 && strlen($edate) == 10) {
+      $this->db->where_as("DATE($this->tbl_as.tgl_pesan)", 'DATE("' . $edate . '")', "AND", '<=');
+    } elseif (strlen($sdate) == 10 && strlen($edate) != 10) {
+      $this->db->where_as("DATE($this->tbl_as.tgl_pesan)", 'DATE("' . $sdate . '")', "AND", '>=');
+    }
+    $this->db->order_by("$this->tbl_as.status");
+    return $this->db->get("", 0);
   }
 }

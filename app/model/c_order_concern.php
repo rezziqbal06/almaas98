@@ -28,6 +28,8 @@ class C_Order_Concern extends \JI_Model
     public $tbl6_as = 'bpi';
     public $tbl7 = 'a_pengguna';
     public $tbl7_as = 'ap';
+    public $tbl8 = 'a_kategori';
+    public $tbl8_as = 'ak';
 
     const COLUMNS = [
         'kode',

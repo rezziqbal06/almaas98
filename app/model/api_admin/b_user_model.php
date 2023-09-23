@@ -13,8 +13,6 @@ register_namespace(__NAMESPACE__);
  */
 class B_User_Model extends \Model\B_User_Concern
 {
-  public $tbl2 = 'a_jabatan';
-  public $tbl2_as = 'j';
   public function __construct()
   {
     parent::__construct();
@@ -286,5 +284,27 @@ class B_User_Model extends \Model\B_User_Concern
       return 1;
     }
     return 0;
+  }
+
+  public function listCount($a_kategori_id = '', $sdate = '', $edate = '')
+  {
+    $this->db->select_as("COUNT($this->tbl_as.id)", "jumlah", 0);
+    $this->db->select_as("COALESCE($this->tbl7_as.nama, 'Belum Beli')", "kawasan", 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->join($this->tbl3, $this->tbl3_as, 'b_user_id', $this->tbl_as, 'id'); //c_order
+    $this->db->join($this->tbl4, $this->tbl4_as, 'c_order_id', $this->tbl3_as, 'id'); //c_order_produk
+    $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl4_as, 'b_produk_id'); //b_produk_item
+    $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl5_as, 'b_produk_id'); //b_produk
+    $this->db->join($this->tbl7, $this->tbl7_as, 'id', $this->tbl6_as, 'a_kategori_id'); //b_produk
+    if (strlen($a_kategori_id)) $this->db->where_as("$this->tbl7_as.id", $this->db->esc($a_kategori_id));
+    if (strlen($sdate) == 10 && strlen($edate) == 10) {
+      $this->db->between("DATE($this->tbl_as.cdate)", 'DATE("' . $sdate . '")', 'DATE("' . $edate . '")');
+    } elseif (strlen($sdate) != 10 && strlen($edate) == 10) {
+      $this->db->where_as("DATE($this->tbl_as.cdate)", 'DATE("' . $edate . '")', "AND", '<=');
+    } elseif (strlen($sdate) == 10 && strlen($edate) != 10) {
+      $this->db->where_as("DATE($this->tbl_as.cdate)", 'DATE("' . $sdate . '")', "AND", '>=');
+    }
+    $this->db->group_by("$this->tbl7_as.id");
+    return $this->db->get("", 0);
   }
 }

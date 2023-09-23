@@ -18,8 +18,16 @@ class B_User_Concern extends \JI_Model
     public $tbl_as = 'bu';
     public $tbl2 = 'b_user_alamat';
     public $tbl2_as = 'bua';
-    // public $tbl3 = 'a_company';
-    // public $tbl3_as = 'ac';
+    public $tbl3 = 'c_order';
+    public $tbl3_as = 'co';
+    public $tbl4 = 'c_order_produk';
+    public $tbl4_as = 'cop';
+    public $tbl5 = 'b_produk_item';
+    public $tbl5_as = 'bpi';
+    public $tbl6 = 'b_produk';
+    public $tbl6_as = 'bp';
+    public $tbl7 = 'a_kategori';
+    public $tbl7_as = 'ak';
 
     const COLUMNS = [
         'a_jabatan_id',
