@@ -45,6 +45,16 @@ $admin_foto = $this->cdn_url($admin_foto);
 			<li class="nav-item mt-3">
 				<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6"></h6>
 			</li>
+			<?php if ($sess->admin->is_admin_master || in_array($sess->admin->a_jabatan_nama, ['Direktur'])) : ?>
+				<li class="nav-item">
+					<a class="nav-link " href="<?= base_url_admin() ?>laporan">
+						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+							<i class="ni ni-collection text-danger text-sm opacity-10"></i>
+						</div>
+						<span class="nav-link-text ms-1">Laporan</span>
+					</a>
+				</li>
+			<?php endif ?>
 			<?php if ($sess->admin->is_admin_master || in_array($sess->admin->a_jabatan_nama, ['Direktur', 'Marketing'])) : ?>
 				<li class="nav-item">
 					<a class="nav-link " href="<?= base_url_admin() ?>order">
