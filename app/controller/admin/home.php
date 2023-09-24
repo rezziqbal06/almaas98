@@ -18,6 +18,7 @@ class Home extends JI_Controller
 		$this->load('a_banner_concern');
 		$this->load('a_partner_concern');
 		$this->load('b_produk_concern');
+		$this->load('b_produk_item_concern');
 		$this->load('b_user_concern');
 		$this->load('c_order_concern');
 		$this->load('c_order_produk_concern');
@@ -27,6 +28,7 @@ class Home extends JI_Controller
 		$this->load('admin/a_banner_model', 'abm');
 		$this->load('admin/a_partner_model', 'apm');
 		$this->load('admin/b_produk_model', 'bpm');
+		$this->load('admin/b_produk_item_model', 'bpim');
 		$this->load('admin/b_user_model', 'bum');
 		$this->load('admin/c_order_model', 'com');
 		$this->load('admin/c_order_produk_model', 'copm');
@@ -42,8 +44,18 @@ class Home extends JI_Controller
 		}
 
 		$data['is_from_login'] = $this->input->request('first', 0);
-
-		$data['count_produk'] = $this->bpm->countAll();
+		$unit = $this->bpim->getTersedia();
+		$unit_tersedia = [];
+		if (isset($unit[0]->harga)) {
+			foreach ($unit as $k => $utr) {
+				if (!isset($utr->order_unit_id)) {
+					if (isset($utr->harga)) $utr->harga = str_replace(".00", '', $utr->harga);
+					if (isset($utr->harga)) $utr->harga = number_format($utr->harga, 0, ',', '.');
+					$unit_tersedia[] = $utr;
+				}
+			}
+		}
+		$data['count_produk'] = count($unit_tersedia);
 		$data['count_kustomer'] = $this->bum->countAll();
 		$data['count_booking'] = 0;
 		$data['count_progress'] = 0;
