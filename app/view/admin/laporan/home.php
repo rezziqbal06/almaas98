@@ -17,7 +17,15 @@
     <div class="card">
 
         <div class="card-header">
-            <h6><strong><?= $this->getTitle() ?></strong></h6>
+            <div class="row justify-content-between">
+                <div class="col-10">
+                    <h6><strong><?= $this->getTitle() ?></strong></h6>
+                </div>
+                <div class="col-2">
+                    <button type="button" data-tipe="all" data-label="UNIT TERSEDIA" class="btn btn-success export-pdf">Export All</button>
+                </div>
+            </div>
+
         </div>
 
         <div class="card-body">
@@ -59,7 +67,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" id="surveyon_res" style="display: none;">
-                <section id="table-surveyon">
+                <section id="table-surveyon" data-label="LIST SURVEYON">
                     <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
                         <thead>
                             <tr>
@@ -92,7 +100,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" id="omset_res" style="display: none;">
-                <section id="table-omset">
+                <section id="table-omset" data-label="OMSET PERBULAN">
                     <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
                         <thead>
                             <tr>
@@ -123,8 +131,8 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" id="unit_terboking_res" style="display: none;">
-                <section id="table-unit_terboking">
-                    <P>
+                <section id="table-unit_terboking" data-label="UNIT TERBOOKING">
+                    <p>
                     <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
                         <thead>
                             <tr>
@@ -145,7 +153,7 @@
                         </thead>
                         <tbody id="unit_terboking_tbody"></tbody>
                     </table>
-                    </P>
+                    </p>
                 </section>
             </div>
         </div>
@@ -165,7 +173,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" id="unit_terjual_res" style="display: none;">
-                <section id="table-unit_terjual">
+                <section id="table-unit_terjual" data-label="UNIT TERJUAL">
                     <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
                         <thead>
                             <tr>
@@ -205,7 +213,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" id="unit_tersedia_res" style="display: none;">
-                <section id="table-unit_tersedia">
+                <section id="table-unit_tersedia" data-label="UNIT TERJUAL">
                     <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
                         <thead>
                             <tr>

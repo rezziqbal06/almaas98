@@ -2,7 +2,46 @@ $('#start_date').val(moment().startOf('year').format('YYYY-MM-DD'))
 $('#end_date').val(moment().endOf('year').format('YYYY-MM-DD'))
 filter()
 $('.export-pdf').on('click', function(e){
-  var contents = $(`#${$(this).data('tipe')}`).html()
+  var bodies = $(`#${$(this).data('tipe')}`).html()
+  var contents = `
+  <center>
+    <h3>${$(this).data('label') ?? ''}</h3>
+  </center>
+    <table>
+    <tr>
+      <td>Periode</td>
+      <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
+    </tr>
+    <tr>
+      <td>Kawasan</td>
+      <td>: ${$('#kawasan option:selected').text()}</td>
+    </tr>
+    </table>
+    ${bodies}
+  `
+  if($(this).data('tipe') == "all"){
+    contents = ''
+    $.each($('section'), function(idex, val){
+      contents += `
+      <center>
+        <h3>${$(this).data('label') ?? ''}</h3>
+      </center>
+      <table>
+        <tr>
+          <td>Periode</td>
+          <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
+        </tr>
+        <tr>
+          <td>Kawasan</td>
+          <td>: ${$('#kawasan option:selected').text()}</td>
+        </tr>
+      </table>
+      ${$(this).html()}
+      
+      `
+    })
+  }
+  
   const newWindow = window.open("about:blank");
   if (newWindow) {
   const contentToPrint = `<html>
@@ -80,6 +119,7 @@ $('.export-pdf').on('click', function(e){
         }
       }
     </style>
+    <title>${$(this).data('label')}_${$('#start_date').val()}-${$('#end_date').val()}</title>
   </head>
 
   <body>
@@ -102,20 +142,6 @@ $('.export-pdf').on('click', function(e){
     <p>
       <hr>
     </p>
-    <center>
-      <h3>${$(this).data('label') ?? ''}</h3>
-    </center>
-
-    <table>
-      <tr>
-        <td>Periode</td>
-        <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
-      </tr>
-      <tr>
-        <td>Kawasan</td>
-        <td>: ${$('#kawasan option:selected').text()}</td>
-      </tr>
-    </table>
     <p>${contents}</p>
 
     <p>
