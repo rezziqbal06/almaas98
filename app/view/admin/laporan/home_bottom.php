@@ -36,7 +36,7 @@ $('.export-pdf').on('click', function(e){
           <td>: ${$('#kawasan option:selected').text()}</td>
         </tr>
       </table>
-      ${$(this).html()}
+      <p>${$(this).html()}</p>
       
       `
     })
