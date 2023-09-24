@@ -470,5 +470,279 @@ $(document).on('click', '.asetorkan', function(e){
 $("#bkwitansi").on('click', function(e){
 	e.preventDefault();
 	
+  $.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
+      order = dt.data;
+      if(dt.data.detail){
+        var detail = dt.data.detail;
+        console.log(detail)
+        
+        $('#no_kwitansi').html(detail.kode ?? '')
+        $('#kwitansi_diterima_dari').html(detail.pembeli ?? '')
+        $('#kwitansi_uang_sejumlah').html(`${terbilangRupiah (detail.total_harga.replaceAll('.', '') ?? 0)} `)
+        $('#kwitansi_untuk_pembayaran').html(detail.catatan ?? '-')
+        var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
+        $('#kwitansi_tanggal_sekarang').html(tanggal_sekarang ?? '')
+        $('#kwitansi_nominal').html('Rp. '+detail.total_harga)
+      }
+      
+    })
 	$("#modal_kwitansi").modal('show')
 });
+
+$('#cetak_kwitansi').click(function(){
+   $.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
+      order = dt.data;
+      if(dt.data.detail){
+        var detail = dt.data.detail;
+        var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
+
+        const newWindow = window.open("about:blank");
+        if (newWindow) {
+          const contentToPrint = `<html>
+
+            <head>
+              <style>
+                @page{
+                  size: auto;
+                  margin: 0;
+                  background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
+                  background-repeat: no-repeat;
+                  background-size: 100% 100%;	
+                  print-color-adjust: exact;
+                }
+                @media print {
+                  @page {
+                    size: 320.0853mm 99.99705mm;
+                    width: 100%;
+                    margin: 0;
+                  }
+                  .contents {
+                    background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;	
+                    print-color-adjust: exact;
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                  }
+
+                  .rectangle-right-bottom{
+                    background-color: white;
+                  }
+                  .rectangle-right-bottom{
+                    background-color: white;
+                  }
+
+                  .rectangle-right-bottom-1{
+                    background-color: white;
+                    border-right: 100px solid white;
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -2%;
+                    background-color: white;
+                    transform: skewx(-15deg);
+                    z-index: 0 !important;
+                    width: 100%;
+                    height: 100%;
+                  }
+                  .rectangle-right-bottom-2{
+                    background-color: white;
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -6%;
+                    background-color: white;
+                    transform: skewx(-15deg);
+                    z-index: 0 !important;
+                    width: 100%;
+                    height: 100%;
+                  }
+                  .rectangle-right-bottom-3{
+                    background-color: white;
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: -8%;
+                    background-color: white;
+                    transform: skewx(-15deg);
+                    z-index: 0 !important;
+                    width: 100%;
+                    height: 100%;
+                  }
+                  .content{
+                    position: absolute;
+                    right: 30%;
+                  }
+
+                  table{
+                    border-collapse: collapse;
+                    position: relative;
+                    overflow: hidden;
+                  }
+
+                  .vertical-align-top{
+                    vertical-align:top;
+                    text-align: center;
+                  }
+
+                  .vertical-align-bottom{
+                    padding-bottom: 2rem;
+                    vertical-align:bottom;
+                    text-align: center;
+                  }
+
+                  .rectangle-top-left{
+                    background-color: white;
+                    position: absolute;
+                    z-index: 1;
+                    width: 55%;
+                    transform: skewX(-15deg);
+                    height: 3rem;
+                    top: 0;
+                    left: -30%;
+                  }
+                  
+
+                  td{
+                    padding: 0.5rem;
+                    vertical-align: top;
+                    font-size: 1.2rem;
+                  }
+                  
+                  .kwitansi-header{
+                    position: absolute;
+                    top: -25%;
+                    left: 0;
+                    z-index: 2;
+                    letter-spacing: 0.8rem;
+                  }
+
+                  table tr{
+                    margin: 0;
+                  }
+
+                  .position-relative{
+                    position: relative;
+                  }
+                  .min-h {
+                    max-height: 5.5rem;
+                    height: 5.5rem;
+                  }
+                }
+              </style>
+              <title>Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}</title>
+            </head>
+
+            <body>
+                <div class="contents">
+                  <table style="width: 100%;">
+                    <tr>
+                      <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
+                      <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
+                    </tr>
+                  </table>
+                  <table style="width: 100%;">
+                    <tr>
+                      <td style="white-space: nowrap;">No</td>
+                      <td style="width: 1%;">:</td>
+                      <td>${detail.kode ?? '-'}</td>
+                      <td rowspan="6"></td>
+                      <td style="width: 30%;" rowspan="3"></td>
+                    </tr>
+                    <tr>
+                      <td style="white-space: nowrap;">Diterima dari</td>
+                      <td>:</td>
+                      <td>${detail.pembeli ?? '-'}</td>
+                    </tr>
+                    <tr>
+                      <td style="white-space: nowrap;">Uang Sejumlah</td>
+                      <td>:</td>
+                      <td>${terbilangRupiah (detail.total_harga.replaceAll('.', '') ?? 0)} Rupiah</td>
+                    </tr>
+                    <tr>
+                      <td style="white-space: nowrap;">Untuk Pembayaran</td>
+                      <td>:</td>
+                      <td class="min-h">${detail.catatan ?? '-'}</td>
+                      <td style="position: relative;" class="vertical-align-top"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3"></td>
+                      <td style="position: relative;" class="rectangle-right-bottom"><div class="rectangle-right-bottom-2"></div></td>
+                    </tr>
+                    <tr class="position-relative">
+                      <td colspan="3">Rp. ${detail.total_harga ?? 0}</td>
+                      <td style="position: relative;" class="rectangle-right-bottom vertical-align-bottom"><div class="rectangle-right-bottom-3"></div><center class="content">YAYAT HENDRAYANA</center></td>
+                    </tr>
+                  </table>
+                </div>
+            </body>
+
+            </html>`;
+
+          newWindow.document.open();
+          newWindow.document.write(contentToPrint);
+          newWindow.document.close();
+          console.log(contentToPrint)
+          newWindow.print();
+          newWindow.close();
+      }
+
+
+      }
+      
+    })
+})
+
+function terbilangRupiah (nominal){
+  const bilangan = [
+    "", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh",
+        "Sebelas"]
+
+  if(nominal < 12){
+    return bilangan[nominal]
+  } else if(nominal < 20){
+    return bilangan[nominal - 10] + " Belas";
+  } else if(nominal < 100){
+    return bilangan[Math.floor(nominal / 10)] + " Puluh " + bilangan[nominal % 10];
+  } else if (nominal < 200) {
+    return "Seratus " + terbilangRupiah(nominal - 100);
+  } else if(nominal < 1000) {
+      return bilangan[Math.floor(nominal / 100)] + " Ratus " + terbilangRupiah(nominal % 100);
+  } else if (nominal < 2000) {
+      return "Seribu " + terbilangRupiah(nominal - 1000);
+  } else if (nominal < 1000000) {
+      return terbilangRupiah(Math.floor(nominal / 1000)) + " Ribu " + terbilangRupiah(nominal % 1000);
+  } else if (nominal < 1000000000) {
+      return terbilangRupiah(Math.floor(nominal / 1000000)) + " Juta " + terbilangRupiah(nominal % 1000000);
+  } else if (nominal < 1000000000000) {
+      return terbilangRupiah(Math.floor(nominal / 1000000000)) + " Miliar " + terbilangRupiah(nominal % 1000000000);
+  } else {
+      return "nilai terlalu besar";
+  }
+}
+
+function getNamaHari(digit) {
+  const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+  if (digit >= 0 && digit <= 6) {
+    return hari[digit]; 
+  } else {
+    return 'Angka hari tidak valid' ; 
+  } 
+
+}
+
+function getNamaBulan(digit) {
+  const bulan = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  if (digit >= 1 && digit <= 12) {
+    return bulan[digit - 1]; // Karena indeks array dimulai dari 0
+  } else {
+    return 'Angka bulan tidak valid';
+  }
+}
