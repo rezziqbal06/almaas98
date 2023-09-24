@@ -180,6 +180,8 @@ class Order extends JI_Controller
 		$this->com->columns['kunjungan_ke']->value = ++$jumlah_kunjungan;
 
 
+		$status_for_notif = ucfirst($this->com->columns['status']->value);
+
 		$user = $this->bum->id($b_user_id);
 		$b_user_nama = $this->input->post("b_user_nama");
 		if (!$b_user_id || $user->fnama != $b_user_nama) {
@@ -237,6 +239,37 @@ class Order extends JI_Controller
 					$res_hapus = $this->com->del($res);
 				}
 			}
+
+			$produk_item_id = $dip[0]['b_produk_id'] ?? 0;
+			$produk_item = $this->bpim->id($produk_item_id);
+
+			// Notifikasi ke Direktur
+			$title = "Survey Baru";
+			$message = "Alhamdulillah terdapat $status_for_notif baru";
+			if (isset($produk_item->id)) {
+				$message .= " - Blok $produk_item->blok $produk_item->nomor - $produk_item->posisi";
+			}
+			$type = 'artikel';
+			$link = base_url_admin("order");
+			$image = $this->cdn_url("media/logo.png");
+			$payload = new stdClass();
+			$payload->judul = $title;
+			$payload->deskripsi = $message;
+			$payload->jenis = $type;
+			$payload->link = $link;
+			$payload->gambar = $image;
+
+			//get user yang ada notifnya
+			$fcm_tokens = [];
+			$user = $this->apm->getFcmTokenByJabatan('Direktur');
+			foreach ($user as $a) {
+				if (strlen($a->fcm_token) > 9) {
+					$fcm_tokens[] = $a->fcm_token;
+				}
+			}
+
+			$res_notif = 'NOT TRIGGERED';
+			if (count($fcm_tokens)) $res_notif = $this->__pushNotif("android", $fcm_tokens, $title, $message, $type, $image, $payload);
 
 			$this->status = 200;
 			$this->message = API_ADMIN_ERROR_CODES[$this->status];
@@ -781,6 +814,41 @@ class Order extends JI_Controller
 		if ($detail->is_setor == 0) {
 			$this->message = 'Berhasil Disetorkan';
 			$is_setor = 1;
+
+			// Notifikasi ke Marketing Terkait
+			$kode = $detail->kode ?? '';
+			$status = $detail->status ?? 'booking';
+			$status = ucfirst($status);
+			$title = "$status Berhasil";
+			$message = "Alhamdulillah order $kode telah dikonfirmasi";
+
+			$type = 'setor';
+			$link = base_url_admin("order");
+			$image = $this->cdn_url("media/logo.png");
+			$payload = new stdClass();
+			$payload->judul = $title;
+			$payload->deskripsi = $message;
+			$payload->jenis = $type;
+			$payload->link = $link;
+			$payload->gambar = $image;
+
+			$fcm_tokens = [];
+			$user = $this->apm->getFcmTokenById($detail->a_pengguna_id ?? 0);
+			foreach ($user as $a) {
+				if (strlen($a->fcm_token) > 9) {
+					$fcm_tokens[] = $a->fcm_token;
+				}
+			}
+
+			$user = $this->bum->getFcmTokenById($detail->b_user_id ?? 0);
+			foreach ($user as $a) {
+				if (strlen($a->fcm_token) > 9) {
+					$fcm_tokens[] = $a->fcm_token;
+				}
+			}
+
+			$res_notif = 'NOT TRIGGERED';
+			if (count($fcm_tokens)) $res_notif = $this->__pushNotif("android", $fcm_tokens, $title, $message, $type, $image, $payload);
 		}
 		$res = $this->com->update($id, ['is_setor' => $is_setor]);
 		if (!$res) {

@@ -505,4 +505,35 @@ class Pegawai extends JI_Controller
 		}
 		$this->__json_out($data);
 	}
+
+	public function update_token()
+	{
+		$d = $this->__init();
+		$data = array();
+		if (!$this->admin_login) {
+			$this->status = 400;
+			$this->message = 'Harus login';
+			header("HTTP/1.0 400 Harus login");
+			$this->__json_out($data);
+			die();
+		}
+		$token = $this->input->post('token', '');
+		if (!strlen($token)) {
+			$this->status = 401;
+			$this->message = "Token Tidak ada";
+			$this->__json_out($data);
+			die();
+		}
+
+		$res = $this->apm->update($d['sess']->admin->id, ["fcm_token" => $token]);
+		if ($res) {
+			$this->status = 200;
+			$this->message = 'Perubahan berhasil diterapkan';
+		} else {
+			$this->status = 901;
+			$this->message = 'Gagal update token';
+		}
+
+		$this->__json_out($data);
+	}
 }

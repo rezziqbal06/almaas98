@@ -335,4 +335,14 @@ class B_User_Model extends \Model\B_User_Concern
     $this->db->order_by("$this->tbl7_as.id")->group_by("$this->tbl_as.id");
     return $this->db->get("", 0);
   }
+
+  public function getFcmTokenById($id)
+  {
+    $this->db->select_as("$this->tbl_as.fnama", 'nama', 0);
+    $this->db->select_as("$this->tbl_as.fcm_token", 'fcm_token', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->where_as("id", $this->db->esc($id));
+    $this->db->where_as("fcm_token", "", "AND", "!=");
+    return $this->db->get();
+  }
 }

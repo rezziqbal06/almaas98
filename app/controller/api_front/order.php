@@ -822,12 +822,79 @@ class Order extends JI_Controller
 				$this->message = API_ADMIN_ERROR_CODES[$this->status];
 			} else {
 				$_SESSION['is_berhasil_upload'] = true;
+
+				$copm = $this->copm->getByOrder($id);
+				$produk_item_id = $copm->b_produk_id ?? 0;
+				$produk_item = $this->bpim->id($produk_item_id);
+
+				// Notifikasi ke Direktur
+				$title = "Survey Baru";
+				$message = "Alhamdulillah terdapat Booking baru";
+				if (isset($produk_item->id)) {
+					$message .= " - Blok $produk_item->blok $produk_item->nomor - $produk_item->posisi";
+				}
+				$type = 'artikel';
+				$link = base_url_admin("order");
+				$image = $this->cdn_url("media/logo.png");
+				$payload = new stdClass();
+				$payload->judul = $title;
+				$payload->deskripsi = $message;
+				$payload->jenis = $type;
+				$payload->link = $link;
+				$payload->gambar = $image;
+
+				//get user yang ada notifnya
+				$fcm_tokens = [];
+				$user = $this->apm->getFcmTokenByJabatan('Direktur');
+				foreach ($user as $a) {
+					if (strlen($a->fcm_token) > 9) {
+						$fcm_tokens[] = $a->fcm_token;
+					}
+				}
+
+				$res_notif = 'NOT TRIGGERED';
+				if (count($fcm_tokens)) $res_notif = $this->__pushNotif("android", $fcm_tokens, $title, $message, $type, $image, $payload);
 			}
 		} else {
 			$this->status = $resUpload->status;
 			$this->message = $resUpload->message;
 		}
 
+		$this->__json_out($data);
+	}
+
+	public function tes_fcm()
+	{
+		$data = [];
+		// Notifikasi ke Direktur
+		$title = "Survey Baru";
+		$message = "Alhamdulillah terdapat Booking baru";
+		if (isset($produk_item->id)) {
+			$message .= " - Blok $produk_item->blok $produk_item->nomor - $produk_item->posisi";
+		}
+		$type = 'artikel';
+		$link = base_url_admin("order");
+		$image = $this->cdn_url("media/logo.png");
+		$payload = new stdClass();
+		$payload->judul = $title;
+		$payload->deskripsi = $message;
+		$payload->jenis = $type;
+		$payload->link = $link;
+		$payload->gambar = $image;
+
+		//get user yang ada notifnya
+		$fcm_tokens = [];
+		$user = $this->apm->getFcmTokenByJabatan('Direktur');
+		foreach ($user as $a) {
+			if (strlen($a->fcm_token) > 9) {
+				$fcm_tokens[] = $a->fcm_token;
+			}
+		}
+
+		$res = 'NOT TRIGGERED';
+		if (count($fcm_tokens)) $res = $this->__pushNotif("android", $fcm_tokens, $title, $message, $type, $image, $payload);
+
+		$data['res'] = $res;
 		$this->__json_out($data);
 	}
 }

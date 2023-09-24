@@ -9,8 +9,8 @@ class Forgot_Password extends JI_Controller
     public function index()
     {
         $data = $this->__init();
-        $this->setTitle('Lupa password ' . $this->current_reseller->site_title);
-		$this->setDescription('Silakan reset password akun '.$this->current_reseller->nama.' melalui halaman ini');
+        $this->setTitle('Lupa password ' . $this->config->semevar->site_name);
+        $this->setDescription('Silakan reset password akun melalui halaman ini');
 
         $this->putThemeContent("forgot_password/home", $data);
         $this->putThemeContent("forgot_password/home_modal", $data);
