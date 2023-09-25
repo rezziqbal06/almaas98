@@ -217,7 +217,7 @@ $semevar['site_title'] = 'Almaas 98';
 $semevar['site_author'] = $semevar['site_title'];
 $semevar['site_keyword'] = $semevar['site_title'];
 $semevar['site_version'] = '1.0.0-dev';
-$semevar['site_name'] = 'Almaas 98';
+$semevar['site_name'] = 'Almaas 98 Residence';
 $semevar['admin_site_suffix'] = ' - Almaas 98';
 $semevar['site_suffix'] = ' - Almaas 98';
 $semevar['site_motto'] = 'Almaas 98 Residence: Hunian Terjangkau, Hidup Nyaman';
@@ -246,6 +246,7 @@ $semevar['sales_site_description'] = 'Sales portal untuk ' . $semevar['site_name
 $semevar['sales_logo'] = 'media/sales-logo.png';
 $semevar['admin_logo'] = 'media/admin-logo.png';
 $semevar['domain_strict'] = false;
+$semevar['site_address'] = 'Perumahan Almaas 3 Jln. Andir Katapang, Desa Sukamukti Kec. Katapang, Kabupaten Bandung';
 
 //alamat api
 $semevar['api_address'] = 'https://alamat.thecloudalert.com/api/';

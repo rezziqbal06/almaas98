@@ -513,6 +513,7 @@ $('#cetak_kwitansi').click(function(){
                     width: 100%;
                     height: 100%;
                     margin: 0;
+					padding: 0;
                   }
 
                   .rectangle-right-bottom{
@@ -602,7 +603,7 @@ $('#cetak_kwitansi').click(function(){
                     position: absolute;
                     left: 0;
                     z-index: 2;
-                    top: 10%;
+                    top: 3%;
                     letter-spacing: 0.8rem;
                   }
 

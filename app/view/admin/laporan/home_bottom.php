@@ -101,14 +101,14 @@ $('.export-pdf').on('click', function(e){
           <img src="<?= $this->cdn_url("media/logo.png") ?>" alt="main_logo">
         </td>
         <td style="vertical-align: top;">
-          AL-MAAS 98 RESIDENCE
+        <?=$this->config->semevar->site_name?>
         </td>
       </tr>
       <tr>
-        <td> Perumahan Bumi Permai, Jalan Bengawan Solo 17, RT 09 RW 03, Kelurahan Kaliurang, Kecamatan Kebahagiaan, Kota Malang, Jawa Timur, 224352</td>
+        <td><?=$this->config->semevar->site_address?></td>
       </tr>
       <tr>
-        <td>081802803423</td>
+        <td><?=$this->config->semevar->site_number?></td>
       </tr>
     </table>
     <p>
