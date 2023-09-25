@@ -25,7 +25,7 @@ const analytics = getAnalytics(app);
 const messaging = getMessaging(app);
 
 // Function to request notification permission
-async function requestNotificationPermission() {
+export async function requestNotificationPermission() {
     try {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {

@@ -203,13 +203,15 @@ $semevar['send_email'] = true;
 //firebase messaging
 $semevar['fcm'] = new stdClass();
 $semevar['fcm']->version = '';
-$semevar['fcm']->apiKey = '';
-$semevar['fcm']->authDomain = '';
+$semevar['fcm']->apiKey = 'AIzaSyBeGZnEqypNa88Haer2ZUM3L7iSi7RQvZo';
+$semevar['fcm']->authDomain = 'almaas-198bc.firebaseapp.com';
 $semevar['fcm']->databaseURL = '';
-$semevar['fcm']->projectId = '';
-$semevar['fcm']->storageBucket = '';
-$semevar['fcm']->messagingSenderId = '';
-$semevar['fcm']->appId = '';
+$semevar['fcm']->projectId = 'almaas-198bc';
+$semevar['fcm']->storageBucket = 'almaas-198bc.appspot.com';
+$semevar['fcm']->messagingSenderId = '1014167839012';
+$semevar['fcm']->appId = '1:1014167839012:web:6d9906dadd7635674453b1';
+$semevar['fcm']->measurementId = 'G-N3QRP1TY30';
+
 
 $semevar['site_title'] = 'Almaas 98';
 $semevar['site_author'] = $semevar['site_title'];
@@ -232,8 +234,8 @@ $semevar['site_logo'] = new stdClass();
 $semevar['site_logo']->path = 'media/logo.png';
 $semevar['site_logo']->width = '117';
 $semevar['site_logo']->height = '50';
-$semevar['site_email'] = 'ptalmaas98@gmail.com';
-$semevar['site_replyto'] = 'ptalmaas98@gmail.com';
+$semevar['site_email'] = 'hallo@rumahalmaas4.com';
+$semevar['site_replyto'] = 'hallo@rumahalmaas4.com';
 $semevar['email_from'] = $semevar['site_email'];
 $semevar['email_reply'] = $semevar['site_replyto'];
 $semevar['app_name'] = 'CODAPP';

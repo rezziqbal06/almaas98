@@ -9,13 +9,7 @@ class User extends JI_Controller
     $this->lib("seme_email");
     //$this->lib("seme_log");
     $this->load("b_user_concern");
-    $this->load("c_asesmen_concern");
-    $this->load("a_jpenilaian_concern");
-    $this->load("d_value_concern");
-    $this->load("api_front/a_jpenilaian_model", 'ajm');
     $this->load("api_front/b_user_model", 'bum');
-    $this->load("api_front/c_asesmen_model", 'cam');
-    $this->load("api_front/d_value_model", 'dvm');
   }
   private function __genRegKode($user_id, $api_reg_token)
   {
@@ -477,11 +471,11 @@ class User extends JI_Controller
     if ($slug == 'audit-hand-hygiene') {
       $asesmen = $this->dvm->getByFilter($id, $penilai_id, $ajm->id, date('Y-' . (int)$bulan . '-1'), date('Y-' . (int)$bulan . '-t'));
     } else {
-      $asesmen = $this->cam->getByFilter($id, $penilai_id, $ajm->id, date('Y-'.(int)$bulan.'-d'), date('Y-'.(int)$bulan.'-t'));
+      $asesmen = $this->cam->getByFilter($id, $penilai_id, $ajm->id, date('Y-' . (int)$bulan . '-d'), date('Y-' . (int)$bulan . '-t'));
       // dd(json_decode($asesmen[0]->value));
-      if(count($asesmen) > 0){
+      if (count($asesmen) > 0) {
         $asesmen = json_decode($asesmen[0]->value);
-      }else{
+      } else {
         $asesmen = [];
       }
     }
@@ -530,6 +524,58 @@ class User extends JI_Controller
       $this->status = 900;
       $this->message = 'Gagal';
     }
+    $this->__json_out($data);
+  }
+
+  public function tes_email()
+  {
+    $replacer = array();
+    $replacer['site_name'] = $this->config->semevar->site_name;
+    $replacer['fnama'] = "Rezza";
+    $replacer['activation_link'] = "Tes Link";
+    $this->seme_email->flush();
+    $this->seme_email->replyto($this->config->semevar->site_name, $this->config->semevar->site_replyto);
+    $this->seme_email->from($this->config->semevar->site_email, $this->config->semevar->site_name);
+    $this->seme_email->subject('Testing Email');
+    $this->seme_email->to('rezziqbal@gmail.com', "Rezza Muhammad Iqbal");
+    $this->seme_email->template('account_active');
+    $this->seme_email->replacer($replacer);
+    $this->seme_email->send();
+
+    $data = array();
+    $this->status = 200;
+    $this->message = "OK";
+    $this->__json_out($data);
+  }
+
+  public function update_token()
+  {
+    $d = $this->__init();
+    $data = array();
+    if (!$this->user_login) {
+      $this->status = 400;
+      $this->message = 'Harus login';
+      header("HTTP/1.0 400 Harus login");
+      $this->__json_out($data);
+      die();
+    }
+    $token = $this->input->post('token', '');
+    if (!strlen($token)) {
+      $this->status = 401;
+      $this->message = "Token Tidak ada";
+      $this->__json_out($data);
+      die();
+    }
+
+    $res = $this->bum->update($d['sess']->user->id, ["fcm_token" => $token]);
+    if ($res) {
+      $this->status = 200;
+      $this->message = 'Perubahan berhasil diterapkan';
+    } else {
+      $this->status = 901;
+      $this->message = 'Gagal update token';
+    }
+
     $this->__json_out($data);
   }
 }

@@ -28,6 +28,7 @@ class JI_Controller extends \SENE_Controller
     public $is_log = true;
     public $email_send = 1;
     public $wa_send = 0;
+    var $fcm_server_token = 'AAAA7CEdISQ:APA91bFhXXtvx3QBY6YmecwgilBKHQhfWqAmAu0WO5lWmL8DT7XUrgrLeSJzzwsTcWRj-gbnRhEW1dG3S3mYWlzyNRfFIWdC2H-WaJTD54_iPBSIWA3dYFya08UZmg-RmC5ofZfJORh0';
 
     public function __construct()
     {
@@ -386,6 +387,8 @@ class JI_Controller extends \SENE_Controller
                 'message' => $message,
                 'image' => $image,
                 'type' => $type,
+                'click_action' => $extras->link ?? base_url(),
+                'link' => $extras->link ?? base_url(),
                 'sound' => 'default',
                 'cdate' => date("Y-m-d H:i:s"),
                 'extras' => json_encode($extras),
@@ -401,6 +404,8 @@ class JI_Controller extends \SENE_Controller
                 'message' => $message,
                 'image' => $image,
                 'type' => $type,
+                'click_action' => $extras->link ?? base_url(),
+                'link' => $extras->link ?? base_url(),
                 'sound' => 'default',
                 'cdate' => date("Y-m-d H:i:s"),
                 'extras' => json_encode($extras),
@@ -427,6 +432,7 @@ class JI_Controller extends \SENE_Controller
             //die('Curl failed: ' . c
         }
         curl_close($ch);
+
         //error_log('FCM FIRE: '.$result);
         $jres = json_decode($result);
         if (isset($jres->success)) {

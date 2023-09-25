@@ -30,7 +30,7 @@
                 <input id="ipassword" type="password" class="form-control" placeholder="password" aria-label="Password">
             </div>
 
-            <a href="<?= base_url("lupa_password") ?>"><small>Lupa password</small></a>
+            <a href="<?= base_url("forgot_password") ?>"><small>Lupa password</small></a>
             <div class="text-center mb-5">
                 <button type="submit" class="btn btn-lg btn-lg bg-secondary w-100 mt-4 mb-0 btn-submit"><i class="icon-submit fa fa-login"></i> Masuk</button>
             </div>

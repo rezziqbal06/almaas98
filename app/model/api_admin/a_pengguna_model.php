@@ -287,4 +287,32 @@ class A_Pengguna_Model extends \Model\A_Pengguna_Concern
     }
     return 0;
   }
+  public function getYangAdaNotifnya()
+  {
+    $this->db->select_as("$this->tbl_as.nama", 'nama', 0);
+    $this->db->select_as("$this->tbl_as.fcm_token", 'fcm_token', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->where_as("fcm_token", "", "AND", "!=");
+    return $this->db->get();
+  }
+
+  public function getFcmTokenByJabatan($a_jabatan_nama)
+  {
+    $this->db->select_as("$this->tbl_as.nama", 'nama', 0);
+    $this->db->select_as("$this->tbl_as.fcm_token", 'fcm_token', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->where_as("a_jabatan_nama", $this->db->esc($a_jabatan_nama));
+    $this->db->where_as("fcm_token", "", "AND", "!=");
+    return $this->db->get();
+  }
+
+  public function getFcmTokenById($id)
+  {
+    $this->db->select_as("$this->tbl_as.nama", 'nama', 0);
+    $this->db->select_as("$this->tbl_as.fcm_token", 'fcm_token', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->where_as("id", $this->db->esc($id));
+    $this->db->where_as("fcm_token", "", "AND", "!=");
+    return $this->db->get();
+  }
 }
