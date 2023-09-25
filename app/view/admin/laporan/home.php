@@ -68,14 +68,14 @@
         <div class="card-body">
             <div class="table-responsive" id="surveyon_res" style="display: none;">
                 <section id="table-surveyon" data-label="LIST SURVEYON">
-                    <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
+                    <table class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Kawasan</th>
-                                <th>Nama</th>
-                                <th>NIK</th>
-                                <th>Telepon</th>
+                                <th class="brt bl" style="width: 3%;">No.</th>
+                                <th class="brt">Kawasan</th>
+                                <th class="brt">Nama</th>
+                                <th class="brt">NIK</th>
+                                <th class="brt">Telepon</th>
                             </tr>
                         </thead>
                         <tbody id="surveyon_tbody"></tbody>
@@ -101,13 +101,13 @@
         <div class="card-body">
             <div class="table-responsive" id="omset_res" style="display: none;">
                 <section id="table-omset" data-label="OMSET PERBULAN">
-                    <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
+                    <table class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Bulan</th>
-                                <th>Jumlah</th>
-                                <th>Omset</th>
+                                <th class="brt bl" style="width: 3%;">No.</th>
+                                <th class="brt">Bulan</th>
+                                <th class="brt">Jumlah</th>
+                                <th class="brt">Omset</th>
                             </tr>
                         </thead>
                         <tbody id="omset_tbody"></tbody>
@@ -133,22 +133,21 @@
             <div class="table-responsive" id="unit_terboking_res" style="display: none;">
                 <section id="table-unit_terboking" data-label="UNIT TERBOOKING">
                     <p>
-                    <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
+                    <table class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Kawasan</th>
-                                <th>Konsumen</th>
-                                <th>Lantai</th>
-                                <th>lb/lt</th>
-                                <th>Marketing</th>
-                                <th>Nomor</th>
-                                <th>Posisi</th>
-                                <th>Status</th>
-                                <th>Tanggal Pesan</th>
-                                <th>Tipe</th>
-                                <th>Total Harga</th>
-                                <th>Unit</th>
+                                <th class="brt bl" style="width: 3%;">No.</th>
+                                <th class="brt" style="">Kawasan</th>
+                                <th class="brt" style="">Konsumen</th>
+                                <th class="brt" style="">Lantai</th>
+                                <th class="brt" style="">lb/lt</th>
+                                <th class="brt" style="">Marketing</th>
+                                <th class="brt" style="">Nomor</th>
+                                <th class="brt" style="">Posisi</th>
+                                <th class="brt" style="">Tanggal Pesan</th>
+                                <th class="brt" style="">Tipe</th>
+                                <th class="brt" style="">Total Harga</th>
+                                <th class="brt" style="">Unit</th>
                             </tr>
                         </thead>
                         <tbody id="unit_terboking_tbody"></tbody>
@@ -174,22 +173,21 @@
         <div class="card-body">
             <div class="table-responsive" id="unit_terjual_res" style="display: none;">
                 <section id="table-unit_terjual" data-label="UNIT TERJUAL">
-                    <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
+                    <table class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Kawasan</th>
-                                <th>Konsumen</th>
-                                <th>Lantai</th>
-                                <th>lb/lt</th>
-                                <th>Marketing</th>
-                                <th>Nomor</th>
-                                <th>Posisi</th>
-                                <th>Status</th>
-                                <th>Tanggal Pesan</th>
-                                <th>Tipe</th>
-                                <th>Total Harga</th>
-                                <th>Unit</th>
+                                <th class="brt bl" style="width: 3%;">No.</th>
+                                <th class="brt">Kawasan</th>
+                                <th class="brt">Konsumen</th>
+                                <th class="brt">Lantai</th>
+                                <th class="brt">lb/lt</th>
+                                <th class="brt">Marketing</th>
+                                <th class="brt">Nomor</th>
+                                <th class="brt">Posisi</th>
+                                <th class="brt">Tanggal Pesan</th>
+                                <th class="brt">Tipe</th>
+                                <th class="brt">Total Harga</th>
+                                <th class="brt">Unit</th>
                             </tr>
                         </thead>
                         <tbody id="unit_terjual_tbody"></tbody>
@@ -214,19 +212,19 @@
         <div class="card-body">
             <div class="table-responsive" id="unit_tersedia_res" style="display: none;">
                 <section id="table-unit_tersedia" data-label="UNIT TERJUAL">
-                    <table class="table table-vcenter table-hover dt-wow table-parent" cellspacing="0">
+                    <table class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Blok</th>
-                                <th>Harga</th>
-                                <th>Kawasan</th>
-                                <th>Lantai</th>
-                                <th>lb/lt</th>
-                                <th>Nomor</th>
-                                <th>Posisi</th>
-                                <th>Tipe</th>
-                                <th>Unit</th>
+                                <th class="brt bl" style="width: 3%;">No.</th>
+                                <th class="brt">Blok</th>
+                                <th class="brt">Harga</th>
+                                <th class="brt">Kawasan</th>
+                                <th class="brt">Lantai</th>
+                                <th class="brt">lb/lt</th>
+                                <th class="brt">Nomor</th>
+                                <th class="brt">Posisi</th>
+                                <th class="brt">Tipe</th>
+                                <th class="brt">Unit</th>
                             </tr>
                         </thead>
                         <tbody id="unit_tersedia_tbody"></tbody>

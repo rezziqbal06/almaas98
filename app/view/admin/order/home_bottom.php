@@ -495,26 +495,15 @@ $('#cetak_kwitansi').click(function(){
       if(dt.data.detail){
         var detail = dt.data.detail;
         var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
-
-        const newWindow = window.open("about:blank");
-        if (newWindow) {
-          const contentToPrint = `<html>
+         const contentToPrint = `<html>
 
             <head>
               <style>
-                @page{
-                  size: auto;
-                  margin: 0;
-                  background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
-                  background-repeat: no-repeat;
-                  background-size: 100% 100%;	
-                  print-color-adjust: exact;
-                }
-                @media print {
                   @page {
                     size: 320.0853mm 99.99705mm;
                     width: 100%;
                     margin: 0;
+                    background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
                   }
                   .contents {
                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
@@ -528,9 +517,7 @@ $('#cetak_kwitansi').click(function(){
 
                   .rectangle-right-bottom{
                     background-color: white;
-                  }
-                  .rectangle-right-bottom{
-                    background-color: white;
+                    border-top-left-radius: 100px;
                   }
 
                   .rectangle-right-bottom-1{
@@ -573,7 +560,7 @@ $('#cetak_kwitansi').click(function(){
                   }
                   .content{
                     position: absolute;
-                    right: 30%;
+                    right: 15%;
                   }
 
                   table{
@@ -608,14 +595,14 @@ $('#cetak_kwitansi').click(function(){
                   td{
                     padding: 0.5rem;
                     vertical-align: top;
-                    font-size: 1.2rem;
+                    font-size: 1rem;
                   }
                   
                   .kwitansi-header{
                     position: absolute;
-                    top: -25%;
                     left: 0;
                     z-index: 2;
+                    top: 10%;
                     letter-spacing: 0.8rem;
                   }
 
@@ -630,7 +617,7 @@ $('#cetak_kwitansi').click(function(){
                     max-height: 5.5rem;
                     height: 5.5rem;
                   }
-                }
+                
               </style>
               <title>Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}</title>
             </head>
@@ -639,7 +626,7 @@ $('#cetak_kwitansi').click(function(){
                 <div class="contents">
                   <table style="width: 100%;">
                     <tr>
-                      <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
+                      <td><div class="rectangle-top-left"></div> <h2 class="kwitansi-header">KWITANSI</h2></td>
                       <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
                     </tr>
                   </table>
@@ -665,7 +652,7 @@ $('#cetak_kwitansi').click(function(){
                       <td style="white-space: nowrap;">Untuk Pembayaran</td>
                       <td>:</td>
                       <td class="min-h">${detail.catatan ?? '-'}</td>
-                      <td style="position: relative;" class="vertical-align-top"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
+                      <td style="position: relative;" class="vertical-align-top rectangle-right-bottom"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
                     </tr>
                     <tr>
                       <td colspan="3"></td>
@@ -680,15 +667,24 @@ $('#cetak_kwitansi').click(function(){
             </body>
 
             </html>`;
+            
+        const options = {
+            margin: 0,
+            filename: `Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}`,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 2 },
+             jsPDF: { 
+                unit: 'mm',
+                format: [99.99705, 320.0853], // Set the custom paper size here
+                orientation: 'landscape' 
+            },
+        };
 
-          newWindow.document.open();
-          newWindow.document.write(contentToPrint);
-          newWindow.document.close();
-          console.log(contentToPrint)
-          newWindow.print();
-          newWindow.close();
-      }
-
+        // Fungsi untuk mengonversi ke PDF
+        html2pdf()
+            .from(contentToPrint)
+            .set(options)
+            .save()
 
       }
       

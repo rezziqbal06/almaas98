@@ -70,10 +70,12 @@
 
 <!-- modal kwitansi -->
 <style>
-    #modal_kwitansi .modal-content {
-        min-height: 377.95px !important;
-        height: 100%;
-        width: 1209.45px !important;
+    @media only screen and (min-width: 768px){
+        #modal_kwitansi .modal-content {
+            min-height: 377.95px !important;
+            height: 100%;
+            width: 1209.45px !important;
+        }
     }
 
     #modal_kwitansi .modal-dialog {
@@ -85,7 +87,7 @@
         background-repeat: no-repeat;
         background-size: 100% 100%;
         min-height: 50vh;
-        overflow: hidden;
+        overflow: scroll;
         position: relative;
     }
 

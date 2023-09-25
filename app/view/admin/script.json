@@ -16,5 +16,6 @@
   "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js\"><\/script>",
   "<script type=\"module\" src=\"https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js\"><\/script>",
   "<script type=\"module\" src=\"https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging.js\"><\/script>",
-  "<script type=\"module\" src=\"{{cdn_url}}skin/admin/js/init-firebase.js\"><\/script>"
+  "<script type=\"module\" src=\"{{cdn_url}}skin/admin/js/init-firebase.js\"><\/script>",
+  "<script src=\"{{cdn_url}}skin/admin/js/jsPDF.js\"><\/script>"
 ]

@@ -5,18 +5,8 @@ $('.export-pdf').on('click', function(e){
   var bodies = $(`#${$(this).data('tipe')}`).html()
   var contents = `
   <center>
-    <h3>${$(this).data('label') ?? ''}</h3>
+    <h5>${$(this).data('label') ?? ''}</h5>
   </center>
-    <table>
-    <tr>
-      <td>Periode</td>
-      <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
-    </tr>
-    <tr>
-      <td>Kawasan</td>
-      <td>: ${$('#kawasan option:selected').text()}</td>
-    </tr>
-    </table>
     ${bodies}
   `
   if($(this).data('tipe') == "all"){
@@ -24,41 +14,18 @@ $('.export-pdf').on('click', function(e){
     $.each($('section'), function(idex, val){
       contents += `
       <center>
-        <h3>${$(this).data('label') ?? ''}</h3>
+        <h5>${$(this).data('label') ?? ''}</h5>
       </center>
-      <table>
-        <tr>
-          <td>Periode</td>
-          <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
-        </tr>
-        <tr>
-          <td>Kawasan</td>
-          <td>: ${$('#kawasan option:selected').text()}</td>
-        </tr>
-      </table>
       <p>${$(this).html()}</p>
       
       `
     })
   }
   
-  const newWindow = window.open("about:blank");
-  if (newWindow) {
-  const contentToPrint = `<html>
+  var contentToPrint = `<html>
 
   <head>
     <style>
-      @page {
-        size: auto;
-        margin: 0;
-      }
-
-      @media print {
-        @page {
-          size: 210mm 297mm;
-          /* A4 */
-        }
-
         .table th {
           font-weight: bold;
         }
@@ -79,6 +46,7 @@ $('.export-pdf').on('click', function(e){
         td {
           font-size: 0.85rem;
           padding: 0.3rem;
+          word-wrap: break-word;
         }
 
 
@@ -92,43 +60,47 @@ $('.export-pdf').on('click', function(e){
 
         .table-parent {
           border-collapse: separate;
-          border: 1px solid black;
-          border-left: none;
           width: 100%;
         }
 
         .table-parent thead th {
-          border: 1px solid black;
-          border-right: none;
-          border-top: none;
-          border-bottom: none;
           white-space: nowrap;
           font-size: 0.65rem;
+          text-align: center;
+        }
+
+        .table-parent tr{
+          border-bottom: 0.2px solid gray;
         }
 
         .table-parent tbody td {
-          border: 1px solid black;
-          border-right: none;
-          border-bottom: none;
-          font-size: 0.65rem;
+          font-size: 0.6rem;
           text-align: left;
         }
 
         *{
           font-family: courier, courier new, serif;
         }
-      }
+
+        .brt{
+          border-right: 0.2px solid gray; border-top: 0.2px solid gray
+        }
+
+        .bl{
+          border-left: 0.2px solid gray;
+        }
+      
     </style>
     <title>${$(this).data('label')}_${$('#start_date').val()}-${$('#end_date').val()}</title>
   </head>
 
   <body>
-    <table>
+    <table style="width: 100%; margin: 0; padding: 0">
       <tr>
-        <td rowspan="3" class="td-responsive">
+        <td rowspan="3" class="td-responsive" style="vertical-align: top !important;">
           <img src="<?= $this->cdn_url("media/logo.png") ?>" alt="main_logo">
         </td>
-        <td>
+        <td style="vertical-align: top;">
           AL-MAAS 98 RESIDENCE
         </td>
       </tr>
@@ -142,6 +114,16 @@ $('.export-pdf').on('click', function(e){
     <p>
       <hr>
     </p>
+    <table>
+      <tr>
+        <td>Periode</td>
+        <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
+      </tr>
+      <tr>
+        <td>Kawasan</td>
+        <td>: ${$('#kawasan option:selected').text()}</td>
+      </tr>
+    </table>
     <p>${contents}</p>
 
     <p>
@@ -168,13 +150,20 @@ $('.export-pdf').on('click', function(e){
 
   </html>`;
 
-  newWindow.document.open();
-  newWindow.document.write(contentToPrint);
-  newWindow.document.close();
+  contentToPrint = contentToPrint.replaceAll('class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0"', 'class="table-parent" cellspacing="0"')
 
-  newWindow.print();
-  newWindow.close();
-  }
+   const pdfOptions = {
+    margin: 5,
+    filename: `${$(this).data('tipe') != "all" ? $(this).data('label'): "Laporan"}_${$('#start_date').val()}-${$('#end_date').val()}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 }, 
+    html2canvas: { scale: 2 }, 
+    jsPDF: { unit: 'mm', format: 'a4' }, // Format dan orientasi halaman
+    pagebreak: { mode: ['avoid-all'] }, // Mode halaman (menghindari pemotongan)
+    autoTable: { styles: { overflow: 'linebreak' }, tableWidth: 'auto' }, // Opsi autoTable
+  };
+
+  html2pdf().from(contentToPrint).set(pdfOptions).save()
+
 })
 
 $('.datepicker').datepicker({format: 'yyyy-mm-dd'})
@@ -219,11 +208,11 @@ function filter(){
           res.data.list_surveyon.map((val, idx) => {
           surveyon_tbody += `
           <tr>
-            <td>${idx + 1}</td>
-            <td>${val.kawasan ?? ''}</td>
-            <td>${val.nama ?? ''}</td>
-            <td>${val.nik ?? ''}</td>
-            <td>${val.telp ?? ''}</td>
+            <td class="brt bl">${idx + 1}</td>
+            <td class="brt">${val.kawasan ?? ''}</td>
+            <td class="brt">${val.nama ?? ''}</td>
+            <td class="brt">${val.nik ?? ''}</td>
+            <td class="brt">${val.telp ?? ''}</td>
           </tr>
           `
           })
@@ -250,10 +239,10 @@ function filter(){
           res.data.omset.map((val, idx) => {
           omset_tbody += `
           <tr>
-            <td>${idx + 1}</td>
-            <td>${val.bulan ?? ''}</td>
-            <td>${val.jumlah ?? ''}</td>
-            <td>Rp. ${val.omset ?? 0}</td>
+            <td class="brt bl">${idx + 1}</td>
+            <td class="brt">${val.bulan ?? ''}</td>
+            <td class="brt">${val.jumlah ?? ''}</td>
+            <td class="brt">Rp. ${val.omset ?? 0}</td>
           </tr>
           `
           })
@@ -267,19 +256,18 @@ function filter(){
           res.data.unit_booking.map((val, idx) => {
           unit_terboking += `
           <tr>
-            <td class="border-print">${idx + 1}</td>
-            <td class="border-print">${val.kawasan ?? ''}</td>
-            <td class="border-print">${val.konsumen ?? ''}</td>
-            <td class="border-print">${val.lantai ?? ''}</td>
-            <td class="border-print">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
-            <td class="border-print">${val.marketing ?? ''}</td>
-            <td class="border-print">${val.nomor ?? ''}</td>
-            <td class="border-print">${val.posisi ?? ''}</td>
-            <td class="border-print">${val.status ?? ''}</td>
-            <td class="border-print">${val.tgl_pesan ?? ''}</td>
-            <td class="border-print">${val.tipe ?? ''}</td>
-            <td class="border-print">${val.total_harga ?? ''}</td>
-            <td class="border-print">${val.unit ?? ''}</td>
+            <td class="brt bl">${idx + 1}</td>
+            <td class="brt">${val.kawasan ?? ''}</td>
+            <td class="brt">${val.konsumen ?? ''}</td>
+            <td class="brt">${val.lantai ?? ''}</td>
+            <td class="brt">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
+            <td class="brt">${val.marketing ?? ''}</td>
+            <td class="brt">${val.nomor ?? ''}</td>
+            <td class="brt">${val.posisi ?? ''}</td>
+            <td class="brt">${val.tgl_pesan ?? ''}</td>
+            <td class="brt">${val.tipe ?? ''}</td>
+            <td class="brt">${val.total_harga ?? ''}</td>
+            <td class="brt">${val.unit ?? ''}</td>
           </tr>
           `
           })
@@ -294,19 +282,18 @@ function filter(){
           res.data.unit_terjual.map((val, idx) => {
           unit_terjual += `
           <tr>
-            <td class="border-print">${idx + 1}</td>
-            <td class="border-print">${val.kawasan ?? ''}</td>
-            <td class="border-print">${val.konsumen ?? ''}</td>
-            <td class="border-print">${val.lantai ?? ''}</td>
-            <td class="border-print">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
-            <td class="border-print">${val.marketing ?? ''}</td>
-            <td class="border-print">${val.nomor ?? ''}</td>
-            <td class="border-print">${val.posisi ?? ''}</td>
-            <td class="border-print">${val.status ?? ''}</td>
-            <td class="border-print">${val.tgl_pesan ?? ''}</td>
-            <td class="border-print">${val.tipe ?? ''}</td>
-            <td class="border-print">${val.total_harga ?? ''}</td>
-            <td class="border-print">${val.unit ?? ''}</td>
+            <td class="brt bl">${idx + 1}</td>
+            <td class="brt">${val.kawasan ?? ''}</td>
+            <td class="brt">${val.konsumen ?? ''}</td>
+            <td class="brt">${val.lantai ?? ''}</td>
+            <td class="brt">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
+            <td class="brt">${val.marketing ?? ''}</td>
+            <td class="brt">${val.nomor ?? ''}</td>
+            <td class="brt">${val.posisi ?? ''}</td>
+            <td class="brt">${val.tgl_pesan ?? ''}</td>
+            <td class="brt">${val.tipe ?? ''}</td>
+            <td class="brt">${val.total_harga ?? ''}</td>
+            <td class="brt">${val.unit ?? ''}</td>
           </tr>
           `
           })
@@ -321,16 +308,16 @@ function filter(){
           res.data.unit_tersedia.map((val, idx) => {
           unit_tersedia += `
           <tr>
-            <td class="border-print">${idx + 1}</td>
-            <td class="border-print">${val.blok ?? ''}</td>
-            <td class="border-print">${val.harga ?? ''}</td>
-            <td class="border-print">${val.kawasan ?? ''}</td>
-            <td class="border-print">${val.lantai ?? ''}</td>
-            <td class="border-print">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
-            <td class="border-print">${val.nomor ?? ''}</td>
-            <td class="border-print">${val.posisi ?? ''}</td>
-            <td class="border-print">${val.tipe ?? ''}</td>
-            <td class="border-print">${val.unit ?? ''}</td>
+            <td class="brt bl">${idx + 1}</td>
+            <td class="brt">${val.blok ?? ''}</td>
+            <td class="brt">${val.harga ?? ''}</td>
+            <td class="brt">${val.kawasan ?? ''}</td>
+            <td class="brt">${val.lantai ?? ''}</td>
+            <td class="brt">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
+            <td class="brt">${val.nomor ?? ''}</td>
+            <td class="brt">${val.posisi ?? ''}</td>
+            <td class="brt">${val.tipe ?? ''}</td>
+            <td class="brt">${val.unit ?? ''}</td>
           </tr>
           `
           })
