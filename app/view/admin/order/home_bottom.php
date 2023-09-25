@@ -470,6 +470,7 @@ $(document).on('click', '.asetorkan', function(e){
 $("#bkwitansi").on('click', function(e){
 	e.preventDefault();
 	
+  if('ontouchstart' in window == false && window.matchMedia("(orientation: portrait)").matches == false) {
   $.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
       order = dt.data;
       if(dt.data.detail){
@@ -487,10 +488,69 @@ $("#bkwitansi").on('click', function(e){
       
     })
 	$("#modal_kwitansi").modal('show')
+  } else{
+    cetak_handler()
+  }
 });
 
 $('#cetak_kwitansi').click(function(){
-   $.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
+  cetak_handler()
+})
+
+function terbilangRupiah (nominal){
+  const bilangan = [
+    "", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh",
+        "Sebelas"]
+
+  if(nominal < 12){
+    return bilangan[nominal]
+  } else if(nominal < 20){
+    return bilangan[nominal - 10] + " Belas";
+  } else if(nominal < 100){
+    return bilangan[Math.floor(nominal / 10)] + " Puluh " + bilangan[nominal % 10];
+  } else if (nominal < 200) {
+    return "Seratus " + terbilangRupiah(nominal - 100);
+  } else if(nominal < 1000) {
+      return bilangan[Math.floor(nominal / 100)] + " Ratus " + terbilangRupiah(nominal % 100);
+  } else if (nominal < 2000) {
+      return "Seribu " + terbilangRupiah(nominal - 1000);
+  } else if (nominal < 1000000) {
+      return terbilangRupiah(Math.floor(nominal / 1000)) + " Ribu " + terbilangRupiah(nominal % 1000);
+  } else if (nominal < 1000000000) {
+      return terbilangRupiah(Math.floor(nominal / 1000000)) + " Juta " + terbilangRupiah(nominal % 1000000);
+  } else if (nominal < 1000000000000) {
+      return terbilangRupiah(Math.floor(nominal / 1000000000)) + " Miliar " + terbilangRupiah(nominal % 1000000000);
+  } else {
+      return "nilai terlalu besar";
+  }
+}
+
+function getNamaHari(digit) {
+  const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+  if (digit >= 0 && digit <= 6) {
+    return hari[digit]; 
+  } else {
+    return 'Angka hari tidak valid' ; 
+  } 
+
+}
+
+function getNamaBulan(digit) {
+  const bulan = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  if (digit >= 1 && digit <= 12) {
+    return bulan[digit - 1]; // Karena indeks array dimulai dari 0
+  } else {
+    return 'Angka bulan tidak valid';
+  }
+}
+
+function cetak_handler(){
+    $.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
       order = dt.data;
       if(dt.data.detail){
         var detail = dt.data.detail;
@@ -500,20 +560,31 @@ $('#cetak_kwitansi').click(function(){
             <head>
               <style>
                   @page {
-                    size: 320.0853mm 99.99705mm;
+                    size: 320.0853px 99.99705px;
                     width: 100%;
                     margin: 0;
                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;	print-color-adjust: exact;
+                    
                   }
+
+                  body{
+                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;	
+                    print-color-adjust: exact;
+                  }                  
+
                   .contents {
                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
                     background-repeat: no-repeat;
                     background-size: 100% 100%;	
                     print-color-adjust: exact;
-                    width: 100%;
-                    height: 100%;
+                    width: 320.0853mm;
+                    height: 99.99705mm;
                     margin: 0;
-					padding: 0;
+					          padding: 0;
                   }
 
                   .rectangle-right-bottom{
@@ -601,7 +672,7 @@ $('#cetak_kwitansi').click(function(){
                   
                   .kwitansi-header{
                     position: absolute;
-                    left: 0;
+                    left: 1%;
                     z-index: 2;
                     top: 3%;
                     letter-spacing: 0.8rem;
@@ -690,56 +761,4 @@ $('#cetak_kwitansi').click(function(){
       }
       
     })
-})
-
-function terbilangRupiah (nominal){
-  const bilangan = [
-    "", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh",
-        "Sebelas"]
-
-  if(nominal < 12){
-    return bilangan[nominal]
-  } else if(nominal < 20){
-    return bilangan[nominal - 10] + " Belas";
-  } else if(nominal < 100){
-    return bilangan[Math.floor(nominal / 10)] + " Puluh " + bilangan[nominal % 10];
-  } else if (nominal < 200) {
-    return "Seratus " + terbilangRupiah(nominal - 100);
-  } else if(nominal < 1000) {
-      return bilangan[Math.floor(nominal / 100)] + " Ratus " + terbilangRupiah(nominal % 100);
-  } else if (nominal < 2000) {
-      return "Seribu " + terbilangRupiah(nominal - 1000);
-  } else if (nominal < 1000000) {
-      return terbilangRupiah(Math.floor(nominal / 1000)) + " Ribu " + terbilangRupiah(nominal % 1000);
-  } else if (nominal < 1000000000) {
-      return terbilangRupiah(Math.floor(nominal / 1000000)) + " Juta " + terbilangRupiah(nominal % 1000000);
-  } else if (nominal < 1000000000000) {
-      return terbilangRupiah(Math.floor(nominal / 1000000000)) + " Miliar " + terbilangRupiah(nominal % 1000000000);
-  } else {
-      return "nilai terlalu besar";
-  }
-}
-
-function getNamaHari(digit) {
-  const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-
-  if (digit >= 0 && digit <= 6) {
-    return hari[digit]; 
-  } else {
-    return 'Angka hari tidak valid' ; 
-  } 
-
-}
-
-function getNamaBulan(digit) {
-  const bulan = [
-    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-  ];
-
-  if (digit >= 1 && digit <= 12) {
-    return bulan[digit - 1]; // Karena indeks array dimulai dari 0
-  } else {
-    return 'Angka bulan tidak valid';
-  }
 }

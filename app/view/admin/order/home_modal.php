@@ -70,32 +70,37 @@
 
 <!-- modal kwitansi -->
 <style>
-    @media only screen and (min-width: 768px){
+    @media only screen and (min-width: 364) {
         #modal_kwitansi .modal-content {
             min-height: 377.95px !important;
             height: 100%;
+
             width: 1209.45px !important;
         }
     }
 
+    
     #modal_kwitansi .modal-dialog {
-        max-width: 1209.45px;
+        max-width: 1209.45px !important;
     }
 
-    #modal_kwitansi .modal-body {
+    #modal_kwitansi .contents {
         background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
         background-repeat: no-repeat;
         background-size: 100% 100%;
-        min-height: 50vh;
-        overflow: scroll;
-        position: relative;
+        print-color-adjust: exact;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
     }
 
-    #modal_kwitansi .rectangle-right-bottom {
+    .rectangle-right-bottom {
         background-color: white;
+        border-top-left-radius: 100px;
     }
 
-    #modal_kwitansi .rectangle-right-bottom-1 {
+    .rectangle-right-bottom-1 {
         background-color: white;
         border-right: 100px solid white;
         content: "";
@@ -109,7 +114,7 @@
         height: 100%;
     }
 
-    #modal_kwitansi .rectangle-right-bottom-2 {
+    .rectangle-right-bottom-2 {
         background-color: white;
         content: "";
         position: absolute;
@@ -122,7 +127,7 @@
         height: 100%;
     }
 
-    #modal_kwitansi .rectangle-right-bottom-3 {
+    .rectangle-right-bottom-3 {
         background-color: white;
         content: "";
         position: absolute;
@@ -136,24 +141,29 @@
         height: 100%;
     }
 
+    .content {
+        position: absolute;
+        right: 15%;
+    }
+
     #modal_kwitansi table {
         border-collapse: collapse;
         position: relative;
         overflow: hidden;
     }
 
-    #modal_kwitansi .vertical-align-top {
+    #modal_kwitansi.vertical-align-top {
         vertical-align: top;
         text-align: center;
     }
 
-    #modal_kwitansi .vertical-align-bottom {
+    #modal_kwitansi.vertical-align-bottom {
         padding-bottom: 2rem;
         vertical-align: bottom;
         text-align: center;
     }
 
-    #modal_kwitansi .rectangle-top-left {
+    .rectangle-top-left {
         background-color: white;
         position: absolute;
         z-index: 1;
@@ -171,6 +181,14 @@
         font-size: 1rem;
     }
 
+    #modal_kwitansi .kwitansi-header {
+        position: absolute;
+        left: 0;
+        z-index: 2;
+        top: 3%;
+        letter-spacing: 0.8rem;
+    }
+
     #modal_kwitansi table tr {
         margin: 0;
     }
@@ -178,78 +196,83 @@
     #modal_kwitansi .position-relative {
         position: relative;
     }
+
+    #modal_kwitansi .min-h {
+        max-height: 5.5rem;
+        height: 5.5rem;
+    }
 </style>
 <div id="modal_kwitansi" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <div class="rectangle-right-bottom">
-                    <h3 style="margin: 0; padding: 0">KWITANSI</h3>
-                </div>
-            </div>
             <!-- Modal Body -->
-            <div class="modal-body">
+            <div class="modal-body overflow-auto position-relative">
                 <!-- Header -->
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 20%;">
-                        </td>
-                        <td></td>
-                        <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
-                    </tr>
-                </table>
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="white-space: nowrap;">No</td>
-                        <td style="width: 1%;">:</td>
-                        <td>
-                            <div id="no_kwitansi"></div>
-                        </td>
-                        <td rowspan="6"></td>
-                        <td style="width: 30%;" rowspan="3"></td>
-                    </tr>
-                    <tr>
-                        <td style="white-space: nowrap;">Diterima dari</td>
-                        <td>:</td>
-                        <td>
-                            <div id="kwitansi_diterima_dari"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="white-space: nowrap;">Uang Sejumlah</td>
-                        <td>:</td>
-                        <td>
-                            <div id="kwitansi_uang_sejumlah"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="white-space: nowrap;">Untuk Pembayaran</td>
-                        <td>:</td>
-                        <td>
-                            <div id="kwitansi_untuk_pembayaran"></div>
-                        </td>
-                        <td style="position: relative;" class="rectangle-right-bottom vertical-align-top">
-                            <center>
-                                <div id="kwitansi_tanggal_sekarang"></div>
-                            </center>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"></td>
-                        <td style="position: relative;" class="rectangle-right-bottom">
-                        </td>
-                    </tr>
-                    <tr class="position-relative">
-                        <td colspan="3">
-                            <div id="kwitansi_nominal"></div>
-                        </td>
-                        <td style="position: relative;" class="rectangle-right-bottom vertical-align-bottom">
-                            <center>YAYAT HENDRAYANA</center>
-                        </td>
-                    </tr>
-                </table>
-
+                <div class="contents">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <div class="rectangle-top-left"></div>
+                                <h2 class="kwitansi-header">KWITANSI</h2>
+                            </td>
+                            <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="white-space: nowrap;">No</td>
+                            <td style="width: 1%;">:</td>
+                            <td>
+                                <div id="no_kwitansi"></div>
+                            </td>
+                            <td rowspan="6"></td>
+                            <td style="width: 30%;" rowspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">Diterima dari</td>
+                            <td>:</td>
+                            <td>
+                                <div id="kwitansi_diterima_dari"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">Uang Sejumlah</td>
+                            <td>:</td>
+                            <td>
+                                <div id="kwitansi_uang_sejumlah"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">Untuk Pembayaran</td>
+                            <td>:</td>
+                            <td class="min-h">
+                                <div id="kwitansi_untuk_pembayaran"></div>
+                            </td>
+                            <td style="position: relative;" class="vertical-align-top rectangle-right-bottom">
+                                <div class="rectangle-right-bottom-1"></div>
+                                <center>
+                                    <div id="kwitansi_tanggal_sekarang" class="content"></div>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td style="position: relative;" class="rectangle-right-bottom">
+                                <div class="rectangle-right-bottom-2"></div>
+                            </td>
+                        </tr>
+                        <tr class="position-relative">
+                            <td colspan="3">
+                                <div id="kwitansi_nominal"></div>
+                            </td>
+                            <td style="position: relative;" class="rectangle-right-bottom vertical-align-bottom">
+                                <div class="rectangle-right-bottom-3"></div>
+                                <center class="content">YAYAT HENDRAYANA</center>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer"><button type="button" id="cetak_kwitansi" class="btn btn-secondary">Cetak Kwitansi</button></div>
         </div>
