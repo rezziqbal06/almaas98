@@ -663,17 +663,17 @@ function cetak_handler(){
                     background-color: white;
                     position: absolute;
                     z-index: 1;
-                    width: 55%;
+                    width: 60%;
                     transform: skewX(-15deg);
-                    height: 3rem;
-                    top: 0;
+                    height: 4rem;
+                    /* top: 10; */
                     left: -30%;
                   }
                   
                   td{
                     padding: 0.4rem;
                     vertical-align: top;
-                    font-size: 0.8rem;
+                    font-size: 1rem;
                   }
                   
                   .kwitansi-header{
@@ -684,6 +684,11 @@ function cetak_handler(){
                     letter-spacing: 0.5rem;
                   }
 
+                  h1{
+                    margin: 0;
+                    padding: 0;
+                  }
+
                   table tr{
                     margin: 0;
                   }
@@ -692,8 +697,8 @@ function cetak_handler(){
                     position: relative;
                   }
                   .min-h {
-                    max-height: 4.5rem;
-                    height: 4.5rem;
+                    max-height: 4.8rem;
+                    height: 4.8rem;
                     overflow: hidden;
                     display: -webkit-box;
                     -webkit-line-clamp: 3;
@@ -713,7 +718,7 @@ function cetak_handler(){
                 <div class="contents">
                   <table style="width: 100%;">
                     <tr>
-                      <td><div class="rectangle-top-left"></div> <h2 class="kwitansi-header">KWITANSI</h2></td>
+                      <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
                       <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
                     </tr>
                   </table>
