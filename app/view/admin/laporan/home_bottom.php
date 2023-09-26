@@ -2,187 +2,187 @@ $('#start_date').val(moment().startOf('year').format('YYYY-MM-DD'))
 $('#end_date').val(moment().endOf('year').format('YYYY-MM-DD'))
 filter()
 $('.export-pdf').on('click', function(e){
-  if('ontouchstart' in window == false && window.matchMedia("(orientation: portrait)").matches == false) {
-  var bodies = $(`#${$(this).data('tipe')}`).html()
-  var contents = `
-  <center>
-    <h3>${$(this).data('label') ?? ''}</h3>
-  </center>
-    <table>
-    <tr>
-      <td>Periode</td>
-      <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
-    </tr>
-    <tr>
-      <td>Kawasan</td>
-      <td>: ${$('#kawasan option:selected').text()}</td>
-    </tr>
-    </table>
-    ${bodies}
-        <div class="page-break"></div> 
-  `
-  if($(this).data('tipe') == "all"){
-    contents = ''
-    $.each($('section'), function(idex, val){
-      contents += `
-      <center>
-        <h3>${$(this).data('label') ?? ''}</h3>
-      </center>
+if('ontouchstart' in window == false && window.matchMedia("(orientation: portrait)").matches == false) {
+    var bodies = $(`#${$(this).data('tipe')}`).html()
+    var contents = `
+    <center>
+      <h3>${$(this).data('label') ?? ''}</h3>
+    </center>
       <table>
+      <tr>
+        <td>Periode</td>
+        <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
+      </tr>
+      <tr>
+        <td>Kawasan</td>
+        <td>: ${$('#kawasan option:selected').text()}</td>
+      </tr>
+      </table>
+      ${bodies}
+          <div class="page-break"></div> 
+    `
+    if($(this).data('tipe') == "all"){
+      contents = ''
+      $.each($('section'), function(idex, val){
+        contents += `
+        <center>
+          <h3>${$(this).data('label') ?? ''}</h3>
+        </center>
+        <table>
+          <tr>
+            <td>Periode</td>
+            <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
+          </tr>
+          <tr>
+            <td>Kawasan</td>
+            <td>: ${$('#kawasan option:selected').text()}</td>
+          </tr>
+        </table>
+        <p>${$(this).html()}</p>
+        <div class="page-break"></div> 
+        `
+      })
+    }
+    
+    const newWindow = window.open("about:blank");
+    if (newWindow) {
+    const contentToPrint = `<html>
+
+    <head>
+      <style>
+        @page {
+          size: auto;
+          margin: 0;
+        }
+
+        @media print {
+          @page {
+            size: 210mm 297mm;
+            /* A4 */
+          }
+
+          .page-break {
+              page-break-before: always; /* Start a new page before this element */
+          }
+
+          .table th {
+            font-weight: bold;
+          }
+
+          .table tbody tr:hover {
+            background-color: #d1e0e0;
+          }
+
+          img {
+            height: 4rem;
+          }
+
+          .td-responsive {
+            width: 25% !important;
+          }
+
+          th,
+          td {
+            font-size: 0.85rem;
+            padding: 0.3rem;
+          }
+
+
+          hr {
+            height: 5px;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-right: none;
+            border-left: none;
+          }
+
+          .table-parent {
+            border-collapse: separate;
+            border: 1px solid black;
+            border-left: none;
+            width: 100%;
+          }
+
+          .table-parent thead th {
+            border: 1px solid black;
+            border-right: none;
+            border-top: none;
+            border-bottom: none;
+            white-space: nowrap;
+            font-size: 0.65rem;
+          }
+
+          .table-parent tbody td {
+            border: 1px solid black;
+            border-right: none;
+            border-bottom: none;
+            font-size: 0.65rem;
+            text-align: left;
+          }
+
+          *{
+            font-family: courier, courier new, serif;
+          }
+        }
+      </style>
+      <title>${$(this).data('label')}_${$('#start_date').val()}-${$('#end_date').val()}</title>
+    </head>
+
+    <body>
+      <table style="width: 100%; margin: 0; padding: 0">
         <tr>
-          <td>Periode</td>
-          <td>: ${moment($('#start_date').val()).format('DD-MM-YYYY')} - ${moment($('#end_date').val()).format('DD-MM-YYYY')}</td>
+          <td rowspan="3" class="td-responsive" style="vertical-align: top !important;">
+            <img src="<?= $this->cdn_url("media/logo.png") ?>" alt="main_logo">
+          </td>
+          <td style="vertical-align: top;">
+          <?=$this->config->semevar->site_name?>
+          </td>
         </tr>
         <tr>
-          <td>Kawasan</td>
-          <td>: ${$('#kawasan option:selected').text()}</td>
+          <td><?=$this->config->semevar->site_address?></td>
+        </tr>
+        <tr>
+          <td><?=$this->config->semevar->site_number?></td>
+        </tr>
+      </table>	
+      <p>
+        <hr>
+      </p>
+      <p>${contents}</p>
+
+      <p>
+      <table style="width: 100%;">
+        <tr>
+          <td></td>
+          <td style="width: 50%"></td>
+          <td rowspan="3" style="vertical-align: top;">${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}</td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top;">
+            <center>Mengetahui</center>
+          </td>
+          <td style="height: 5rem;"></td>
+        </tr>
+        <tr>
+          <td>
+            <center>Yayat Hendrayana</center>
+          </td>
         </tr>
       </table>
-      <p>${$(this).html()}</p>
-      <div class="page-break"></div> 
-      `
-    })
-  }
-  
-  const newWindow = window.open("about:blank");
-  if (newWindow) {
-  const contentToPrint = `<html>
+      </p>
+    </body>
 
-  <head>
-    <style>
-      @page {
-        size: auto;
-        margin: 0;
-      }
+    </html>`;
 
-      @media print {
-        @page {
-          size: 210mm 297mm;
-          /* A4 */
-        }
+    newWindow.document.open();
+    newWindow.document.write(contentToPrint);
+    newWindow.document.close();
 
-        .page-break {
-            page-break-before: always; /* Start a new page before this element */
-        }
+    newWindow.print();
+    newWindow.close();
+    }
 
-        .table th {
-          font-weight: bold;
-        }
-
-        .table tbody tr:hover {
-          background-color: #d1e0e0;
-        }
-
-        img {
-          height: 4rem;
-        }
-
-        .td-responsive {
-          width: 25% !important;
-        }
-
-        th,
-        td {
-          font-size: 0.85rem;
-          padding: 0.3rem;
-        }
-
-
-        hr {
-          height: 5px;
-          border-top: 1px solid black;
-          border-bottom: 1px solid black;
-          border-right: none;
-          border-left: none;
-        }
-
-        .table-parent {
-          border-collapse: separate;
-          border: 1px solid black;
-          border-left: none;
-          width: 100%;
-        }
-
-        .table-parent thead th {
-          border: 1px solid black;
-          border-right: none;
-          border-top: none;
-          border-bottom: none;
-          white-space: nowrap;
-          font-size: 0.65rem;
-        }
-
-        .table-parent tbody td {
-          border: 1px solid black;
-          border-right: none;
-          border-bottom: none;
-          font-size: 0.65rem;
-          text-align: left;
-        }
-
-        *{
-          font-family: courier, courier new, serif;
-        }
-      }
-    </style>
-    <title>${$(this).data('label')}_${$('#start_date').val()}-${$('#end_date').val()}</title>
-  </head>
-
-  <body>
-    <table style="width: 100%; margin: 0; padding: 0">
-      <tr>
-        <td rowspan="3" class="td-responsive" style="vertical-align: top !important;">
-          <img src="<?= $this->cdn_url("media/logo.png") ?>" alt="main_logo">
-        </td>
-        <td style="vertical-align: top;">
-        <?=$this->config->semevar->site_name?>
-        </td>
-      </tr>
-      <tr>
-        <td><?=$this->config->semevar->site_address?></td>
-      </tr>
-      <tr>
-        <td><?=$this->config->semevar->site_number?></td>
-      </tr>
-    </table>	
-    <p>
-      <hr>
-    </p>
-    <p>${contents}</p>
-
-    <p>
-    <table style="width: 100%;">
-      <tr>
-        <td></td>
-        <td style="width: 50%"></td>
-        <td rowspan="3" style="vertical-align: top;">${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}</td>
-      </tr>
-      <tr>
-        <td style="vertical-align: top;">
-          <center>Mengetahui</center>
-        </td>
-        <td style="height: 5rem;"></td>
-      </tr>
-      <tr>
-        <td>
-          <center>Yayat Hendrayana</center>
-        </td>
-      </tr>
-    </table>
-    </p>
-  </body>
-
-  </html>`;
-
-  newWindow.document.open();
-  newWindow.document.write(contentToPrint);
-  newWindow.document.close();
-
-  newWindow.print();
-  newWindow.close();
-  }
-
-    } else {
+} else {
       var bodies = $(`#${$(this).data('tipe')}`).html()
       var contents = `
       <center>
@@ -204,7 +204,7 @@ $('.export-pdf').on('click', function(e){
           `
         })
     }
-  }
+  
   
   var contentToPrint = `<html>
 
@@ -346,13 +346,9 @@ $('.export-pdf').on('click', function(e){
     autoTable: { styles: { overflow: 'linebreak' }, tableWidth: 'auto' }, // Opsi autoTable
   };
 
-  html2pdf().from(contentToPrint).set(pdfOptions).outputPdf('datauristring') 
-  .then(function (pdfDataUri) {
-    // Sekarang Anda memiliki URI data PDF yang dapat Anda gunakan untuk membuka tab baru
-    var newTab = window.open();
-    newTab.document.write('<iframe width="100%" height="100%" src="' + pdfDataUri + '"></iframe>');
-  });
+  html2pdf().from(contentToPrint).set(pdfOptions).save()
 
+}
 })
 
 $('.datepicker').datepicker({format: 'yyyy-mm-dd'})

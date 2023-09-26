@@ -15,6 +15,7 @@
   "<script src=\"https://cdn.jsdelivr.net/npm/apexcharts\"><\/script>",
   "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js\"><\/script>",
   "<script src=\"{{cdn_url}}skin/admin/js/jsPDF.js\"><\/script>",
+  "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js\"><\/script>",
   "<script src=\"https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js\"><\/script>",
   "<script src=\"https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js\"><\/script>"
 ]
