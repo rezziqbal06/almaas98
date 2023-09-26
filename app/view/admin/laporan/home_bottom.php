@@ -13,11 +13,13 @@ $('.export-pdf').on('click', function(e){
     contents = ''
     $.each($('section'), function(idex, val){
       contents += `
+
       <center>
         <h5>${$(this).data('label') ?? ''}</h5>
       </center>
-      <p>${$(this).html()}</p>
-      
+        <p>${$(this).html()}</p>
+            <div class="page-break">
+      </div>
       `
     })
   }
@@ -158,7 +160,7 @@ $('.export-pdf').on('click', function(e){
     image: { type: 'jpeg', quality: 0.98 }, 
     html2canvas: { scale: 2 }, 
     jsPDF: { unit: 'mm', format: 'a4' }, // Format dan orientasi halaman
-    pagebreak: { mode: ['avoid-all'] }, // Mode halaman (menghindari pemotongan)
+      pagebreak: { mode: ['avoid-all'], before: '.page-break' },
     autoTable: { styles: { overflow: 'linebreak' }, tableWidth: 'auto' }, // Opsi autoTable
   };
 
