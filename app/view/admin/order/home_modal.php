@@ -199,6 +199,7 @@
 
     #modal_kwitansi .min-h {
         max-height: 4.5rem;
+        height: 4.5rem;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 3;
