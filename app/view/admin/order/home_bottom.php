@@ -480,7 +480,7 @@ $("#bkwitansi").on('click', function(e){
         $('#no_kwitansi').html(detail.kode ?? '')
         $('#kwitansi_diterima_dari').html(detail.pembeli ?? '')
         $('#kwitansi_uang_sejumlah').html(`${terbilangRupiah (detail.total_harga.replaceAll('.', '') ?? 0)} `)
-        $('#kwitansi_untuk_pembayaran').html(detail.catatan ?? '-')
+        $('#kwitansi_untuk_pembayaran').html(`Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}`)
         var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
         $('#kwitansi_tanggal_sekarang').html(tanggal_sekarang ?? '')
         $('#kwitansi_nominal').html('Rp. '+detail.total_harga)
@@ -554,13 +554,14 @@ function cetak_handler(){
       order = dt.data;
       if(dt.data.detail){
         var detail = dt.data.detail;
+        console.log(detail)
         var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
          const contentToPrint = `<html>
 
             <head>
               <style>
                   @page {
-                    size: 320.0853px 99.99705px;
+                    size: 320.0853mm 99.99705mm;
                     width: 100%;
                     margin: 0;
                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
@@ -689,6 +690,11 @@ function cetak_handler(){
                     max-height: 5.5rem;
                     height: 5.5rem;
                   }
+
+                  *{
+                    color: black;
+                    font-family: 'Inter', sans-serif;
+                  }
                 
               </style>
               <title>Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}</title>
@@ -698,7 +704,7 @@ function cetak_handler(){
                 <div class="contents">
                   <table style="width: 100%;">
                     <tr>
-                      <td><div class="rectangle-top-left"></div> <h2 class="kwitansi-header">KWITANSI</h2></td>
+                      <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
                       <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
                     </tr>
                   </table>
@@ -723,7 +729,7 @@ function cetak_handler(){
                     <tr>
                       <td style="white-space: nowrap;">Untuk Pembayaran</td>
                       <td>:</td>
-                      <td class="min-h">${detail.catatan ?? '-'}</td>
+                      <td class="min-h"> Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}</td>
                       <td style="position: relative;" class="vertical-align-top rectangle-right-bottom"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
                     </tr>
                     <tr>
