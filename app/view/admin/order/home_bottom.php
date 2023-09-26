@@ -475,12 +475,12 @@ $("#bkwitansi").on('click', function(e){
       order = dt.data;
       if(dt.data.detail){
         var detail = dt.data.detail;
-        console.log(detail)
-        
+        var tujuan_pembayaran = tujuan_pembayaran_handler(`Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}`);
+
         $('#no_kwitansi').html(detail.kode ?? '')
         $('#kwitansi_diterima_dari').html(detail.pembeli ?? '')
         $('#kwitansi_uang_sejumlah').html(`${terbilangRupiah (detail.total_harga.replaceAll('.', '') ?? 0)} `)
-        $('#kwitansi_untuk_pembayaran').html(`Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}`)
+        $('#kwitansi_untuk_pembayaran').html(tujuan_pembayaran)
         var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
         $('#kwitansi_tanggal_sekarang').html(tanggal_sekarang ?? '')
         $('#kwitansi_nominal').html('Rp. '+detail.total_harga)
@@ -554,14 +554,15 @@ function cetak_handler(){
       order = dt.data;
       if(dt.data.detail){
         var detail = dt.data.detail;
-        console.log(detail)
         var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
+        var tujuan_pembayaran = tujuan_pembayaran_handler(`Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}`);
+        
          const contentToPrint = `<html>
 
             <head>
               <style>
                   @page {
-                    size: 320.0853mm 99.99705mm;
+                    size: 1209.45px 377.95px;
                     width: 100%;
                     margin: 0;
                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
@@ -575,6 +576,8 @@ function cetak_handler(){
                     background-repeat: no-repeat;
                     background-size: 100% 100%;	
                     print-color-adjust: exact;
+                    width: 100%;
+                    height: 100%;
                   }                  
 
                   .contents {
@@ -582,8 +585,8 @@ function cetak_handler(){
                     background-repeat: no-repeat;
                     background-size: 100% 100%;	
                     print-color-adjust: exact;
-                    width: 320.0853mm;
-                    height: 99.99705mm;
+                    height:  377.95px;
+                    width: 1210.45px;
                     margin: 0;
 					          padding: 0;
                   }
@@ -611,7 +614,7 @@ function cetak_handler(){
                     content: "";
                     position: absolute;
                     top: 0;
-                    left: -6%;
+                    left: -5.1%;
                     background-color: white;
                     transform: skewx(-15deg);
                     z-index: 0 !important;
@@ -624,7 +627,7 @@ function cetak_handler(){
                     position: absolute;
                     top: 0;
                     bottom: 0;
-                    left: -8%;
+                    left: -7%;
                     background-color: white;
                     transform: skewx(-15deg);
                     z-index: 0 !important;
@@ -640,6 +643,9 @@ function cetak_handler(){
                     border-collapse: collapse;
                     position: relative;
                     overflow: hidden;
+                    border-spacing: 0; /* This removes the spacing between rows */
+                    margin: 0; /* Remove any margin */
+                    padding: 0; 
                   }
 
                   .vertical-align-top{
@@ -664,11 +670,10 @@ function cetak_handler(){
                     left: -30%;
                   }
                   
-
                   td{
-                    padding: 0.5rem;
+                    padding: 0.4rem;
                     vertical-align: top;
-                    font-size: 1rem;
+                    font-size: 0.8rem;
                   }
                   
                   .kwitansi-header{
@@ -676,7 +681,7 @@ function cetak_handler(){
                     left: 1%;
                     z-index: 2;
                     top: 3%;
-                    letter-spacing: 0.8rem;
+                    letter-spacing: 0.5rem;
                   }
 
                   table tr{
@@ -687,9 +692,12 @@ function cetak_handler(){
                     position: relative;
                   }
                   .min-h {
-                    max-height: 5.5rem;
-                    height: 5.5rem;
-                  }
+                    max-height: 4.5rem;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                  } 
 
                   *{
                     color: black;
@@ -704,7 +712,7 @@ function cetak_handler(){
                 <div class="contents">
                   <table style="width: 100%;">
                     <tr>
-                      <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
+                      <td><div class="rectangle-top-left"></div> <h2 class="kwitansi-header">KWITANSI</h2></td>
                       <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
                     </tr>
                   </table>
@@ -729,7 +737,7 @@ function cetak_handler(){
                     <tr>
                       <td style="white-space: nowrap;">Untuk Pembayaran</td>
                       <td>:</td>
-                      <td class="min-h"> Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}</td>
+                      <td class="min-h"> ${tujuan_pembayaran ?? ''}</td>
                       <td style="position: relative;" class="vertical-align-top rectangle-right-bottom"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
                     </tr>
                     <tr>
@@ -752,11 +760,13 @@ function cetak_handler(){
             image: { type: 'jpeg', quality: 1 },
             html2canvas: { scale: 2 },
              jsPDF: { 
-                unit: 'mm',
-                format: [99.99705, 320.0853], // Set the custom paper size here
+                unit: 'px',
+                format: [1209.45, 377.95], // Set the custom paper size here
                 orientation: 'landscape' 
             },
         };
+
+        console.log(contentToPrint)
 
         // Fungsi untuk mengonversi ke PDF
         html2pdf()
@@ -767,4 +777,17 @@ function cetak_handler(){
       }
       
     })
+}
+
+function tujuan_pembayaran_handler(params = ''){
+  var tujuan_pembayaran = ''
+  $.each(params.split(''), function(idx, value){
+    if((idx + 1) % 30 == 0){
+    tujuan_pembayaran += '<br>'
+    } else {
+    tujuan_pembayaran += value
+    }
+  }) 
+
+  return tujuan_pembayaran
 }

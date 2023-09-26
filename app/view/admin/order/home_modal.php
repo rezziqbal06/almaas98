@@ -79,7 +79,7 @@
         }
     }
 
-    
+
     #modal_kwitansi .modal-dialog {
         max-width: 1209.45px !important;
     }
@@ -133,7 +133,7 @@
         position: absolute;
         top: 0;
         bottom: 0;
-        left: -8%;
+        left: -7%;
         background-color: white;
         transform: skewx(-15deg);
         z-index: 0 !important;
@@ -176,9 +176,9 @@
 
 
     #modal_kwitansi td {
-        padding: 0.5rem;
+        padding: 0.1rem;
         vertical-align: top;
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     #modal_kwitansi .kwitansi-header {
@@ -186,7 +186,7 @@
         left: 0;
         z-index: 2;
         top: 3%;
-        letter-spacing: 0.8rem;
+        letter-spacing: 0.5rem;
     }
 
     #modal_kwitansi table tr {
@@ -198,8 +198,11 @@
     }
 
     #modal_kwitansi .min-h {
-        max-height: 5.5rem;
-        height: 5.5rem;
+        max-height: 4.5rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
     }
 </style>
 <div id="modal_kwitansi" class="modal fade" role="dialog">
