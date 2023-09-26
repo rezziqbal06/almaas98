@@ -627,7 +627,7 @@ function cetak_handler(){
                     position: absolute;
                     top: 0;
                     bottom: 0;
-                    left: -7%;
+                    left: -8.5%;
                     background-color: white;
                     transform: skewx(-15deg);
                     z-index: 0 !important;
@@ -654,6 +654,7 @@ function cetak_handler(){
                   }
 
                   .vertical-align-bottom{
+padding-top: 3rem;
                     padding-bottom: 2rem;
                     vertical-align:bottom;
                     text-align: center;
@@ -709,7 +710,6 @@ function cetak_handler(){
                     color: black;
                     font-family: 'Inter', sans-serif;
                   }
-                
               </style>
               <title>Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}</title>
             </head>
