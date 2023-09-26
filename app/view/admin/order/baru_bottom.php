@@ -177,7 +177,17 @@ var option_produk = '<option value="">-- pilih rumah --</option>';
 function addProduk(id, value="", value_detail=""){
   if(!window['produk_'+id]) window['produk_'+id] = 0;
   var s = `<div id="ps_${id}" class="row">
-            <div class="col-md-12 mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="istatus_${id}" data-count="${id}">Jenis</label>
+                <select name="status[]" id="istatus_${id}" data-count="${id}" class="form-control select2">
+                <option value="">-- pilih jenis --</option>
+                  <option value="survey">survey</option>
+                  <option value="pembayaran">pembayaran</option>
+                  <option value="booking">booking</option>
+                  <option value="dp">dp</option>
+                </select>
+            </div>
+            <div class="col-md-6 panel-pembayaran mb-3">
                 <label for="ib_produk_id_${id}">Rumah</label>
                 <select name="b_produk_id[]" id="ib_produk_id_${id}" data-count="${id}" class="form-control select2">
                   <option value="">-- pilih pembeli terlebih dahulu --</option>
@@ -191,14 +201,6 @@ function addProduk(id, value="", value_detail=""){
                 <label for="ib_produk_id_harga_${id}" data-count="${id}">Spesifikasi</label>
                 <select name="b_produk_id_harga[]" id="ib_produk_id_harga_${id}" data-count="${id}" class="form-control select2">
                    <option>-- pilih nama & qty terlebih dahulu --</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="istatus_${id}" data-count="${id}">Jenis</label>
-                <select name="status[]" id="istatus_${id}" data-count="${id}" class="form-control select2">
-                  <option value="pembayaran">pembayaran</option>
-                  <option value="booking">booking</option>
-                  <option value="dp">dp</option>
                 </select>
             </div>
             
@@ -369,13 +371,28 @@ $(document).on('change', '[name="status[]"]', function(e){
   var qty = $("#iqty_"+id).val()
 	var harga = $(this).find("option:selected").attr('data-harga');
 	var value = $(this).find("option:selected").val();
-  if(value == 'booking'){
-    $("#iharga_"+id).val(parseInt("1000000")).trigger('keyup');
+  if(value == 'survey'){
+    $(".panel-pembayaran").slideUp();
+    $("#igambar").prop('required', false);
+    $("#imetode_pembayaran").prop('required', false);
+    $("#imetode").prop('required', false);
+    $("#iharga").val('0');
+    $("#itotal_harga").val('0');
   }else{
-    $("#iharga_"+id).val('')
+    $(".panel-pembayaran").slideDown();
+    $("#igambar").prop('required', true);
+    $("#imetode_pembayaran").prop('required', true);
+    $("#imetode").prop('required', true);
+    if(value == 'booking'){
+      $("#iharga_"+id).val(parseInt("1000000")).trigger('keyup');
+    }else{
+      $("#iharga_"+id).val('')
+    }
+
+    setTotal()
   }
 
-  setTotal()
+ 
 });
 
 $(document).off('click', '.btn-remove-produk-detail');

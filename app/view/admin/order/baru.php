@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="row pt-2">
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-6 panel-pembayaran mb-2">
                             <label for="imetode" class="control-label">Metode</label>
                             <select id="imetode" type="text" name="metode" class="form-control " required>
                                 <option value="">-- pilih metode --</option>
@@ -88,7 +88,7 @@
                                 <option value="Cash Bertahap">Cash Bertahap</option>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-6 panel-pembayaran mb-2">
                             <label for="imetode_pembayaran" class="control-label">Metode Pembayaran</label>
                             <select id="imetode_pembayaran" type="text" name="metode_pembayaran" class="form-control " required>
                                 <option value="">-- pilih metode pembayaran --</option>
@@ -102,13 +102,13 @@
                     </div>
                     <div class="row pt-2">
                         <div class="col-12">
-                            <div class=" panel_history" style="display: none;"></div>
+                            <div class="panel_history" style="display: none;"></div>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6 panel-pembayaran mb-3">
                             <label for="iharga_0" data-count="0">Nominal</label>
                             <input type="text" name="harga[]" id="iharga_0" data-count="0" class="form-control">
                         </div>
-                        <div id="panel_a_rekening_id" class="col-md-6 mb-2" style="display: none;">
+                        <div id="panel_a_rekening_id" class="col-md-6 panel-pembayaran mb-2" style="display: none;">
                             <label for="ia_rekening_id" class="control-label">Rekening Tujuan</label>
                             <select id="ia_rekening_id" type="text" name="a_rekening_id" class="form-control">
                                 <option value="">-- pilih rekening tujuan --</option>
@@ -119,7 +119,7 @@
                                 <?php endif ?>
                             </select>
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-6 panel-pembayaran mb-2">
                             <label for="igambar" class="control-label">Bukti Pembayaran/Transfer</label>
                             <input id="igambar" type="file" name="gambar" accept=".png, .jpg, .jpeg" class="form-control" required>
                         </div>
