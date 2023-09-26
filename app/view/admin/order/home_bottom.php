@@ -61,7 +61,7 @@ if(jQuery('#drTable').length>0){
 								$(".asetorkan").html('<i class="fa fa-money"></i> Batal Setoran')
 							}else{
 								$("#bhapus").show();
-								<!-- $("#bkwitansi").hide(); -->
+								$("#bkwitansi").hide();
 								$(".asetorkan").html('<i class="fa fa-money"></i> Setorkan')
 							}
 							if(dt.data.detail){
