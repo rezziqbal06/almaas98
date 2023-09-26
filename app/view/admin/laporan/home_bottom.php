@@ -164,7 +164,12 @@ $('.export-pdf').on('click', function(e){
     autoTable: { styles: { overflow: 'linebreak' }, tableWidth: 'auto' }, // Opsi autoTable
   };
 
-  html2pdf().from(contentToPrint).set(pdfOptions).save()
+  html2pdf().from(contentToPrint).set(pdfOptions).outputPdf('datauristring') 
+  .then(function (pdfDataUri) {
+    // Sekarang Anda memiliki URI data PDF yang dapat Anda gunakan untuk membuka tab baru
+    var newTab = window.open();
+    newTab.document.write('<iframe width="100%" height="100%" src="' + pdfDataUri + '"></iframe>');
+  });
 
 })
 
