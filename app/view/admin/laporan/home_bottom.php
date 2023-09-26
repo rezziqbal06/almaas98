@@ -19,7 +19,6 @@ if('ontouchstart' in window == false && window.matchMedia("(orientation: portrai
       </tr>
       </table>
       ${bodies}
-          <div class="page-break"></div> 
     `
     if($(this).data('tipe') == "all"){
       contents = ''
@@ -39,7 +38,8 @@ if('ontouchstart' in window == false && window.matchMedia("(orientation: portrai
           </tr>
         </table>
         <p>${$(this).html()}</p>
-        <div class="page-break"></div> 
+        ${idex < ($('section').length - 1) ? '<div class="page-break"></div>' : ''}
+         
         `
       })
     }
@@ -199,8 +199,7 @@ if('ontouchstart' in window == false && window.matchMedia("(orientation: portrai
             <h5>${$(this).data('label') ?? ''}</h5>
           </center>
             <p>${$(this).html()}</p>
-                <div class="page-break">
-          </div>
+                ${idex < ($('section').length - 1) ? '<div class="page-break"></div>' : ''}
           `
         })
     }
