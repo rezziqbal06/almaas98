@@ -13,12 +13,14 @@ class Produk extends JI_Controller
 		$this->load('a_banner_concern');
 		$this->load('a_partner_concern');
 		$this->load('b_produk_concern');
+		$this->load('b_produk_item_concern');
 		$this->load('b_produk_gambar_concern');
 
 		$this->load('front/a_kategori_model', 'akm');
 		$this->load('front/a_banner_model', 'abm');
 		$this->load('front/a_partner_model', 'apm');
 		$this->load('front/b_produk_model', 'bpm');
+		$this->load('front/b_produk_item_model', 'bpim');
 		$this->load('front/b_produk_gambar_model', 'bpgm');
 	}
 
@@ -94,13 +96,21 @@ class Produk extends JI_Controller
 		if (isset($akm->data_siteplan)) $data_siteplan = $akm->data_siteplan;
 		$tipe = "TP-" . $produk->tipe;
 		// dd($tipe . $data_siteplan);
-		if (strlen($data_siteplan)) $data_siteplan = json_decode($data_siteplan);
-		foreach ($data_siteplan as $ds) {
-			if (isset($ds->data) && stripos($ds->data, $tipe) !== false && $ds->status == 'tersedia') {
+		// if (strlen($data_siteplan)) $data_siteplan = json_decode($data_siteplan);
+		// foreach ($data_siteplan as $ds) {
+		// 	if (isset($ds->data) && stripos($ds->data, $tipe) !== false && $ds->status == 'tersedia') {
+		// 		$is_sold = false;
+		// 		break;
+		// 	}
+		// }
+		$unit_tersedia = $this->bpim->getTersedia($produk->id);
+		foreach ($unit_tersedia as $kt => $vt) {
+			if (!isset($vt->order_unit_id)) {
 				$is_sold = false;
 				break;
 			}
 		}
+
 
 		$data['is_sold'] = $is_sold;
 		$this->setTitle($produk->tipe . $this->config->semevar->site_suffix);
