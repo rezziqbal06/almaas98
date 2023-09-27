@@ -33,19 +33,18 @@ if(jQuery('#drTable').length>0){
 						ieid = id;
 						$.get('<?=base_url("api_admin/akun/user/detail/")?>'+ieid).done(function(dt){
 							if(dt.data){
-								if(dt.data.utype){
-									if(dt.data.utype == 'agen'){
-										$("#areseller").hide();
-									}
+								if(dt.data.is_forbidden){
+									return false;
 								}
+								$("#adetail").attr("href","<?=base_url_admin("akun/user/detail/")?>"+ieid);
+								$("#aedit").attr("href","<?=base_url_admin("akun/user/edit/")?>"+ieid);
+								$("#amodule").attr("href","<?=base_url_admin("akun/user/module/")?>"+ieid);
+								$("#areseller").attr("href","<?=base_url_admin("partner/reseller/baru/")?>"+ieid);
+								$("#ieid-user").val(ieid);
+								$("#modal_option").modal("show");
 							}
 						})
-						$("#adetail").attr("href","<?=base_url_admin("akun/user/detail/")?>"+ieid);
-						$("#aedit").attr("href","<?=base_url_admin("akun/user/edit/")?>"+ieid);
-						$("#amodule").attr("href","<?=base_url_admin("akun/user/module/")?>"+ieid);
-						$("#areseller").attr("href","<?=base_url_admin("partner/reseller/baru/")?>"+ieid);
-						$("#ieid-user").val(ieid);
-						$("#modal_option").modal("show");
+						
 					});
 
 					$().btnSubmit('finished');

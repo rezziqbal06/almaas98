@@ -28,6 +28,8 @@ class B_User_Concern extends \JI_Model
     public $tbl6_as = 'bp';
     public $tbl7 = 'a_kategori';
     public $tbl7_as = 'ak';
+    public $tbl8 = 'a_pengguna';
+    public $tbl8_as = 'ap';
 
     const COLUMNS = [
         'a_jabatan_id',
@@ -160,6 +162,7 @@ class B_User_Concern extends \JI_Model
             ["$this->tbl_as.fnama", 'fnama', 'Nama'],
             ["$this->tbl_as.telp", 'telp', 'Telp'],
             ["$this->tbl_as.email", 'email', 'Email'],
+            ["$this->tbl8_as.nama", 'marketing', 'Marketing'],
             ["$this->tbl_as.is_active", 'is_active', 'Status']
         ]);
 
