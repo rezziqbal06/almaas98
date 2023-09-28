@@ -59,6 +59,7 @@ class B_User_Model extends \Model\B_User_Concern
   {
     $this->datatables[$this->point_of_view]->selections($this->db);
     $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->join($this->tbl8, $this->tbl8_as, 'id', $this->tbl_as, 'a_pengguna_id');
     $this->filters($b_user_id, $keyword, $is_active, $a_unit_id)->scoped();
     $this->db->order_by($sortCol, $sortDir)->limit($page, $pagesize);
     return $this->db->get("object", 0);
@@ -68,6 +69,7 @@ class B_User_Model extends \Model\B_User_Concern
   {
     $this->db->select_as("COUNT($this->tbl_as.id)", "jumlah", 0);
     $this->db->from($this->tbl, $this->tbl_as);
+    $this->db->join($this->tbl8, $this->tbl8_as, 'id', $this->tbl_as, 'a_pengguna_id');
     $this->filters($b_user_id, $keyword, $is_active, $a_unit_id)->scoped();
     $d = $this->db->get_first("object", 0);
     if (isset($d->jumlah)) {

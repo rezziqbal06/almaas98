@@ -30,8 +30,9 @@ class C_Order_Model extends \Model\C_Order_Concern
     }
     if (strlen($keyword) > 0) {
       $this->db->where_as("$this->tbl_as.kode", $keyword, "OR", "%like%", 1, 0);
-      $this->db->where_as("$this->tbl_as.total_harga", $keyword, "AND", "%like%", 0, 0);
-      $this->db->where_as("$this->tbl5_as.fnama", $keyword, "AND", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.total_harga", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl_as.status", $keyword, "OR", "%like%", 0, 0);
+      $this->db->where_as("$this->tbl5_as.fnama", $keyword, "OR", "%like%", 0, 0);
       $this->db->where_as("$this->tbl3_as.nama", $keyword, "AND", "%like%", 0, 1);
     }
     return $this;

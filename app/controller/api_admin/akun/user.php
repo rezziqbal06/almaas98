@@ -64,6 +64,11 @@ class User extends JI_Controller
 			if (isset($gd->is_active)) {
 				$gd->is_active = $this->bum->label('is_active', $gd->is_active);
 			}
+			if (isset($gd->telp)) {
+				if ($gd->marketing != $d['sess']->admin->nama && strtolower($d['sess']->admin->a_jabatan_nama) != 'admin' && $d['sess']->admin->a_jabatan_nama != 'direktur') {
+					if (strlen($gd->telp)) $gd->telp = substr($gd->telp, 0, 3) . "XXXXX" . substr($gd->telp, 8);
+				}
+			}
 		}
 
 		$this->__jsonDataTable($ddata, $dcount);
@@ -139,6 +144,11 @@ class User extends JI_Controller
 			$this->message = API_ADMIN_ERROR_CODES[$this->status];
 			$this->__json_out($data);
 			die();
+		}
+		$data->is_forbidden = false;
+		if (isset($data->a_pengguna_id) && $data->a_pengguna_id != $d['sess']->admin->id && strtolower($d['sess']->admin->a_jabatan_nama) != 'admin' && $d['sess']->admin->a_jabatan_nama != 'direktur') {
+			$data->is_forbidden = true;
+			if (strlen($data->telp)) $data->telp = substr($data->telp, 0, 3) . "XXXXX" . substr($data->telp, 8);
 		}
 		$this->__json_out($data);
 	}

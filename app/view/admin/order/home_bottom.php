@@ -96,46 +96,59 @@ if(jQuery('#drTable').length>0){
 									</table>
 								`;
 								$("#table_header").html(s);
-								var s2 = `
-									<table class="w-100">
-										<tr>
-											<td class="text-grey">Metode</td>
-											<td>${detail?.metode}</td>
-										</tr>
-										<tr>
-											<td class="text-grey">Nominal</td>
-											<td class="text-primary">Rp. ${detail?.total_harga}</td>
-										</tr>
-										<tr>
-											<td class="text-grey">Metode Pembayaran</td>
-											<td>${detail?.metode_pembayaran}</td>
-										</tr>`
-										if(detail?.metode_pembayaran == 'transfer'){
-								s2 +=	`<tr>
-											<td class="text-grey">Rekening Tujuan</td>
-											<td><img src="<?=base_url("media/bank/")?>${detail?.icon_rekening}.png" width="70px" class="img-fluid" alt=""><br>${detail?.nomor_rekening} <br>a.n ${detail?.nama_rekening}</td>
-										</tr>`
-										}
-								s2 +=	`<tr>
-											<td class="text-grey">Bukti</td>
-											<td><a href="<?=base_url()?>${detail?.gambar}" target="_blank"><img src="<?=base_url()?>${detail?.gambar}" alt="" class="img-fluid rounded"></a></td>
-										</tr>
-										<tr class="mt-2">
-											<td class="text-grey">Disetorkan</td>
-											<td>${detail?.is_setor}</td>
-										</tr>
-										<tr>
-											<td class="text-grey">Catatan</td>
-											<td>${detail?.catatan}</td>
-										</tr>
-									</table>
-								`;
+								if(!detail?.status.includes('survey')){
+									var s2 = `
+										<table class="w-100">
+											<tr>
+												<td class="text-grey">Metode</td>
+												<td>${detail?.metode}</td>
+											</tr>
+											<tr>
+												<td class="text-grey">Nominal</td>
+												<td class="text-primary">Rp. ${detail?.total_harga}</td>
+											</tr>
+											<tr>
+												<td class="text-grey">Metode Pembayaran</td>
+												<td>${detail?.metode_pembayaran}</td>
+											</tr>`
+											if(detail?.metode_pembayaran == 'transfer'){
+									s2 +=	`<tr>
+												<td class="text-grey">Rekening Tujuan</td>
+												<td><img src="<?=base_url("media/bank/")?>${detail?.icon_rekening}.png" width="70px" class="img-fluid" alt=""><br>${detail?.nomor_rekening} <br>a.n ${detail?.nama_rekening}</td>
+											</tr>`
+											}
+									s2 +=	`<tr>
+												<td class="text-grey">Bukti</td>
+												<td><a href="<?=base_url()?>${detail?.gambar}" target="_blank"><img src="<?=base_url()?>${detail?.gambar}" alt="" class="img-fluid rounded"></a></td>
+											</tr>
+											<tr class="mt-2">
+												<td class="text-grey">Disetorkan</td>
+												<td>${detail?.is_setor}</td>
+											</tr>
+											<tr>
+												<td class="text-grey">Catatan</td>
+												<td>${detail?.catatan}</td>
+											</tr>
+										</table>
+									`;
+								}else{
+									var s2 =	`
+										<table class="w-100">
+											<tr>
+												<td class="text-grey">Catatan</td>
+												<td>${detail?.catatan}</td>
+											</tr>
+										</table>
+									`;
+								}
+								
 								$("#table_transaksi").html(s2);
 							}
 							if(dt.data.produk[0]){
 								var produk = dt.data.produk[0]
 								var s = '';
-								s += `<div class="row">
+								if(produk?.blok && produk?.blok != 'null' && produk?.blok != null){
+									s += `<div class="row">
 										<div class="col-4 col-md-2">
 											<img src="<?=base_url()?>${produk?.gambar}" class="img-fluid rounded" alt="">
 										</div>
@@ -145,7 +158,9 @@ if(jQuery('#drTable').length>0){
 											<p class="m-0"></p>
 										</div>
 									</div>`
-								$("#table_produk").html(s);
+									$("#table_produk").html(s);
+								}
+							
 							}
 							
 						})

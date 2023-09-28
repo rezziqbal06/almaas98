@@ -112,7 +112,7 @@ class Order extends JI_Controller
 			}
 			switch ($gd->status) {
 				case "pembayaran":
-					$gd->status = '<span class="badge badge-sm bg-gradient-secondary">' . $gd->status . '</span>';
+					$gd->status = '<span class="badge badge-sm bg-gradient-danger">' . $gd->status . '</span>';
 					break;
 				case "booking":
 					$gd->status = '<span class="badge badge-sm bg-gradient-info">' . $gd->status . '</span>';
@@ -122,6 +122,9 @@ class Order extends JI_Controller
 					break;
 				case "cancel":
 					$gd->status = '<span class="badge badge-sm bg-gradient-danger">' . $gd->status . '</span>';
+					break;
+				case "survey":
+					$gd->status = '<span class="badge badge-sm bg-gradient-secondary">' . $gd->status . '</span>';
 					break;
 				case "pending":
 					$gd->status = '<span class="badge badge-sm bg-gradient-danger">Menunggu Persetujuan</span>';
@@ -216,13 +219,13 @@ class Order extends JI_Controller
 			$b_produk_id_harga = $this->input->post('b_produk_id_harga');
 			$harga = $this->input->post('harga');
 			$qty = $this->input->post('qty');
-			if (isset($b_produk_id) && is_array($b_produk_id) && count($b_produk_id)) {
+			if (isset($status) && is_array($status) && count($status)) {
 				$dip = [];
-				foreach ($b_produk_id as $k => $v) {
+				foreach ($status as $k => $v) {
 					$dip[$k]['c_order_id'] = $res;
-					$dip[$k]['b_produk_id'] = $v;
-					$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k];
-					$dip[$k]['qty'] = $qty[$k];
+					$dip[$k]['b_produk_id'] = $b_produk_id[$k] ?? 0;
+					$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
+					$dip[$k]['qty'] = $qty[$k] ?? 1;
 					$dip[$k]['status'] = $status[$k];
 					$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
 					$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
@@ -338,7 +341,7 @@ class Order extends JI_Controller
 
 		switch ($data['detail']->status) {
 			case "pembayaran":
-				$data['detail']->status = '<span class="badge badge-sm bg-gradient-secondary">' . $data['detail']->status . '</span>';
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-danger">' . $data['detail']->status . '</span>';
 				break;
 			case "booking":
 				$data['detail']->status = '<span class="badge badge-sm bg-gradient-info">' . $data['detail']->status . '</span>';
@@ -348,6 +351,9 @@ class Order extends JI_Controller
 				break;
 			case "cancel":
 				$data['detail']->status = '<span class="badge badge-sm bg-gradient-danger">' . $data['detail']->status . '</span>';
+				break;
+			case "survey":
+				$data['detail']->status = '<span class="badge badge-sm bg-gradient-secondary">' . $data['detail']->status . '</span>';
 				break;
 			case "pending":
 				$data['detail']->status = '<span class="badge badge-sm bg-gradient-danger">Menunggu Persetujuan</span>';
@@ -436,6 +442,9 @@ class Order extends JI_Controller
 			die();
 		}
 		$du['status'] = $status[0] ?? 'pending';
+		$tgl_pesan = $du['tgl_pesan'];
+		$waktu_pesan = date("H:i:s");
+		$du['tgl_pesan'] = $tgl_pesan . ' ' . $waktu_pesan;
 
 		$total_harga = $this->input->post('total_harga');
 		$du['total_harga'] = (int) str_replace('.', '', $total_harga);
@@ -481,11 +490,11 @@ class Order extends JI_Controller
 					$b_produk_id_harga = $this->input->post('b_produk_id_harga');
 					$harga = $this->input->post('harga');
 					$qty = $this->input->post('qty');
-					if (isset($b_produk_id) && is_array($b_produk_id) && count($b_produk_id)) {
+					if (isset($status) && is_array($status) && count($status)) {
 						$dip = [];
-						foreach ($b_produk_id as $k => $v) {
+						foreach ($status as $k => $v) {
 							$dip[$k]['c_order_id'] = $id;
-							$dip[$k]['b_produk_id'] = $v;
+							$dip[$k]['b_produk_id'] = $b_produk_id[$k] ?? 0;
 							$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
 							$dip[$k]['qty'] = $qty[$k] ?? 1;
 							$dip[$k]['status'] = $status[$k];
@@ -568,9 +577,9 @@ class Order extends JI_Controller
 			die();
 		}
 
-		$res = $this->com->update($id, array('is_deleted' => 1));
+		$res = $this->com->del($id);
 		if ($res) {
-			$res_hapus = $this->copm->softDelByOrder($id);
+			$res_hapus = $this->copm->delByOrder($id);
 
 			$this->status = 200;
 			$this->message = API_ADMIN_ERROR_CODES[$this->status];

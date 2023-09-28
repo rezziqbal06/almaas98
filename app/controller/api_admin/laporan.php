@@ -126,7 +126,7 @@ class Laporan extends JI_Controller
 				if (isset($ut->total_harga)) $ut->total_harga = number_format($ut->total_harga, 0, ',', '.');
 				if ($ut->status == 'booking') {
 					$unit_booking[] = $ut;
-				} else {
+				} else if ($ut->status == 'pembayaran' || $ut->status == 'dp') {
 					$unit_terjual[] = $ut;
 				}
 			}
