@@ -552,51 +552,36 @@ function getNamaBulan(digit) {
 function cetak_handler(){
     $.get('<?=base_url("api_admin/order/detail/")?>'+ieid).done(function(dt){
       order = dt.data;
+      var contentToPrint = ''
       if(dt.data.detail){
         var detail = dt.data.detail;
         var tanggal_sekarang = `${getNamaHari(moment().format('d'))}, ${moment().format('DD')} ${getNamaBulan(moment().format('M'))} ${moment().format('YYYY')}`
         var tujuan_pembayaran = tujuan_pembayaran_handler(`Blok ${order.produk[0].blok} ${order.produk[0].nomor ?? ''} - ${order.produk[0].posisi ?? ''}. ${detail.catatan ?? '-'}`);
         
-         const contentToPrint = `<html>
-
-            <head>
-              <style>
-                  @page {
-                    size: 1209.45px 377.95px;
-                    width: 100%;
-                    margin: 0;
-                    background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;	print-color-adjust: exact;
-                    
-                  }
-
-                  body{
-                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;	
-                    print-color-adjust: exact;
-                    width: 100%;
-                    height: 100%;
-                  }                  
-
+        contentToPrint = `
+				<html>
+          <head>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+              <style>  
                   .contents {
                     background: linear-gradient(168deg, #3EFF96 0%, #FFF942 100%);
                     background-repeat: no-repeat;
-                    background-size: 100% 100%;	
+                    background-size: 100% 100%;
                     print-color-adjust: exact;
-                    height:  377.95px;
-                    width: 1210.45px;
                     margin: 0;
-					          padding: 0;
+                    padding: 0;
+                    position: relative; 
+                    overflow: hidden; 
+                    width: 1210.45px;
+                    height: 377.95px;
                   }
-
-                  .rectangle-right-bottom{
+              
+                  .rectangle-right-bottom {
                     background-color: white;
                     border-top-left-radius: 100px;
                   }
-
-                  .rectangle-right-bottom-1{
+              
+                  .rectangle-right-bottom-1 {
                     background-color: white;
                     border-right: 100px solid white;
                     content: "";
@@ -609,7 +594,8 @@ function cetak_handler(){
                     width: 100%;
                     height: 100%;
                   }
-                  .rectangle-right-bottom-2{
+              
+                  .rectangle-right-bottom-2 {
                     background-color: white;
                     content: "";
                     position: absolute;
@@ -621,7 +607,8 @@ function cetak_handler(){
                     width: 100%;
                     height: 100%;
                   }
-                  .rectangle-right-bottom-3{
+              
+                  .rectangle-right-bottom-3 {
                     background-color: white;
                     content: "";
                     position: absolute;
@@ -634,33 +621,34 @@ function cetak_handler(){
                     width: 100%;
                     height: 100%;
                   }
-                  .content{
+              
+                  .content {
                     position: absolute;
                     right: 15%;
                   }
-
-                  table{
+              
+                  table {
                     border-collapse: collapse;
                     position: relative;
                     overflow: hidden;
-                    border-spacing: 0; /* This removes the spacing between rows */
-                    margin: 0; /* Remove any margin */
-                    padding: 0; 
+                    border-spacing: 0;
+                    margin: 0;
+                    padding: 0;
                   }
-
-                  .vertical-align-top{
-                    vertical-align:top;
+              
+                  .vertical-align-top {
+                    vertical-align: top;
                     text-align: center;
                   }
-
-                  .vertical-align-bottom{
-padding-top: 3rem;
+              
+                  .vertical-align-bottom {
+                    padding-top: 3rem;
                     padding-bottom: 2rem;
-                    vertical-align:bottom;
+                    vertical-align: bottom;
                     text-align: center;
                   }
-
-                  .rectangle-top-left{
+              
+                  .rectangle-top-left {
                     background-color: white;
                     position: absolute;
                     z-index: 1;
@@ -670,33 +658,34 @@ padding-top: 3rem;
                     /* top: 10; */
                     left: -30%;
                   }
-                  
-                  td{
+              
+                  td {
                     padding: 0.4rem;
                     vertical-align: top;
                     font-size: 1rem;
                   }
-                  
-                  .kwitansi-header{
+              
+                  .kwitansi-header {
                     position: absolute;
                     left: 1%;
                     z-index: 2;
                     top: 3%;
                     letter-spacing: 0.5rem;
                   }
-
-                  h1{
+              
+                  h1 {
                     margin: 0;
                     padding: 0;
                   }
-
-                  table tr{
+              
+                  table tr {
                     margin: 0;
                   }
-
-                  .position-relative{
+              
+                  .position-relative {
                     position: relative;
                   }
+              
                   .min-h {
                     max-height: 4.8rem;
                     height: 4.8rem;
@@ -704,81 +693,92 @@ padding-top: 3rem;
                     display: -webkit-box;
                     -webkit-line-clamp: 3;
                     -webkit-box-orient: vertical;
-                  } 
-
-                  *{
+                  }
+              
+                  * {
                     color: black;
                     font-family: 'Inter', sans-serif;
                   }
-              </style>
-              <title>Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}</title>
-            </head>
+                </style>
+                <title>Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}</title>
+              </head>
 
-            <body>
-                <div class="contents">
-                  <table style="width: 100%;">
-                    <tr>
-                      <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
-                      <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
-                    </tr>
-                  </table>
-                  <table style="width: 100%;">
-                    <tr>
-                      <td style="white-space: nowrap;">No</td>
-                      <td style="width: 1%;">:</td>
-                      <td>${detail.kode ?? '-'}</td>
-                      <td rowspan="6"></td>
-                      <td style="width: 30%;" rowspan="3"></td>
-                    </tr>
-                    <tr>
-                      <td style="white-space: nowrap;">Diterima dari</td>
-                      <td>:</td>
-                      <td>${detail.pembeli ?? '-'}</td>
-                    </tr>
-                    <tr>
-                      <td style="white-space: nowrap;">Uang Sejumlah</td>
-                      <td>:</td>
-                      <td>${terbilangRupiah (detail.total_harga.replaceAll('.', '') ?? 0)} Rupiah</td>
-                    </tr>
-                    <tr>
-                      <td style="white-space: nowrap;">Untuk Pembayaran</td>
-                      <td>:</td>
-                      <td class="min-h"> ${tujuan_pembayaran ?? ''}</td>
-                      <td style="position: relative;" class="vertical-align-top rectangle-right-bottom"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
-                    </tr>
-                    <tr>
-                      <td colspan="3"></td>
-                      <td style="position: relative;" class="rectangle-right-bottom"><div class="rectangle-right-bottom-2"></div></td>
-                    </tr>
-                    <tr class="position-relative">
-                      <td colspan="3">Rp. ${detail.total_harga ?? 0}</td>
-                      <td style="position: relative;" class="rectangle-right-bottom vertical-align-bottom"><div class="rectangle-right-bottom-3"></div><center class="content">YAYAT HENDRAYANA</center></td>
-                    </tr>
-                  </table>
-                </div>
-            </body>
+              <body>
+                  <div class="contents">
+                    <table style="width: 100%;">
+                      <tr>
+                        <td><div class="rectangle-top-left"></div> <h1 class="kwitansi-header">KWITANSI</h1></td>
+                        <td style="width: 10%;"><img src="<?= $this->cdn_url("media/logo.png") ?>" alt="Almaas" style="height: 4rem;"></td>
+                      </tr>
+                    </table>
+                    <table style="width: 100%;">
+                      <tr>
+                        <td style="white-space: nowrap;">No</td>
+                        <td style="width: 1%;">:</td>
+                        <td>${detail.kode ?? '-'}</td>
+                        <td rowspan="6"></td>
+                        <td style="width: 30%;" rowspan="3"></td>
+                      </tr>
+                      <tr>
+                        <td style="white-space: nowrap;">Diterima dari</td>
+                        <td>:</td>
+                        <td>${detail.pembeli ?? '-'}</td>
+                      </tr>
+                      <tr>
+                        <td style="white-space: nowrap;">Uang Sejumlah</td>
+                        <td>:</td>
+                        <td>${terbilangRupiah (detail.total_harga.replaceAll('.', '') ?? 0)} Rupiah</td>
+                      </tr>
+                      <tr>
+                        <td style="white-space: nowrap;">Untuk Pembayaran</td>
+                        <td>:</td>
+                        <td class="min-h"> ${tujuan_pembayaran ?? ''}</td>
+                        <td style="position: relative;" class="vertical-align-top rectangle-right-bottom"><div class="rectangle-right-bottom-1"></div> <center><div class="content">${tanggal_sekarang}</div></center></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"></td>
+                        <td style="position: relative;" class="rectangle-right-bottom"><div class="rectangle-right-bottom-2"></div></td>
+                      </tr>
+                      <tr class="position-relative">
+                        <td colspan="3">Rp. ${detail.total_harga ?? 0}</td>
+                        <td style="position: relative;" class="rectangle-right-bottom vertical-align-bottom"><div class="rectangle-right-bottom-3"></div><center class="content">YAYAT HENDRAYANA</center></td>
+                      </tr>
+                    </table>
+                  </div>
+              </body>
 
-            </html>`;
+              </html>
+      `;
             
-        const options = {
-            margin: 0,
-            filename: `Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}`,
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 2 },
-             jsPDF: { 
-                unit: 'px',
-                format: [1209.45, 377.95], // Set the custom paper size here
-                orientation: 'landscape' 
-            },
-        };
+   const options = {
+      margin: 0,
+      filename: `Cetak Kwitansi_${detail.pembeli}_${moment().format('YYYY-MM-DD')}`,
+      image: { type: 'jpeg', quality: 1 },
+      html2canvas: { 
+        scale: 2,
+        removeContainer: true,
+        windowWidthHeight: 23.5,
+        windowWidthWidth: 75, 
+      },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+      jsPDF: { 
+        unit: 'in',
+        orientation: 'landscape',
+        format: [1210.45/96, 377.95/96]
+      },
+      page: {
+        width: 1210.45 / 96, // Convert width from pixels to inches
+        height: 377.95 / 96, // Convert height from pixels to inches
+      }
+    }
 
-        console.log(contentToPrint)
+    console.log(contentToPrint)
 
-        // Fungsi untuk mengonversi ke PDF
-        html2pdf()
-            .from(contentToPrint)
-            .set(options)
-            .save()
+    // Fungsi untuk mengonversi ke PDF
+    html2pdf()
+        .from(contentToPrint)
+        .set(options)
+        .save()
 
       }
       
