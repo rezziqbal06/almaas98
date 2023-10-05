@@ -317,6 +317,7 @@ class B_User_Model extends \Model\B_User_Concern
     $this->db->select_as("$this->tbl_as.fnama", "nama", 0);
     $this->db->select_as("$this->tbl_as.telp", "telp", 0);
     $this->db->select_as("$this->tbl_as.nik", "nik", 0);
+    $this->db->select_as("$this->tbl_as.sumber_iklan", "sumber_iklan", 0);
     $this->db->select_as("COALESCE($this->tbl7_as.nama, 'Belum Beli')", "kawasan", 0);
     $this->db->from($this->tbl, $this->tbl_as);
     $this->db->join($this->tbl3, $this->tbl3_as, 'b_user_id', $this->tbl_as, 'id'); //c_order

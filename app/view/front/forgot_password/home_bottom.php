@@ -12,10 +12,10 @@ $("#forgot_password_form").on('submit',function(e){
 				},1500)
 		}else{
   		gritter("<h4>Gagal</h4><p>"+dt.message+"</p>", 'danger');
-      $().btnSubmit('finished');
+      	NProgress.done();
 		}
 	}).fail(function(){
 		gritter("<h4>Error</h4><p>Tidak dapat reset password sekarang, coba beberapa saat lagi</p>", 'warning');
-    $().btnSubmit('finished');
+    	NProgress.done();
 	})
 })

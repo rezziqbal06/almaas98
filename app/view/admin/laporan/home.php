@@ -74,8 +74,8 @@
                                 <th class="brt bl" style="width: 3%;">No.</th>
                                 <th class="brt">Kawasan</th>
                                 <th class="brt">Nama</th>
-                                <th class="brt">NIK</th>
                                 <th class="brt">Telepon</th>
+                                <th class="brt">Sumber Iklan</th>
                             </tr>
                         </thead>
                         <tbody id="surveyon_tbody"></tbody>
@@ -139,6 +139,7 @@
                                 <th class="brt bl" style="width: 3%;">No.</th>
                                 <th class="brt" style="">Kawasan</th>
                                 <th class="brt" style="">Konsumen</th>
+                                <th class="brt" style="">Sumber Iklan</th>
                                 <th class="brt" style="">Lantai</th>
                                 <th class="brt" style="">lb/lt</th>
                                 <th class="brt" style="">Marketing</th>
@@ -179,6 +180,7 @@
                                 <th class="brt bl" style="width: 3%;">No.</th>
                                 <th class="brt">Kawasan</th>
                                 <th class="brt">Konsumen</th>
+                                <th class="brt" style="">Sumber Iklan</th>
                                 <th class="brt">Lantai</th>
                                 <th class="brt">lb/lt</th>
                                 <th class="brt">Marketing</th>
@@ -211,7 +213,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive" id="unit_tersedia_res" style="display: none;">
-                <section id="table-unit_tersedia" data-label="UNIT TERJUAL">
+                <section id="table-unit_tersedia" data-label="UNIT TERSEDIA">
                     <table class="table table-vcenter table-hover dt-wow table-parent" style="width: 100%;" cellspacing="0">
                         <thead>
                             <tr>

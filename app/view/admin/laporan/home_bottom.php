@@ -395,8 +395,8 @@ function filter(){
             <td class="brt bl">${idx + 1}</td>
             <td class="brt">${val.kawasan ?? ''}</td>
             <td class="brt">${val.nama ?? ''}</td>
-            <td class="brt">${val.nik ?? ''}</td>
             <td class="brt">${val.telp ?? ''}</td>
+            <td class="brt">${val.sumber_iklan ?? ''}</td>
           </tr>
           `
           })
@@ -443,6 +443,7 @@ function filter(){
             <td class="brt bl">${idx + 1}</td>
             <td class="brt">${val.kawasan ?? ''}</td>
             <td class="brt">${val.konsumen ?? ''}</td>
+            <td class="brt">${val.sumber_iklan ?? ''}</td>
             <td class="brt">${val.lantai ?? ''}</td>
             <td class="brt">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
             <td class="brt">${val.marketing ?? ''}</td>
@@ -469,6 +470,7 @@ function filter(){
             <td class="brt bl">${idx + 1}</td>
             <td class="brt">${val.kawasan ?? ''}</td>
             <td class="brt">${val.konsumen ?? ''}</td>
+            <td class="brt">${val.sumber_iklan ?? ''}</td>
             <td class="brt">${val.lantai ?? ''}</td>
             <td class="brt">${val.luas_bangunan ?? ' '}(m<sup>2</sup>)/${val.luas_tanah ?? ''}(m<sup>2</sup>) </td>
             <td class="brt">${val.marketing ?? ''}</td>

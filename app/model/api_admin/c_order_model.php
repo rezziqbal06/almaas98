@@ -129,6 +129,7 @@ class C_Order_Model extends \Model\C_Order_Concern
     $this->db->select_as("$this->tbl8_as.nama", 'kawasan', 0);
     $this->db->select_as("$this->tbl7_as.nama", 'marketing', 0);
     $this->db->select_as("$this->tbl5_as.fnama", 'konsumen', 0);
+    $this->db->select_as("$this->tbl5_as.sumber_iklan", 'sumber_iklan', 0);
     $this->db->select_as("$this->tbl_as.tgl_pesan", 'tgl_pesan', 0);
     $this->db->select_as("$this->tbl_as.status", 'status', 0);
     $this->db->select_as("$this->tbl_as.total_harga", 'total_harga', 0);

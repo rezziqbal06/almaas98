@@ -31,16 +31,13 @@
                             <option value="0">Tidak</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <label for="ifnama" class="control-label">Nama Lengkap*</label>
                         <input type="text" name="fnama" id="ifnama" class="form-control" placeholder="Nama" required>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-none">
                         <label for="inik" class="control-label">NIK*</label>
-                        <input type="number" name="nik" id="inik" class="form-control" placeholder="Nama" required>
+                        <input type="number" name="nik" id="inik" class="form-control" placeholder="Nama">
                     </div>
                     <?php if (isset($jabatans) && count($jabatans)) { ?>
                         <div class="col-md-6">
@@ -80,8 +77,6 @@
                         <label for="ikabkota">Kabupaten / Kota</label>
                         <select id="ikabkota" class="form-control" name="kabkota"></select>
                     </div>
-                </div>
-                <div class="form-group row">
                     <div class="col-md-4">
                         <label for="ikecamatan">Kecamatan</label>
                         <select id="ikecamatan" class="form-control" name="kecamatan"></select>

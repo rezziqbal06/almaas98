@@ -1,25 +1,25 @@
 <?php
+
 namespace Authentication\Library;
 
 register_namespace(__NAMESPACE__);
 /**
-* Define forgot password email in a library
-*
-* @version 1.0.0
-*
-* @package Authentication\Library
-* @since 1.0.0
-*/
+ * Define forgot password email in a library
+ *
+ * @version 1.0.0
+ *
+ * @package Authentication\Library
+ * @since 1.0.0
+ */
 class Forgot_Password
 {
     private $subject = 'Lupa Password';
     private $site_email;
     private $data;
 
-    public function __construct($config, $reseller, $seme_email, $data)
+    public function __construct($config, $seme_email, $data)
     {
         $this->config = $config;
-        $this->reseller = $reseller;
         $this->seme_email = $seme_email;
         $this->data = $data;
 
@@ -88,7 +88,7 @@ class Forgot_Password
         $this->seme_email->flush();
         $this->seme_email->replyto($this->site_name, $this->site_replyto);
         $this->seme_email->from($this->site_email, $this->site_name);
-        $this->seme_email->subject($this->subject.' - '.$this->site_name);
+        $this->seme_email->subject($this->subject . ' - ' . $this->site_name);
         $this->seme_email->to($this->data->email, $this->data->nama);
         $this->seme_email->template('forgot_password');
         $this->seme_email->replacer($this->replacer());

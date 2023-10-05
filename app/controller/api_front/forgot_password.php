@@ -1,4 +1,5 @@
 <?php
+
 namespace API\Front;
 
 register_namespace(__NAMESPACE__);
@@ -22,8 +23,6 @@ class Forgot_Password extends \JI_Controller
     $this->lib('seme_email');
     $this->lib('seme_email/forgot_password', '', 'inc');
 
-    $this->load("a_company_concern");
-    $this->load("api_front/a_company_model", 'acm');
     $this->load("b_user_concern");
     $this->load("api_front/b_user_model", 'bum');
   }
@@ -37,22 +36,21 @@ class Forgot_Password extends \JI_Controller
    */
   private function generateLink($user_id)
   {
-      $this->lib("conumtext");
-      $token = $this->conumtext->genRand($type="str", $min=18, $max=24);
-      $this->bum->setToken($user_id, $token, $kind="api_web");
+    $this->lib("conumtext");
+    $token = $this->conumtext->genRand($type = "str", $min = 18, $max = 24);
+    $this->bum->setToken($user_id, $token, $kind = "api_web");
 
-      return base_url('account/password/reset/'.$token);
+    return base_url('account/password/reset/' . $token);
   }
 
   private function preparedData($user)
   {
-      $data = new \stdClass();
-      $data->nama = $user->fnama.' ';
-      $data->email = $user->email;
-      $data->link_href = $this->generateLink($user->id);
-      $data->link_text = $data->link_href;
-
-      return $data;
+    $data = new \stdClass();
+    $data->nama = $user->fnama . ' ';
+    $data->email = $user->email;
+    $data->link_href = $this->generateLink($user->id);
+    $data->link_text = $data->link_href;
+    return $data;
   }
 
   public function index()
@@ -66,37 +64,35 @@ class Forgot_Password extends \JI_Controller
 
     //check apikey
     $apikey = $this->input->get('apikey');
-    $current_reseller = $this->current_reseller_api();
 
     //check email
     $email = $this->input->post("email", '');
-    if ( strlen($email) <= 6 ) {
-        $this->status = 1718;
-        $this->message = API_ADMIN_ERROR_CODES[$this->status];
-        $this->__json_out($data);
-        die();
+    if (strlen($email) <= 6) {
+      $this->status = 1718;
+      $this->message = API_ADMIN_ERROR_CODES[$this->status];
+      $this->__json_out($data);
+      die();
     }
 
     $bum = $this->bum->email($email);
     if (!isset($bum->id)) {
-        $this->status = 1719;
-        $this->message = API_ADMIN_ERROR_CODES[$this->status];
-        $this->__json_out($data);
-        die();
+      $this->status = 1719;
+      $this->message = API_ADMIN_ERROR_CODES[$this->status];
+      $this->__json_out($data);
+      die();
     }
 
     $this->status = 200;
     $prepared_email = new \Authentication\Library\Forgot_Password(
-        $this->config,
-        $current_reseller,
-        $this->seme_email,
-        $this->preparedData($bum)
+      $this->config,
+      $this->seme_email,
+      $this->preparedData($bum)
     );
 
     $this->message = 'Success, please check your email if you are registered';
     if ($this->config_semevar('send_email', false)) {
-        $prepared_email->send();
-        $this->message = 'Success, please check your email if you are registered';
+      $prepared_email->send();
+      $this->message = 'Sukses, Silakan cek email';
     }
 
     $this->__json_out($data);
