@@ -30,6 +30,8 @@ class C_Order_Concern extends \JI_Model
     public $tbl7_as = 'ap';
     public $tbl8 = 'a_kategori';
     public $tbl8_as = 'ak';
+    public $tbl9 = 'a_kategori';
+    public $tbl9_as = 'ak2';
 
     const COLUMNS = [
         'kode',
@@ -109,7 +111,7 @@ class C_Order_Concern extends \JI_Model
             ["$this->tbl_as.kode", 'kode', 'Kode'],
             ["$this->tbl5_as.fnama", 'pembeli', 'Pembeli'],
             ["$this->tbl_as.kunjungan_ke", 'kunjungan_ke', 'Kunjungan Ke'],
-            ["CONCAT('Blok ', $this->tbl6_as.blok,' - ',$this->tbl6_as.nomor)", 'produk', 'Produk'],
+            ["COALESCE(CONCAT('Blok ', $this->tbl6_as.blok,' - ',$this->tbl6_as.nomor), CONCAT('Blok ', $this->tbl2_as.blok,' - ',$this->tbl2_as.nomor))", 'produk', 'Produk'],
             ["$this->tbl2_as.tgl_pesan", 'tgl_pesan', 'Tanggal'],
             ["$this->tbl_as.total_harga", 'total_harga', 'Total Harga'],
             ["$this->tbl7_as.nama", 'marketing', 'Marketing'],

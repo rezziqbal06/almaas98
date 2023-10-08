@@ -30,6 +30,8 @@ class B_User_Concern extends \JI_Model
     public $tbl7_as = 'ak';
     public $tbl8 = 'a_pengguna';
     public $tbl8_as = 'ap';
+    public $tbl9 = 'a_kategori';
+    public $tbl9_as = 'ak2';
 
     const COLUMNS = [
         'a_jabatan_id',
@@ -76,7 +78,8 @@ class B_User_Concern extends \JI_Model
         'sumber_iklan',
         'is_active',
         'is_deleted',
-        'b_user_id'
+        'b_user_id',
+        'ktp',
     ];
     const DEFAULTS = [
         '',
@@ -123,6 +126,7 @@ class B_User_Concern extends \JI_Model
         '',
         1,
         0,
+        null,
         null
     ];
     const REQUIREDS = [

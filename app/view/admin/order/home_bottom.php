@@ -153,8 +153,8 @@ if(jQuery('#drTable').length>0){
 											<img src="<?=base_url()?>${produk?.gambar}" class="img-fluid rounded" alt="">
 										</div>
 										<div class="col-8 col-md-10">
-											<p class="m-0">Blok ${produk?.blok} - ${produk?.nomor} Tipe ${produk?.luas_tanah}/${produk?.luas_bangunan}</p>
-											<small class="text-grey">${produk?.posisi}</small>
+											<p class="m-0">Blok ${produk?.blok} - ${produk?.nomor} Tipe ${produk?.luas_tanah ?? ''}/${produk?.luas_bangunan ?? ''}</p>
+											<small class="text-grey">${produk?.posisi ?? ''}</small>
 											<p class="m-0"></p>
 										</div>
 									</div>`

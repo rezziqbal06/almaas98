@@ -120,10 +120,40 @@ class Laporan extends JI_Controller
 		$unit_order = $this->com->unitTerjual($a_kategori_id, $sdate, $edate);
 		$unit_booking = [];
 		$unit_terjual = [];
-		if (isset($unit_order[0]->total_harga)) {
-			foreach ($unit_order as $k => $ut) {
-				if (isset($ut->total_harga)) $ut->total_harga = str_replace(".00", '', $ut->total_harga);
-				if (isset($ut->total_harga)) $ut->total_harga = number_format($ut->total_harga, 0, ',', '.');
+		$groupedData = [];
+		foreach ($unit_order as $item) {
+			$unit = $item->unit;
+			if (!isset($groupedData[$unit])) {
+				$groupedData[$unit] = $item;
+			} else {
+				// If 'pembayaran' status is present, update the status and total_harga
+				if ($item->status != 'booking') {
+					$groupedData[$unit] = $item;
+				}
+			}
+		}
+
+		// Add 'booking' items to 'groupedData' if not already present
+		foreach ($unit_order as $item) {
+			$unit = $item->unit;
+			if ($item->status === 'booking' && !isset($groupedData[$unit])) {
+				$groupedData[$unit] = $item;
+			}
+		}
+
+		// Convert the associative array back to an indexed array
+		$finalData = array_values($groupedData);
+		if (isset($finalData[0]->total_harga)) {
+			foreach ($finalData as $k => $ut) {
+				if (isset($ut->is_custom) && $ut->is_custom && isset($ut->luas_tanah) && isset($ut->harga_satuan)) {
+					$total_harga = $ut->luas_tanah * $ut->harga_satuan;
+					if (isset($ut->total_harga)) $ut->total_harga = number_format($total_harga, 0, ',', '.');
+					$ut->tipe = "Kustom";
+				} else {
+					if (isset($ut->total_harga)) $ut->total_harga = str_replace(".00", '', $ut->total_harga);
+					if (isset($ut->total_harga)) $ut->total_harga = number_format($ut->total_harga, 0, ',', '.');
+				}
+
 				if ($ut->status == 'booking') {
 					$unit_booking[] = $ut;
 				} else if ($ut->status == 'pembayaran' || $ut->status == 'dp') {

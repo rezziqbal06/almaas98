@@ -110,6 +110,11 @@ class Order extends JI_Controller
 				if ($gd->tgl_selesai == "0000-00-00 00:00:00") $gd->tgl_selesai = "";
 				$gd->tgl_selesai = $this->__dateIndonesia($gd->tgl_selesai);
 			}
+			if (isset($gd->produk)) {
+				if ($gd->produk == 'Blok  - ') {
+					$gd->produk = '';
+				}
+			}
 			switch ($gd->status) {
 				case "pembayaran":
 					$gd->status = '<span class="badge badge-sm bg-gradient-danger">' . $gd->status . '</span>';
@@ -218,6 +223,13 @@ class Order extends JI_Controller
 			$b_produk_id = $this->input->post('b_produk_id');
 			$b_produk_id_harga = $this->input->post('b_produk_id_harga');
 			$harga = $this->input->post('harga');
+			$is_custom = $this->input->post('is_custom');
+			$harga_satuan = $this->input->post('harga_satuan');
+			$blok = $this->input->post('blok');
+			$nomor = $this->input->post('nomor');
+			$lt = $this->input->post('lt');
+			$lb = $this->input->post('lb');
+			$a_kategori_id = $this->input->post('a_kategori_id');
 			$qty = $this->input->post('qty');
 			if (isset($status) && is_array($status) && count($status)) {
 				$dip = [];
@@ -226,6 +238,13 @@ class Order extends JI_Controller
 					$dip[$k]['b_produk_id'] = $b_produk_id[$k] ?? 0;
 					$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
 					$dip[$k]['qty'] = $qty[$k] ?? 1;
+					$dip[$k]['is_custom'] = $is_custom[$k] ?? 0;
+					$dip[$k]['a_kategori_id'] = $a_kategori_id[$k] ?? null;
+					$dip[$k]['blok'] = $blok[$k] ?? null;
+					$dip[$k]['nomor'] = $nomor[$k] ?? null;
+					$dip[$k]['lt'] = $lt[$k] ?? null;
+					$dip[$k]['lb'] = $lb[$k] ?? null;
+					$dip[$k]['harga_satuan'] = $harga_satuan[$k] ? (int) str_replace('.', '', $harga_satuan[$k]) : null;
 					$dip[$k]['status'] = $status[$k];
 					$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
 					$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
@@ -474,6 +493,13 @@ class Order extends JI_Controller
 		unset($du['harga']);
 		unset($du['qty']);
 		unset($du['b_user_nama']);
+		unset($du['blok']);
+		unset($du['nomor']);
+		unset($du['harga_satuan']);
+		unset($du['a_kategori_id']);
+		unset($du['is_custom']);
+		unset($du['lb']);
+		unset($du['lt']);
 		if ($id > 0) {
 			unset($du['id']);
 			$resUpload = $this->se->upload_file('gambar', 'kategori', $id);
@@ -490,6 +516,13 @@ class Order extends JI_Controller
 					$b_produk_id_harga = $this->input->post('b_produk_id_harga');
 					$harga = $this->input->post('harga');
 					$qty = $this->input->post('qty');
+					$is_custom = $this->input->post('is_custom');
+					$harga_satuan = $this->input->post('harga_satuan');
+					$blok = $this->input->post('blok');
+					$nomor = $this->input->post('nomor');
+					$lt = $this->input->post('lt');
+					$lb = $this->input->post('lb');
+					$a_kategori_id = $this->input->post('a_kategori_id');
 					if (isset($status) && is_array($status) && count($status)) {
 						$dip = [];
 						foreach ($status as $k => $v) {
@@ -497,6 +530,13 @@ class Order extends JI_Controller
 							$dip[$k]['b_produk_id'] = $b_produk_id[$k] ?? 0;
 							$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
 							$dip[$k]['qty'] = $qty[$k] ?? 1;
+							$dip[$k]['is_custom'] = $is_custom[$k] ?? 0;
+							$dip[$k]['a_kategori_id'] = $a_kategori_id[$k] ?? null;
+							$dip[$k]['blok'] = $blok[$k] ?? null;
+							$dip[$k]['nomor'] = $nomor[$k] ?? null;
+							$dip[$k]['lt'] = $lt[$k] ?? null;
+							$dip[$k]['lb'] = $lb[$k] ?? null;
+							$dip[$k]['harga_satuan'] = $harga_satuan[$k] ? (int) str_replace('.', '', $harga_satuan[$k]) : null;
 							$dip[$k]['status'] = $status[$k];
 							$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
 							$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
@@ -750,6 +790,8 @@ class Order extends JI_Controller
 		$this->status = 200;
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
 		$produk_id = $this->input->request("produk_id", '');
+		$user_id = $this->input->request("user_id", '');
+		$blok = $this->input->request("blok", '');
 		$metode = $this->input->request("metode", '');
 		$harga = 0;
 		$diskon = 0;
@@ -762,17 +804,33 @@ class Order extends JI_Controller
 			die();
 		}
 
-		$bpim = $this->bpim->id($produk_id);
-		$bpm = $this->bpm->id($bpim->b_produk_id);
-		if (isset($bpim->posisi)) $posisi = $bpim->posisi;
-		if (isset($bpm->harga)) $harga = $bpm->harga;
+		if (stripos($produk_id, 'kustom') === false) {
+			$bpim = $this->bpim->id($produk_id);
+			$bpm = $this->bpm->id($bpim->b_produk_id);
+			if (isset($bpim->posisi)) $posisi = $bpim->posisi;
+			if (isset($bpm->harga)) $harga = $bpm->harga;
 
-		$copm = $this->copm->getByProduk($produk_id);
-		$total = 0;
-		foreach ($copm as $k => $v) {
-			if (isset($v->metode) && $k == 1) $metode = $v->metode;
-			$total += $v->sub_harga;
-			if (isset($v->sub_harga)) $v->sub_harga = number_format($v->sub_harga, 0, ',', '.');
+			$copm = $this->copm->getByProduk($produk_id);
+			$total = 0;
+			foreach ($copm as $k => $v) {
+				if (isset($v->metode) && $k == 1) $metode = $v->metode;
+				$total += $v->sub_harga;
+				if (isset($v->sub_harga)) $v->sub_harga = number_format($v->sub_harga, 0, ',', '.');
+			}
+		} else {
+			// Extract A23 from the first string
+			if (preg_match('/Blok ([A-Z]+) No (\d+)/', $blok, $matches)) {
+				$blok = $matches[1] . $matches[2];
+			}
+			$copm = $this->copm->getCustomByUserAndBlok($user_id, $blok);
+			if (isset($copm[0]->harga_satuan) && isset($copm[0]->lt)) $harga = $copm[0]->harga_satuan * $copm[0]->lt;
+			$posisi = $copm[0]->posisi ?? '';
+			$total = 0;
+			foreach ($copm as $k => $v) {
+				if (isset($v->metode) && $k == 1) $metode = $v->metode;
+				$total += $v->sub_harga;
+				if (isset($v->sub_harga)) $v->sub_harga = number_format($v->sub_harga, 0, ',', '.');
+			}
 		}
 
 		$diskon = $this->diskon_by_posisi[strtolower($metode)][$posisi] ?? 0;

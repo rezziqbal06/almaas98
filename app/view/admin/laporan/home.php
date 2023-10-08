@@ -76,6 +76,7 @@
                                 <th class="brt">Nama</th>
                                 <th class="brt">Telepon</th>
                                 <th class="brt">Sumber Iklan</th>
+                                <th class="brt">Marketing</th>
                             </tr>
                         </thead>
                         <tbody id="surveyon_tbody"></tbody>

@@ -397,6 +397,7 @@ function filter(){
             <td class="brt">${val.nama ?? ''}</td>
             <td class="brt">${val.telp ?? ''}</td>
             <td class="brt">${val.sumber_iklan ?? ''}</td>
+            <td class="brt">${val.marketing ?? ''}</td>
           </tr>
           `
           })

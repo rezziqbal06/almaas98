@@ -9,6 +9,7 @@ class User extends JI_Controller
 		$this->load('b_user_concern');
 		$this->load('b_user_alamat_concern');
 		$this->load("api_admin/b_user_model", 'bum');
+		$this->lib("seme_upload", 'se');
 	}
 
 	/**
@@ -102,6 +103,10 @@ class User extends JI_Controller
 
 		$res = $this->bum->save();
 		if ($res) {
+			$resUpload = $this->se->upload_file('ktp', 'ktp', $res);
+			if ($resUpload->status == 200) {
+				$resUpdateGambar = $this->bum->update($res, ['ktp' => $resUpload->file]);
+			}
 			$this->lib("conumtext");
 			$this->status = 200;
 			$this->message = API_ADMIN_ERROR_CODES[$this->status];
@@ -209,7 +214,10 @@ class User extends JI_Controller
 		$this->bum->columns['api_reg_date']->value = $this->__($bum, 'api_reg_date', 'NOW()');
 		$this->bum->columns['is_deleted']->value = $this->__($bum, 'is_deleted', '0');
 		$this->bum->columns['b_user_id']->value = $this->__($bum, 'b_user_id', 'NULL');
-
+		$resUpload = $this->se->upload_file('ktp', 'ktp', $id);
+		if ($resUpload->status == 200) {
+			$this->bum->columns['ktp']->value = $resUpload->file;
+		}
 		$res = $this->bum->save($id);
 		if ($res) {
 			$this->status = 200;

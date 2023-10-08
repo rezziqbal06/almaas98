@@ -30,6 +30,10 @@ $("#fedit").on("submit",function(e){
 	$('.icon-submit').addClass('fa-circle-o-notch fa-spin');
 
 	var fd = new FormData($(this)[0]);
+  var ktp = getImageData('iktpprev');
+	if(ktp){
+		fd.append('ktp', ktp.blob, 'ktp.'+ktp.extension);
+	}
 	var url = '<?=base_url("api_admin/akun/user/edit/".$bum->id)?>';
 
 	$.ajax({
@@ -185,14 +189,26 @@ $("#iekelurahan").select2({
 <?php if(isset($bum->id)){
   foreach($bum as $k => $v){ ?>
     <?php if(isset($v) && strlen($v)){?>
-    $("[name='<?=$k?>']").val('<?=$v?>');
-    <?php if($k == 'a_jabatan_id' || $k == 'a_unit_id' || $k == 'a_ruangan_id' || $k == 'sumber_iklan'){ ?>
-      $("[name='<?=$k?>']").val('<?=$v?>').select2();
-    <?php } ?>
-    <?php if($k == 'provinsi' || $k == 'kabkota' || $k == 'kecamatan' || $k == 'kelurahan'){ ?>
-      var newOption = $("<option selected='selected'></option>").val('<?=$v?>').text('<?=$v?>')
-      $("[name='<?=$k?>']").append(newOption).trigger('change');
-    <?php } ?>
+      <?php if($k == 'a_jabatan_id' || $k == 'a_unit_id' || $k == 'a_ruangan_id' || $k == 'sumber_iklan'){ ?>
+        $("[name='<?=$k?>']").val('<?=$v?>').select2();
+      <?php } else if($k == 'provinsi' || $k == 'kabkota' || $k == 'kecamatan' || $k == 'kelurahan'){ ?>
+        var newOption = $("<option selected='selected'></option>").val('<?=$v?>').text('<?=$v?>')
+        $("[name='<?=$k?>']").append(newOption).trigger('change');
+      <?php } else if($k == 'ktp'){ ?>
+        console.log('ktp', '<?=$v?>')
+        $('#img-i<?=$k?>').attr('src', '<?=base_url($v)?>');
+      <?php }else{ ?>
+        $("[name='<?=$k?>']").val('<?=$v?>');
+      <?php } ?>
     <?php } ?>
   <?php }
 } ?>
+
+
+$(document).off('change', 'input[type="file"]');
+$(document).on('change', 'input[type="file"]', function(e){
+	e.preventDefault();
+	setCompressedImage(e)
+	var id = $(this).attr('id');
+	readURLImage(this, 'img-'+id);
+});

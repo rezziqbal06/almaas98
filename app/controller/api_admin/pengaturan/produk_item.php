@@ -462,6 +462,14 @@ class Produk_Item extends JI_Controller
 		$this->message = API_ADMIN_ERROR_CODES[$this->status];
 		$ordered = $this->copm->getAllGroupByUser();
 		$produk_item = $this->bpim->getAll();
+		$custom_ordered = $this->copm->getCustomByUserGroupByBlok($b_user_id);
+		foreach ($custom_ordered as $co) {
+			if (!isset($co->blok)) $co->blok = '';
+			if (!isset($co->nomor)) $co->nomor = '';
+			$co->id = 'kustom-' . $co->blok . $co->nomor;
+			$co->harga = $co->lt * $co->harga_satuan;
+			$co->harga = number_format($co->harga, 0, ',', '.');
+		}
 		foreach ($produk_item as $k => $v) {
 			$v->status = "tersedia";
 			$v->b_user_id = null;
@@ -475,6 +483,9 @@ class Produk_Item extends JI_Controller
 					}
 				}
 			}
+		}
+		if (count($custom_ordered) > 0) {
+			$produk_item = array_merge($custom_ordered, $produk_item);
 		}
 		$data = $produk_item;
 		$this->__json_out($data);

@@ -120,10 +120,11 @@ function initCariPembeli(){
             var blok_owning = [];
 
             var s= '<option value="">-- pilih rumah yang tersedia --</option>';
+            s += '<option value="kustom">kustom</option>';
             $.each(dt.data, function(k,v){
               is_owner[k] = '';
               is_sold[k] = false;
-              var text = `Blok ${v?.blok} No ${v?.nomor} - ${v?.posisi} - Rp. ${v?.harga} - ${v?.kawasan}`;
+              var text = `${v?.is_custom ? 'KUSTOM | ' : ''}Blok ${v?.blok} No ${v?.nomor} - ${v?.posisi} - Rp. ${v?.harga} - ${v?.kawasan}`;
               var status = '';
               if(v.status == 'pembayaran' || v.status == 'dp'){
                 status = 'terjual';
@@ -132,7 +133,7 @@ function initCariPembeli(){
                 is_sold[k] = true;
               }
               if(v.b_user_id && b_user_id == v.b_user_id){
-                blok_owning.push({id:v.id,text:text});
+                blok_owning.push({id:v.id,text:text,blok:v?.blok,nomor:v?.nomor});
                 is_owner[k] = 'is_owner';
                 is_sold[k] = false;
               }
@@ -142,7 +143,7 @@ function initCariPembeli(){
             if(blok_owning.length > 0){
                 var s = '<p>Pelanggan ini memiliki histori pembelian pada:</p><ul>'
                 $.each(blok_owning, function(kb, vb){
-                  s += '<li><a href="#" class="history-pembayaran text-white" data-id="'+vb.id+'">'+vb.text+'</a></li>'
+                  s += '<li><a href="#" class="history-pembayaran text-white" data-id="'+vb.id+'" data-blok="'+vb.blok+vb.nomor+'">'+vb.text+'</a></li>'
                 })
                 s+= '</ul>'
                 $("#panel_info_owning").html(s).slideDown();
@@ -151,9 +152,9 @@ function initCariPembeli(){
             }
             $.each(is_sold, function(ks, vs){
               if(vs === true){
-                $("#ib_produk_id_0 option:eq("+(ks+1)+")").prop('disabled');
+                $("#ib_produk_id_0 option:eq("+(ks+2)+")").prop('disabled');
               }else{
-                $("#ib_produk_id_0 option:eq("+(ks+1)+")").prop('disabled', false);
+                $("#ib_produk_id_0 option:eq("+(ks+2)+")").prop('disabled', false);
               }
             })
             $("#ib_produk_id_0").select2();
@@ -167,10 +168,18 @@ function initCariPembeli(){
 
 priceFormat('itotal_harga')
 
+
 var option_produk = '<option value="">-- pilih rumah --</option>';
 <?php if(isset($bpim)){ ?>
   <?php foreach($bpim as $k => $v){ ?>
     option_produk += '<option value="<?= $v->id ?>">Blok <?= $v->blok ?> No <?= $v->nomor ?> - <?= $v->posisi ?? '' ?>- Rp. <?= number_format($v->harga, 0, ',', '.') ?> - <?= $v->kawasan ?></option>'
+  <?php } ?>
+<?php } ?>
+
+var option_kategori = '<option value="">-- pilih kawasan --</option>';
+<?php if(isset($akm)){ ?>
+  <?php foreach($akm as $k1 => $v2){ ?>
+    option_kategori += '<option value="<?= $v2->id ?>"><?= $v2->nama ?></option>'
   <?php } ?>
 <?php } ?>
 
@@ -187,12 +196,14 @@ function addProduk(id, value="", value_detail=""){
                   <option value="dp">dp</option>
                 </select>
             </div>
+            
             <div class="col-md-6 panel-pembayaran mb-3">
                 <label for="ib_produk_id_${id}">Rumah</label>
                 <select name="b_produk_id[]" id="ib_produk_id_${id}" data-count="${id}" class="form-control select2">
                   <option value="">-- pilih pembeli terlebih dahulu --</option>
                 </select>
             </div>
+           
             <div class="col-md-1 mb-3 d-none">
                 <label for="iqty_${id}" data-count="${id}">Qty</label>
                 <input type="number" name="qty[]" id="iqty_${id}" data-count="${id}" class="form-control">
@@ -204,6 +215,72 @@ function addProduk(id, value="", value_detail=""){
                 </select>
             </div>
             
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="ia_kategori_id_${id}" data-count="${id}">Kawasan</label>
+                <select name="a_kategori_id[]" id="ia_kategori_id_${id}" data-count="${id}" class="form-control form-kustom">
+                   ${option_kategori}
+                </select>
+            </div>
+
+            <input type="hidden" id="iis_custom_${id}" name="is_custom[]" value="0">
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="iblok_${id}" data-count="${id}">Blok</label>
+                <select name="blok[]" id="iblok_${id}" data-count="${id}" class="form-control form-kustom">
+                    <option>-- pilih blok --</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                    <option value="K">K</option>
+                    <option value="L">L</option>
+                    <option value="M">M</option>
+                    <option value="N">N</option>
+                    <option value="O">O</option>
+                    <option value="P">P</option>
+                    <option value="Q">Q</option>
+                    <option value="R">R</option>
+                    <option value="S">S</option>
+                    <option value="T">T</option>
+                    <option value="U">U</option>
+                    <option value="V">V</option>
+                    <option value="W">W</option>
+                    <option value="X">X</option>
+                    <option value="Y">Y</option>
+                    <option value="Z">Z</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="inomor_${id}" data-count="${id}">Nomor</label>
+                <input name="nomor[]" type="number" id="inomor_${id}" data-count="${id}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="ilt_${id}" data-count="${id}">Luas Tanah (m<sup>2</sup>)</label>
+                <input name="lt[]" type="number" id="ilt_${id}" data-count="${id}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="ilb_${id}" data-count="${id}">Luas Bangunan (m<sup>2</sup>)</label>
+                <input name="lb[]" type="number" id="ilb_${id}" data-count="${id}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="iharga_satuan_${id}" data-count="${id}">Harga/m<sup>2</sup></label>
+                <input name="harga_satuan[]" type="text" id="iharga_satuan_${id}" data-count="${id}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="isub_harga_${id}" data-count="${id}">Total Harga</label>
+                <input type="text" id="isub_harga_${id}" data-count="${id}" class="form-control form-kustom" readonly>
+            </div>
             
             <div class="col-md-1 mb-3 d-none">
                 <label for="" class="text-white">Aksi</label>
@@ -215,6 +292,8 @@ function addProduk(id, value="", value_detail=""){
 
   initCariPembeli()
   priceFormat('iharga_'+id)
+  priceFormat('iharga_satuan_'+id)
+  priceFormat('isub_harga_'+id)
   window['produk_'+id]++;
   id_produk++;
 }
@@ -255,9 +334,9 @@ function setTotal(){
   $("#itotal_harga").val(total).trigger('keyup')
 }
 
-function getHistory(id){
+function getHistory(id, user_id, blok=""){
   return new Promise(function(resolve, reject){
-    var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id
+    var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id + '&user_id='+user_id + '&blok='+blok
     var metode = $("#imetode").val();
     if(metode) url += '&metode='+metode;
     var s = '';
@@ -269,6 +348,12 @@ function getHistory(id){
           s += '<tr><th>No</th><th>Jenis</th><th>Nominal</th><th class="text-end">Marketing</th></tr>'
           $.each(dt.data.history, function(k,v){
             s += `<tr><td>${(k+1)}</td><td>${v.status}</td><td class="text-end">${v.sub_harga}</td><td >${v.a_pengguna_nama}</td></tr>`
+            $("#iblok_0").val(v?.blok)
+            $("#inomor_0").val(v?.nomor)
+            $("#ia_kategori_id_0").val(v?.a_kategori_id)
+            $("#ilt_0").val(v?.lt)
+            $("#ilb_0").val(v?.lb)
+            $("#iharga_satuan_0").val(v?.harga_satuan).trigger('input').trigger('keyup')
           })
           s += `<tr><td colspan="2"><b>Total</b></td><td class="text-end"><b>${dt.data.total}</b></td><td></td></tr>`
           if(dt.data.harga) s += `<tr class="table-info"><td colspan="2"><b>Harga</b></td><td class="text-end">${dt.data.harga}</td><td></td></tr>`
@@ -318,8 +403,9 @@ $(document).on('click', '.btn-remove-produk', function(e){
 $("#imetode").on('change', function(e){
   e.preventDefault();
   var id = $("#ib_produk_id_0").find("option:selected").val();
-
-  getHistory(id).then(function(dt){
+  var text = $("#ib_produk_id_0").find("option:selected").text();
+  var b_user_id = $("#ib_user_id").val();
+  getHistory(id, b_user_id, text).then(function(dt){
     if(dt){
       $(".panel_history").html(dt).slideDown();
     }else{
@@ -345,9 +431,12 @@ $("#imetode_pembayaran").on('change', function(e){
 $(document).off('change', '[name="b_produk_id[]"]');
 $(document).on('change', '[name="b_produk_id[]"]', function(e){
 	e.preventDefault();
+  var count = $(this).attr('data-count');
   var b_user_id = $("#ib_user_id").val();
 	var id = $(this).find("option:selected").val();
-  getHistory(id).then(function(dt){
+	var text = $(this).find("option:selected").text();
+  $(".panel_history").html('').slideUp();
+  getHistory(id, b_user_id, text).then(function(dt){
     if(dt){
       $(".panel_history").html(dt).slideDown();
     }else{
@@ -356,12 +445,49 @@ $(document).on('change', '[name="b_produk_id[]"]', function(e){
   }).catch(function(){
     $(".panel_history").html('').slideUp();
   });  
+
+  if(id.includes('kustom')){
+    $("#iis_custom_"+count).val(1)
+    $(".panel-kustom").slideDown();
+  }else{
+    $("#iis_custom_"+count).val(0)
+    $(".form-kustom").val('');
+    $(".panel-kustom").slideUp();
+  }
 });
 
 $(document).off('input', '[name="harga[]"]');
 $(document).on('input', '[name="harga[]"]', function(e){
 	e.preventDefault();
 	setTotal();
+});
+
+$(document).off('input', '[name="harga_satuan[]"]');
+$(document).on('input', '[name="harga_satuan[]"]', function(e){
+	e.preventDefault();
+  var count = $(this).attr('data-count');
+  var harga_satuan = $(this).val();
+  var lt = $("#ilt_"+count).val();
+  if(harga_satuan && lt){
+    harga_satuan = harga_satuan.replaceAll('.','');
+    var harga = harga_satuan * lt;
+    $("#isub_harga_"+count).val(harga).trigger("keyup");
+    setTotal();
+  }
+});
+
+$(document).off('input', '[name="lt[]"]');
+$(document).on('input', '[name="lt[]"]', function(e){
+	e.preventDefault();
+  var count = $(this).attr('data-count');
+  var lt = $(this).val();
+  var harga_satuan = $("#iharga_satuan_"+count).val();
+  if(harga_satuan && lt){
+    harga_satuan = harga_satuan.replaceAll('.','');
+    var harga = harga_satuan * lt;
+    $("#isub_harga_"+count).val(harga).trigger("keyup");
+    setTotal();
+  }
 });
 
 $(document).off('change', '[name="status[]"]');
@@ -378,6 +504,9 @@ $(document).on('change', '[name="status[]"]', function(e){
     $("#imetode").prop('required', false);
     $("#iharga").val('0');
     $("#itotal_harga").val('0');
+    $(".form-kustom").val('');
+    $(".panel-kustom").slideUp();
+    $("#ib_produk_id_"+id).val('').trigger('change');
   }else{
     $(".panel-pembayaran").slideDown();
     $("#igambar").prop('required', true);
@@ -464,8 +593,10 @@ $(document).off('click', '.history-pembayaran');
 $(document).on('click', '.history-pembayaran', function(e){
 	e.preventDefault();
   var id = $(this).attr('data-id');
+  var blok = $(this).attr('data-blok');
   var text = $(this).text();
-  getHistory(id).then(function(dt){
+  var b_user_id = $("#ib_user_id").val();
+  getHistory(id, b_user_id, blok).then(function(dt){
     var history = dt;
     $(".modal-title").text(text)
     $(".panel_history").html(history)

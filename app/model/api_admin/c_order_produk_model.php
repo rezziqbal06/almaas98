@@ -44,6 +44,7 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
     $this->db->join($this->tbl4, $this->tbl4_as, 'id', $this->tbl3_as, 'b_produk_id', 'left');
     $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl2_as, 'b_user_id', 'left');
     $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl2_as, 'a_pengguna_id', 'left');
+    $this->db->join($this->tbl7, $this->tbl7_as, 'id', $this->tbl_as, 'a_kategori_id', 'left');
     return $this;
   }
 
@@ -121,6 +122,43 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
     $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
     $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
     $this->db->order_by("$this->tbl_as.id", "asc");
+    return $this->db->get();
+  }
+
+  public function getCustomByUserAndBlok($user_id, $blok)
+  {
+    $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+    $this->db->select_as("$this->tbl2_as.metode_pembayaran", 'metode_pembayaran', 0);
+    $this->db->select_as("$this->tbl2_as.diskon", 'diskon', 0);
+    $this->db->select_as("$this->tbl5_as.id", 'b_user_id', 0);
+    $this->db->select_as("$this->tbl6_as.nama", 'a_pengguna_nama', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+    $this->db->where_as("$this->tbl5_as.id", $user_id, "AND", "=");
+    $this->db->where_as("CONCAT($this->tbl_as.blok,'',$this->tbl_as.nomor)", $this->db->esc($blok), "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_custom", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    $this->db->order_by("$this->tbl_as.id", "asc");
+    return $this->db->get();
+  }
+
+  public function getCustomByUserGroupByBlok($user_id)
+  {
+    $this->db->select_as("$this->tbl_as.*, $this->tbl_as.id", 'id', 0);
+    $this->db->select_as("$this->tbl2_as.metode_pembayaran", 'metode_pembayaran', 0);
+    $this->db->select_as("$this->tbl2_as.diskon", 'diskon', 0);
+    $this->db->select_as("$this->tbl5_as.id", 'b_user_id', 0);
+    $this->db->select_as("$this->tbl6_as.nama", 'a_pengguna_nama', 0);
+    $this->db->select_as("COALESCE($this->tbl3_as.posisi,'')", 'posisi', 0);
+    $this->db->select_as("COALESCE($this->tbl7_as.nama,'')", 'kawasan', 0);
+    $this->db->from($this->tbl, $this->tbl_as);
+    $this->join_company();
+    $this->db->where_as("$this->tbl5_as.id", $user_id, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_custom", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_active", 1, "AND", "=");
+    $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0), "AND", "=");
+    $this->db->order_by("$this->tbl_as.id", "asc")->group_by("$this->tbl_as.blok");
     return $this->db->get();
   }
 }

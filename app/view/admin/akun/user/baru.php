@@ -130,6 +130,13 @@
                             <option value="Twitter">Twitter</option>
                         </select>
                     </div>
+                    <div class="col-md-2 panel-pembayaran mb-2">
+                        <label for="iktp" class="control-label">KTP</label>
+                        <input id="iktp" type="file" name="ktp" accept=".png, .jpg, .jpeg" class="form-control" required>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <img id="img-iktp" src="" alt="" class="img-fluid rounded">
+                    </div>
                     <!-- <div class="col-md-4">
                         <label for="ipassword" class="control-label">Password</label>
                         <input id="ipassword" type="password" class="form-control" name="password" value="123456" placeholder="password" />

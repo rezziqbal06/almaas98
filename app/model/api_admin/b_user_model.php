@@ -317,14 +317,18 @@ class B_User_Model extends \Model\B_User_Concern
     $this->db->select_as("$this->tbl_as.fnama", "nama", 0);
     $this->db->select_as("$this->tbl_as.telp", "telp", 0);
     $this->db->select_as("$this->tbl_as.nik", "nik", 0);
+    $this->db->select_as("$this->tbl_as.ktp", "ktp", 0);
     $this->db->select_as("$this->tbl_as.sumber_iklan", "sumber_iklan", 0);
-    $this->db->select_as("COALESCE($this->tbl7_as.nama, 'Belum Beli')", "kawasan", 0);
+    $this->db->select_as("COALESCE($this->tbl7_as.nama, $this->tbl9_as.nama, 'Belum Beli')", "kawasan", 0);
+    $this->db->select_as("COALESCE($this->tbl8_as.nama, '')", "marketing", 0);
     $this->db->from($this->tbl, $this->tbl_as);
     $this->db->join($this->tbl3, $this->tbl3_as, 'b_user_id', $this->tbl_as, 'id'); //c_order
     $this->db->join($this->tbl4, $this->tbl4_as, 'c_order_id', $this->tbl3_as, 'id'); //c_order_produk
     $this->db->join($this->tbl5, $this->tbl5_as, 'id', $this->tbl4_as, 'b_produk_id'); //b_produk_item
     $this->db->join($this->tbl6, $this->tbl6_as, 'id', $this->tbl5_as, 'b_produk_id'); //b_produk
     $this->db->join($this->tbl7, $this->tbl7_as, 'id', $this->tbl6_as, 'a_kategori_id'); //b_produk
+    $this->db->join($this->tbl8, $this->tbl8_as, 'id', $this->tbl_as, 'a_pengguna_id'); //a_pengguna_id
+    $this->db->join($this->tbl9, $this->tbl9_as, 'id', $this->tbl4_as, 'a_kategori_id'); //a_pengguna_id
     if (strlen($a_kategori_id)) $this->db->where_as("$this->tbl7_as.id", $this->db->esc($a_kategori_id));
     if (strlen($sdate) == 10 && strlen($edate) == 10) {
       $this->db->between("DATE($this->tbl_as.cdate)", 'DATE("' . $sdate . '")', 'DATE("' . $edate . '")');
@@ -335,7 +339,7 @@ class B_User_Model extends \Model\B_User_Concern
     }
     $this->db->where_as("$this->tbl_as.is_active", 1);
     $this->db->where_as("$this->tbl_as.is_deleted", $this->db->esc(0));
-    $this->db->order_by("$this->tbl7_as.id")->group_by("$this->tbl_as.id");
+    $this->db->order_by("kawasan")->group_by("$this->tbl_as.id");
     return $this->db->get("", 0);
   }
 

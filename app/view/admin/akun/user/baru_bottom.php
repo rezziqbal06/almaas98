@@ -17,6 +17,10 @@ $("#ftambah").on("submit",function(e){
 	$('.icon-submit').addClass('fa-circle-o-notch fa-spin');
 
 	var fd = new FormData($(this)[0]);
+  var ktp = getImageData('iktpprev');
+	if(ktp){
+		fd.append('ktp', ktp.blob, 'ktp.'+ktp.extension);
+	}
 	var url = '<?= base_url("api_admin/akun/user/baru/")?>';
 
 	$.ajax({
@@ -163,4 +167,12 @@ $("#ikelurahan").select2({
     },
     cache: true
 	}
+});
+
+$(document).off('change', 'input[type="file"]');
+$(document).on('change', 'input[type="file"]', function(e){
+	e.preventDefault();
+	setCompressedImage(e)
+	var id = $(this).attr('id');
+	readURLImage(this, 'img-'+id);
 });

@@ -26,6 +26,8 @@ class C_Order_Produk_Concern extends \JI_Model
     public $tbl5_as = 'bu';
     public $tbl6 = 'a_pengguna';
     public $tbl6_as = 'ap';
+    public $tbl7 = 'a_kategori';
+    public $tbl7_as = 'ak';
 
     const COLUMNS = [
         'c_order_id',
@@ -39,6 +41,11 @@ class C_Order_Produk_Concern extends \JI_Model
         'status',
         'rating',
         'penilaian',
+        'blok',
+        'nomor',
+        'lt',
+        'lb',
+        'harga_satuan',
         'sub_harga',
         'is_active',
         'is_deleted',
@@ -48,6 +55,11 @@ class C_Order_Produk_Concern extends \JI_Model
         0,
         0,
         0,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -96,13 +108,13 @@ class C_Order_Produk_Concern extends \JI_Model
             ["$this->tbl_as.sub_harga", 'sub_harga', 'sub_harga'],
             ["$this->tbl_as.tgl_pesan", 'tgl_pesan', 'Tgl Pesan'],
             ["$this->tbl_as.tgl_selesai", 'tgl_selesai', 'Tgl Selesai'],
-            ["$this->tbl3_as.blok", 'blok', 'Blok'],
-            ["$this->tbl3_as.nomor", 'nomor', 'Nomor'],
+            ["COALESCE($this->tbl3_as.blok,$this->tbl_as.blok,'')", 'blok', 'Blok'],
+            ["COALESCE($this->tbl3_as.nomor,$this->tbl_as.nomor,'')", 'nomor', 'Nomor'],
             ["$this->tbl3_as.posisi", 'posisi', 'Posisi'],
-            ["$this->tbl4_as.luas_tanah", 'luas_tanah', 'luas_tanah'],
-            ["$this->tbl4_as.luas_bangunan", 'luas_bangunan', 'luas_bangunan'],
-            ["$this->tbl4_as.harga", 'harga', 'harga'],
-            ["$this->tbl4_as.gambar", 'gambar', 'gambar'],
+            ["COALESCE($this->tbl4_as.luas_tanah,$this->tbl_as.lt)", 'luas_tanah', 'luas_tanah'],
+            ["COALESCE($this->tbl4_as.luas_bangunan,$this->tbl_as.lb)", 'luas_bangunan', 'luas_bangunan'],
+            ["COALESCE($this->tbl4_as.harga, SUM($this->tbl_as.lt*$this->tbl_as.harga_satuan))", 'harga', 'harga'],
+            ["COALESCE($this->tbl4_as.gambar,'media/default_produk.jpeg')", 'gambar', 'gambar'],
             ["$this->tbl_as.status", 'status', 'Status']
         ]);
 

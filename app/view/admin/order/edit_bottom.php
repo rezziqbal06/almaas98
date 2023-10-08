@@ -111,10 +111,11 @@ function getTersedia(b_user_id){
             var blok_owning = [];
 
             var s= '<option value="">-- pilih rumah yang tersedia --</option>';
+            s += '<option value="kustom">kustom</option>';
             $.each(dt.data, function(k,v){
               is_owner[k] = '';
               is_sold[k] = false;
-              var text = `Blok ${v?.blok} No ${v?.nomor} - ${v?.posisi} - Rp. ${v?.harga} - ${v?.kawasan}`;
+              var text = `${v?.is_custom ? 'KUSTOM | ' : ''}Blok ${v?.blok} No ${v?.nomor} - ${v?.posisi} - Rp. ${v?.harga} - ${v?.kawasan}`;
               var status = '';
               if(v.status == 'pembayaran' || v.status == 'dp'){
                 status = 'terjual';
@@ -123,7 +124,7 @@ function getTersedia(b_user_id){
                 is_sold[k] = true;
               }
               if(v.b_user_id && b_user_id == v.b_user_id){
-                blok_owning.push({id:v.id,text:text});
+                blok_owning.push({id:v.id,text:text,blok:v?.blok,nomor:v?.nomor});
                 is_owner[k] = 'is_owner';
                 is_sold[k] = false;
               }
@@ -133,7 +134,7 @@ function getTersedia(b_user_id){
             if(blok_owning.length > 0){
                 var s = '<p>Pelanggan ini memiliki histori pembelian pada:</p><ul>'
                 $.each(blok_owning, function(kb, vb){
-                  s += '<li><a href="#" class="history-pembayaran text-white" data-id="'+vb.id+'">'+vb.text+'</a></li>'
+                  s += '<li><a href="#" class="history-pembayaran text-white" data-id="'+vb.id+'" data-blok="'+vb.blok+vb.nomor+'">'+vb.text+'</a></li>'
                 })
                 s+= '</ul>'
                 $("#panel_info_owning").html(s).slideDown();
@@ -142,9 +143,9 @@ function getTersedia(b_user_id){
             }
             $.each(is_sold, function(ks, vs){
               if(vs === true){
-                $("#ib_produk_id_0 option:eq("+(ks+1)+")").prop('disabled');
+                $("#ib_produk_id_0 option:eq("+(ks+2)+")").prop('disabled');
               }else{
-                $("#ib_produk_id_0 option:eq("+(ks+1)+")").prop('disabled', false);
+                $("#ib_produk_id_0 option:eq("+(ks+2)+")").prop('disabled', false);
               }
             })
             $("#ib_produk_id_0").select2();
@@ -200,7 +201,15 @@ var option_produk = '<option value="">-- pilih rumah --</option>';
   <?php } ?>
 <?php } ?>
 
-function addProduk(id, b_produk_id="", qty="", b_produk_id_harga="", harga="", status="pending"){
+var option_kategori = '<option value="">-- pilih kawasan --</option>';
+<?php if(isset($akm)){ ?>
+  <?php foreach($akm as $k1 => $v2){ ?>
+    option_kategori += '<option value="<?= $v2->id ?>"><?= $v2->nama ?></option>'
+  <?php } ?>
+<?php } ?>
+
+
+function addProduk(id, b_produk_id="", qty="", b_produk_id_harga="", harga="", status="pending", is_custom=0, blok="", nomor="", a_kategori_id="", lt="", lb="", harga_satuan=""){
   if(!window['produk_'+id]) window['produk_'+id] = 0;
   var s = `<div id="ps_${id}" class="row">
             <div class="col-md-6 mb-3">
@@ -230,7 +239,72 @@ function addProduk(id, b_produk_id="", qty="", b_produk_id_harga="", harga="", s
                 </select>
             </div>
             
-            
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="ia_kategori_id_${id}" data-count="${id}">Kawasan</label>
+                <select name="a_kategori_id[]" id="ia_kategori_id_${id}" data-count="${id}" class="form-control form-kustom">
+                   ${option_kategori}
+                </select>
+            </div>
+
+            <input type="hidden" id="iis_custom_${id}" name="is_custom[]" value="${is_custom}">
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="iblok_${id}" data-count="${id}">Blok</label>
+                <select name="blok[]" id="iblok_${id}" data-count="${id}" class="form-control form-kustom">
+                    <option>-- pilih blok --</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                    <option value="K">K</option>
+                    <option value="L">L</option>
+                    <option value="M">M</option>
+                    <option value="N">N</option>
+                    <option value="O">O</option>
+                    <option value="P">P</option>
+                    <option value="Q">Q</option>
+                    <option value="R">R</option>
+                    <option value="S">S</option>
+                    <option value="T">T</option>
+                    <option value="U">U</option>
+                    <option value="V">V</option>
+                    <option value="W">W</option>
+                    <option value="X">X</option>
+                    <option value="Y">Y</option>
+                    <option value="Z">Z</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="inomor_${id}" data-count="${id}">Nomor</label>
+                <input name="nomor[]" type="number" id="inomor_${id}" data-count="${id}" value="${nomor}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="ilt_${id}" data-count="${id}">Luas Tanah (m<sup>2</sup>)</label>
+                <input name="lt[]" type="number" id="ilt_${id}" data-count="${id}" value="${lt}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="ilb_${id}" data-count="${id}">Luas Bangunan (m<sup>2</sup>)</label>
+                <input name="lb[]" type="number" id="ilb_${id}" data-count="${id}" value="${lb}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="iharga_satuan_${id}" data-count="${id}">Harga/m<sup>2</sup></label>
+                <input name="harga_satuan[]" type="text" id="iharga_satuan_${id}" data-count="${id}" value="${harga_satuan}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3" style="display: none;">
+                <label for="isub_harga_${id}" data-count="${id}">Total Harga</label>
+                <input type="text" id="isub_harga_${id}" data-count="${id}" class="form-control form-kustom" readonly>
+            </div>
             
             <div class="col-md-1 mb-3 d-none">
                 <label for="" class="text-white">Aksi</label>
@@ -240,6 +314,8 @@ function addProduk(id, b_produk_id="", qty="", b_produk_id_harga="", harga="", s
   $('#panel_produk').append(s);
   $(".select2").select2();
   priceFormat('iharga_'+id)
+  priceFormat('iharga_satuan_'+id)
+  priceFormat('isub_harga_'+id)
 
   if(b_produk_id) $("#ib_produk_id_"+id).val(b_produk_id)
   if(qty) $("#iqty_"+id).val(qty)
@@ -248,9 +324,19 @@ function addProduk(id, b_produk_id="", qty="", b_produk_id_harga="", harga="", s
     setSpesifikasi(id)
     setTimeout(function(){
       console.log("#ib_produk_id_harga_"+id, b_produk_id_harga)
+      console.log("#iblok_"+id, blok)
+      console.log("#ia_kategori_id_"+id, a_kategori_id)
       if(b_produk_id_harga) $("#ib_produk_id_harga_"+id).val(b_produk_id_harga).trigger('change')
+      if(a_kategori_id) $("#ia_kategori_id_"+id).val(a_kategori_id).trigger('change')
+      if(blok) $("#iblok_"+id).val(blok).trigger('change')
+      if(is_custom){
+        console.log(is_custom, 'is_custom')
+        $("#ib_produk_id_"+id).val('kustom-'+blok+nomor).trigger('change')
+        $("#ilt_"+id).trigger('input')
+      } 
     },333)
   }
+ 
   initCariPembeli()
   window['produk_'+id]++;
   id_produk++;
@@ -280,9 +366,9 @@ $("#btn_add_produk").on('click', function(e){
   addProduk(id_produk);
 })
 
-function getHistory(id){
+function getHistory(id, user_id, blok=""){
   return new Promise(function(resolve, reject){
-    var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id
+    var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id + '&user_id='+user_id + '&blok='+blok
     var metode = $("#imetode").val();
     if(metode) url += '&metode='+metode;
     var s = '';
@@ -294,6 +380,12 @@ function getHistory(id){
           s += '<tr><th>No</th><th>Jenis</th><th>Nominal</th><th class="text-end">Marketing</th></tr>'
           $.each(dt.data.history, function(k,v){
             s += `<tr><td>${(k+1)}</td><td>${v.status}</td><td class="text-end">${v.sub_harga}</td><td >${v.a_pengguna_nama}</td></tr>`
+            $("#iblok_0").val(v?.blok)
+            $("#inomor_0").val(v?.nomor)
+            $("#ia_kategori_id_0").val(v?.a_kategori_id)
+            $("#ilt_0").val(v?.lt)
+            $("#ilb_0").val(v?.lb)
+            $("#iharga_satuan_0").val(v?.harga_satuan).trigger('input').trigger('keyup')
           })
           s += `<tr><td colspan="2"><b>Total</b></td><td class="text-end"><b>${dt.data.total}</b></td><td></td></tr>`
           if(dt.data.harga) s += `<tr class="table-info"><td colspan="2"><b>Harga</b></td><td class="text-end">${dt.data.harga}</td><td></td></tr>`
@@ -332,8 +424,9 @@ function getHistory(id){
 $("#imetode").on('change', function(e){
   e.preventDefault();
   var id = $("#ib_produk_id_0").find("option:selected").val();
-
-  getHistory(id).then(function(dt){
+  var text = $("#ib_produk_id_0").find("option:selected").text();
+  var b_user_id = $("#ib_user_id").val();
+  getHistory(id, b_user_id, text).then(function(dt){
     if(dt){
       $(".panel_history").html(dt).slideDown();
     }else{
@@ -366,9 +459,12 @@ $(document).on('click', '.btn-remove-produk', function(e){
 $(document).off('change', '[name="b_produk_id[]"]');
 $(document).on('change', '[name="b_produk_id[]"]', function(e){
 	e.preventDefault();
+  var count = $(this).attr('data-count');
   var b_user_id = $("#ib_user_id").val();
 	var id = $(this).find("option:selected").val();
-  getHistory(id).then(function(dt){
+	var text = $(this).find("option:selected").text();
+  $(".panel_history").html('').slideUp();
+  getHistory(id, b_user_id, text).then(function(dt){
     if(dt){
       $(".panel_history").html(dt).slideDown();
     }else{
@@ -377,6 +473,18 @@ $(document).on('change', '[name="b_produk_id[]"]', function(e){
   }).catch(function(){
     $(".panel_history").html('').slideUp();
   });  
+
+  console.log(id,'produk')
+  
+  
+  if(id.includes('kustom')){
+    $("#iis_custom_"+count).val(1)
+    $(".panel-kustom").slideDown();
+  }else{
+    $("#iis_custom_"+count).val(0)
+    $(".form-kustom").val('');
+    $(".panel-kustom").slideUp();
+  }
 });
 
 $(document).off('input', '[name="qty[]"]');
@@ -398,6 +506,34 @@ $(document).on('change', '[name="b_produk_id_harga[]"]', function(e){
 });
 
 
+$(document).off('input', '[name="harga_satuan[]"]');
+$(document).on('input', '[name="harga_satuan[]"]', function(e){
+	e.preventDefault();
+  var count = $(this).attr('data-count');
+  var harga_satuan = $(this).val();
+  var lt = $("#ilt_"+count).val();
+  if(harga_satuan && lt){
+    harga_satuan = harga_satuan.replaceAll('.','');
+    var harga = harga_satuan * lt;
+    $("#isub_harga_"+count).val(harga).trigger("keyup");
+    setTotal();
+  }
+});
+
+$(document).off('input', '[name="lt[]"]');
+$(document).on('input', '[name="lt[]"]', function(e){
+	e.preventDefault();
+  var count = $(this).attr('data-count');
+  var lt = $(this).val();
+  var harga_satuan = $("#iharga_satuan_"+count).val();
+  if(harga_satuan && lt){
+    harga_satuan = harga_satuan.replaceAll('.','');
+    var harga = harga_satuan * lt;
+    $("#isub_harga_"+count).val(harga).trigger("keyup");
+    setTotal();
+  }
+});
+
 $(document).off('change', '[name="status[]"]');
 $(document).on('change', '[name="status[]"]', function(e){
 	e.preventDefault();
@@ -412,6 +548,9 @@ $(document).on('change', '[name="status[]"]', function(e){
     $("#imetode").prop('required', false);
     $("#iharga").val('0');
     $("#itotal_harga").val('0');
+    $(".form-kustom").val('');
+    $(".panel-kustom").slideUp();
+    $("#ib_produk_id_"+id).val('').trigger('change');
   }else{
     $(".panel-pembayaran").slideDown();
     $("#igambar").prop('required', true);
@@ -437,8 +576,10 @@ $(document).off('click', '.history-pembayaran');
 $(document).on('click', '.history-pembayaran', function(e){
 	e.preventDefault();
   var id = $(this).attr('data-id');
+  var blok = $(this).attr('data-blok');
   var text = $(this).text();
-  getHistory(id).then(function(dt){
+  var b_user_id = $("#ib_user_id").val();
+  getHistory(id, b_user_id, blok).then(function(dt){
     var history = dt;
     $(".modal-title").text(text)
     $(".panel_history").html(history)
@@ -455,7 +596,7 @@ initEditor('#icatatan');
 setTimeout(function(){
   <?php if(isset($copm) && count($copm)){ ?>
     <?php foreach($copm as $kpm => $vpm){ ?>
-        addProduk(id_produk, "<?=$vpm->b_produk_id?>", "<?=$vpm->qty?>", "<?=$vpm->b_produk_id_harga?>", "<?=$vpm->sub_harga?>", "<?=$vpm->status ?? "pending"?>")
+        addProduk(id_produk, "<?=$vpm->b_produk_id?>", "<?=$vpm->qty?>", "<?=$vpm->b_produk_id_harga?>", "<?=$vpm->sub_harga?>", "<?=$vpm->status ?? "pending"?>", "<?=$vpm->is_custom ?? 0?>", "<?=$vpm->blok ?? ''?>", "<?=$vpm->nomor ?? ''?>",  "<?=$vpm->a_kategori_id ?? ''?>", "<?=$vpm->lt ?? ''?>", "<?=$vpm->lb ?? ''?>", "<?=$vpm->harga_satuan ?? ''?>")
     <?php } ?>
   <?php } ?>
 
@@ -465,6 +606,7 @@ setTimeout(function(){
   $.each(data_fill,function(k,v){
     if(k == 'gambar'){
       $('#img-igambar').attr('src', '<?=base_url()?>'+v);
+      if(v) $("#igambar").prop('required', false)
     }else if(k == 'b_user_id'){
       $("#ie"+k).val(v);
       getTersedia(v);
@@ -487,7 +629,9 @@ setTimeout(function(){
     <?php if(isset($copm) && count($copm)){ ?>
     <?php foreach($copm as $kpm => $vpm){ ?>
         console.log("#ib_produk_id_<?=$kpm?>",'<?=$vpm->b_produk_id?>')
-        $("#ib_produk_id_<?=$kpm?>").val('<?=$vpm->b_produk_id?>').select2().trigger('change');
+        <?php if(isset($vpm->b_produk_id) && strlen($vpm->b_produk_id) && !empty($vpm->b_produk_id) && !$vpm->is_custom) { ?>
+          $("#ib_produk_id_<?=$kpm?>").val('<?=$vpm->b_produk_id?>').select2().trigger('change');
+        <?php } ?>
     <?php } ?>
   <?php } ?>
   },333)
