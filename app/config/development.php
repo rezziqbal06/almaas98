@@ -221,7 +221,7 @@ $semevar['site_name'] = 'Almaas 98 Residence';
 $semevar['admin_site_suffix'] = ' - Almaas 98';
 $semevar['site_suffix'] = ' - Almaas 98';
 $semevar['site_motto'] = 'Almaas 98 Residence: Hunian Terjangkau, Hidup Nyaman';
-$semevar['site_description'] = 'Almaas 98 Residence adalah sebuah hunian yang menghadirkan perpaduan sempurna antara harga terjangkau dan nilai-nilai syar\'i. Terletak strategis di daerah yang ramai dan aksesible, kompleks perumahan ini menawarkan berbagai pilihan unit perumahan yang terjangkau bagi para calon pemilik rumah. Dengan komitmen untuk mematuhi prinsip-prinsip syariah dalam perencanaan dan pengembangan proyek ini, Almaas 98 Residence memberikan rasa aman dan nyaman bagi penghuninya. Ini adalah tempat ideal bagi mereka yang mencari perumahan yang tidak hanya terjangkau tetapi juga sesuai dengan prinsip-prinsip syariah dalam kehidupan sehari-hari.';
+$semevar['site_description'] = 'Sebuah hunian yang menghadirkan perpaduan sempurna antara harga terjangkau dan nilai-nilai syar\'i. Terletak strategis di daerah yang ramai dan aksesible, kompleks perumahan ini menawarkan berbagai pilihan unit perumahan yang terjangkau bagi para calon pemilik rumah. Dengan komitmen untuk mematuhi prinsip-prinsip syariah dalam perencanaan dan pengembangan proyek ini.';
 $semevar['site_map'] = 'https://goo.gl/maps/4xDEwPDd2ML3txc59';
 $semevar['site_fb'] = 'https://www.facebook.com/profile.php?id=100054244250465';
 $semevar['site_ig'] = 'https://www.instagram.com/almaas_developer.official/';

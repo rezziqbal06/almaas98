@@ -117,4 +117,15 @@ class B_User_Model extends \Model\B_User_Concern
 		$this->db->from($this->tbl, $this->tbl_as);
 		return $this->db->get_first('object', 0);
 	}
+
+	public function getPenilaian($is_active = 1)
+	{
+		$this->db->select_as("$this->tbl_as.fnama", 'fnama', 0);
+		$this->db->select_as("$this->tbl_as.penilaian", 'penilaian', 0);
+		$this->db->where_as("$this->tbl_as.penilaian", 'IS NOT NULL');
+		$this->db->where_as("$this->tbl_as.penilaian", '""', 'AND', '<>');
+		$this->db->where('is_active', $is_active);
+		$this->db->where('is_deleted', $this->db->esc(0));
+		return $this->db->get('', 0);
+	}
 }

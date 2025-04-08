@@ -9,8 +9,8 @@ class Logout extends JI_Controller
 	public function index()
 	{
 		$d = $this->__init();
-		unset($_SESSION);
 		$sess = $d['sess'];
+		unset($_SESSION);
 		if (!is_object($sess)) $sess = new stdClass();
 		if (!isset($sess->user)) $sess->user = new stdClass();
 		if (!isset($sess->admin)) $sess->admin = new stdClass();

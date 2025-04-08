@@ -108,7 +108,6 @@ class Order extends \JI_Controller
 		$data['copm'] = $this->copm->getByOrder($com->id);
 		$data['arm'] = $this->arm->getAll();
 
-		// dd($data['copm']);
 		$this->setTitle('Order Edit #' . $com->id . ' ' . $this->config_semevar('admin_site_suffix', ''));
 		$this->putThemeContent("order/edit_modal", $data);
 		$this->putThemeContent("order/edit", $data);

@@ -98,6 +98,10 @@
 						<label for="iealamat2">Alamat2</label>
 						<textarea id="iealamat2" class="form-control" name="alamat2" maxlength="30"></textarea>
 					</div>
+					<div class="col-md-12">
+                        <label for="iepenilaian">Penilaian/Testimoni</label>
+                        <textarea id="iepenilaian" class="form-control" name="penilaian" maxlength="300"></textarea>
+                    </div>
 				</div>
 				<div class="form-group row">
 
@@ -133,7 +137,7 @@
 					</div>
 					<div class="col-md-4 panel-pembayaran mb-2">
 						<label for="iktp" class="control-label">KTP</label>
-						<input id="iktp" type="file" name="ktp" accept=".png, .jpg, .jpeg" class="form-control" required>
+						<input id="iktp" type="file" name="ktp" accept=".png, .jpg, .jpeg" class="form-control">
 					</div>
 					<div class="col-md-2 mb-2 mt-4">
 						<img id="img-iktp" src="" alt="" class="img-fluid rounded">

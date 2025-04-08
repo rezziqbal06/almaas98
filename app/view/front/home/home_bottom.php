@@ -1,7 +1,7 @@
-NProgress.start();
+<!-- NProgress.start(); -->
 
 setTimeout(function(){
-	NProgress.done();
+	<!-- NProgress.done(); -->
 	
 	<?php if($is_from_login) : ?>
 	
@@ -50,9 +50,26 @@ $('#banner').slick({
     }
   });
 
+$('#testimoni').slick({
+    autoplay: true,
+    autoplaySpeed: 2000,
+    fade: true,
+	dots: true, // Enable dots (indicator bullets)
+});
+
 
 $("#cari_quiz").on('click', function(e){
 	e.preventDefault();
 	window.location = '<?= base_url("explore") ?>'
 })
   
+AOS.init();
+
+window.addEventListener('scroll', function() {
+	const header = document.getElementById('nav-menu');
+	if (window.scrollY > 0) {
+		header.classList.add('header-scrolled');
+	} else {
+		header.classList.remove('header-scrolled');
+	}
+});

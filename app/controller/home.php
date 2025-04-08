@@ -15,11 +15,13 @@ class Home extends JI_Controller
 		$this->load('a_banner_concern');
 		$this->load('a_blog_concern');
 		$this->load('b_produk_concern');
+		$this->load('b_user_concern');
 
 		$this->load('front/a_kategori_model', 'akm');
 		$this->load('front/a_banner_model', 'abm');
 		$this->load('front/a_blog_model', 'ablm');
 		$this->load('front/b_produk_model', 'bpm');
+		$this->load('front/b_user_model', 'bum');
 	}
 
 	function __formatNominal($nominal)
@@ -92,6 +94,10 @@ class Home extends JI_Controller
 		}
 		$data['ablm'] = $ablm;
 		unset($ablm);
+
+		$testimoni = $this->bum->getPenilaian();
+		if (isset($testimoni[0]->fnama)) $data['testimoni'] = $testimoni;
+		unset($testimoni);
 
 		// $data['jp'] = $this->input->request('jp', 2);
 

@@ -97,6 +97,10 @@
                         <label for="ialamat2">Alamat2</label>
                         <textarea id="ialamat2" class="form-control" name="alamat2" maxlength="30"></textarea>
                     </div>
+                    <div class="col-md-12">
+                        <label for="ipenilaian">Penilaian/Testimoni</label>
+                        <textarea id="ipenilaian" class="form-control" name="penilaian" maxlength="300"></textarea>
+                    </div>
                 </div>
                 <div class="form-group row">
 

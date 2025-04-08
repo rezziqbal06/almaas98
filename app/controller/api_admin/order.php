@@ -227,6 +227,7 @@ class Order extends JI_Controller
 			$harga_satuan = $this->input->post('harga_satuan');
 			$blok = $this->input->post('blok');
 			$nomor = $this->input->post('nomor');
+			$posisi = $this->input->post('posisi');
 			$lt = $this->input->post('lt');
 			$lb = $this->input->post('lb');
 			$a_kategori_id = $this->input->post('a_kategori_id');
@@ -239,12 +240,13 @@ class Order extends JI_Controller
 					$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
 					$dip[$k]['qty'] = $qty[$k] ?? 1;
 					$dip[$k]['is_custom'] = $is_custom[$k] ?? 0;
-					$dip[$k]['a_kategori_id'] = $a_kategori_id[$k] ?? null;
-					$dip[$k]['blok'] = $blok[$k] ?? null;
-					$dip[$k]['nomor'] = $nomor[$k] ?? null;
-					$dip[$k]['lt'] = $lt[$k] ?? null;
-					$dip[$k]['lb'] = $lb[$k] ?? null;
-					$dip[$k]['harga_satuan'] = $harga_satuan[$k] ? (int) str_replace('.', '', $harga_satuan[$k]) : null;
+					$dip[$k]['a_kategori_id'] = $a_kategori_id[$k] ?? 0;
+					$dip[$k]['blok'] = $blok[$k] ?? "";
+					$dip[$k]['nomor'] = $nomor[$k] ?? "";
+					$dip[$k]['posisi'] = $posisi[$k] ?? "";
+					$dip[$k]['lt'] = $lt[$k] ?? "";
+					$dip[$k]['lb'] = $lb[$k] ?? "";
+					$dip[$k]['harga_satuan'] = $harga_satuan[$k] ? (int) str_replace('.', '', $harga_satuan[$k]) : 0;
 					$dip[$k]['status'] = $status[$k];
 					$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
 					$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
@@ -500,6 +502,7 @@ class Order extends JI_Controller
 		unset($du['is_custom']);
 		unset($du['lb']);
 		unset($du['lt']);
+		unset($du['posisi']);
 		if ($id > 0) {
 			unset($du['id']);
 			$resUpload = $this->se->upload_file('gambar', 'kategori', $id);
@@ -520,6 +523,7 @@ class Order extends JI_Controller
 					$harga_satuan = $this->input->post('harga_satuan');
 					$blok = $this->input->post('blok');
 					$nomor = $this->input->post('nomor');
+					$posisi = $this->input->post('posisi');
 					$lt = $this->input->post('lt');
 					$lb = $this->input->post('lb');
 					$a_kategori_id = $this->input->post('a_kategori_id');
@@ -531,12 +535,13 @@ class Order extends JI_Controller
 							$dip[$k]['b_produk_id_harga'] = $b_produk_id_harga[$k] ?? 0;
 							$dip[$k]['qty'] = $qty[$k] ?? 1;
 							$dip[$k]['is_custom'] = $is_custom[$k] ?? 0;
-							$dip[$k]['a_kategori_id'] = $a_kategori_id[$k] ?? null;
-							$dip[$k]['blok'] = $blok[$k] ?? null;
-							$dip[$k]['nomor'] = $nomor[$k] ?? null;
-							$dip[$k]['lt'] = $lt[$k] ?? null;
-							$dip[$k]['lb'] = $lb[$k] ?? null;
-							$dip[$k]['harga_satuan'] = $harga_satuan[$k] ? (int) str_replace('.', '', $harga_satuan[$k]) : null;
+							$dip[$k]['a_kategori_id'] = $a_kategori_id[$k] ?? 0;
+							$dip[$k]['blok'] = $blok[$k] ?? "";
+							$dip[$k]['nomor'] = $nomor[$k] ?? "";
+							$dip[$k]['posisi'] = $posisi[$k] ?? "";
+							$dip[$k]['lt'] = $lt[$k] ?? "";
+							$dip[$k]['lb'] = $lb[$k] ?? "";
+							$dip[$k]['harga_satuan'] = $harga_satuan[$k] ? (int) str_replace('.', '', $harga_satuan[$k]) : 0;
 							$dip[$k]['status'] = $status[$k];
 							$dip[$k]['sub_harga'] = (int) str_replace('.', '', $harga[$k]);
 							$dip[$k]['tgl_pesan'] = $this->input->post('tgl_pesan');
@@ -793,9 +798,9 @@ class Order extends JI_Controller
 		$user_id = $this->input->request("user_id", '');
 		$blok = $this->input->request("blok", '');
 		$metode = $this->input->request("metode", '');
+		$posisi = $this->input->request("posisi", null);
 		$harga = 0;
 		$diskon = 0;
-		$posisi = '';
 
 		if (!strlen($produk_id)) {
 			$this->status = 401;
@@ -824,7 +829,7 @@ class Order extends JI_Controller
 			}
 			$copm = $this->copm->getCustomByUserAndBlok($user_id, $blok);
 			if (isset($copm[0]->harga_satuan) && isset($copm[0]->lt)) $harga = $copm[0]->harga_satuan * $copm[0]->lt;
-			$posisi = $copm[0]->posisi ?? '';
+			$posisi = $posisi ?? $copm[0]->posisi ?? '';
 			$total = 0;
 			foreach ($copm as $k => $v) {
 				if (isset($v->metode) && $k == 1) $metode = $v->metode;

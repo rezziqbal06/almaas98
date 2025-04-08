@@ -2,6 +2,7 @@
 	"<link rel=\"stylesheet\" href=\"{{cdn_url}}skin/front/css/bootstrap.min.css\" \/>",
 	"<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css\" \/>",
 	"<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css\" \/>",
+	"<link rel=\"stylesheet\" href=\"https://unpkg.com/aos@2.3.1/dist/aos.css\" \/>",
 	"<link rel=\"stylesheet\" href=\"{{cdn_url}}skin/admin/css/plugins.css\" \/>",
 	"<link rel=\"stylesheet\" href=\"{{cdn_url}}skin/admin/css/jquery.gritter.css\" \/>",
 	"<link rel=\"stylesheet\" href=\"{{cdn_url}}skin/admin/css/nucleo-svg.css\" \/>",
