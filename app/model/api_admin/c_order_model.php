@@ -123,7 +123,7 @@ class C_Order_Model extends \Model\C_Order_Concern
     $this->db->select_as("$this->tbl6_as.id", 'unit_id', 0);
     $this->db->select_as("COALESCE($this->tbl6_as.nomor, $this->tbl2_as.nomor)", 'nomor', 0);
     $this->db->select_as("COALESCE($this->tbl6_as.blok, $this->tbl2_as.blok)", 'blok', 0);
-    $this->db->select_as("$this->tbl6_as.posisi", 'posisi', 0);
+    $this->db->select_as("COALESCE($this->tbl6_as.posisi, $this->tbl2_as.posisi)", 'posisi', 0);
     $this->db->select_as("$this->tbl3_as.tipe", 'tipe', 0);
     $this->db->select_as("COALESCE($this->tbl3_as.luas_tanah, $this->tbl2_as.lt,'')", 'luas_tanah', 0);
     $this->db->select_as("COALESCE($this->tbl3_as.luas_bangunan, $this->tbl2_as.lb,'')", 'luas_bangunan', 0);

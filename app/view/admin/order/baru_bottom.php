@@ -226,40 +226,21 @@ function addProduk(id, value="", value_detail=""){
 
             <div class="col-md-4 panel-kustom mb-3" style="display: none;">
                 <label for="iblok_${id}" data-count="${id}">Blok</label>
-                <select name="blok[]" id="iblok_${id}" data-count="${id}" class="form-control form-kustom">
-                    <option>-- pilih blok --</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="G">G</option>
-                    <option value="H">H</option>
-                    <option value="I">I</option>
-                    <option value="J">J</option>
-                    <option value="K">K</option>
-                    <option value="L">L</option>
-                    <option value="M">M</option>
-                    <option value="N">N</option>
-                    <option value="O">O</option>
-                    <option value="P">P</option>
-                    <option value="Q">Q</option>
-                    <option value="R">R</option>
-                    <option value="S">S</option>
-                    <option value="T">T</option>
-                    <option value="U">U</option>
-                    <option value="V">V</option>
-                    <option value="W">W</option>
-                    <option value="X">X</option>
-                    <option value="Y">Y</option>
-                    <option value="Z">Z</option>
-                </select>
+                <input name="blok[]" id="iblok_${id}" data-count="${id}" class="form-control form-kustom">
             </div>
 
             <div class="col-md-4 panel-kustom mb-3" style="display: none;">
                 <label for="inomor_${id}" data-count="${id}">Nomor</label>
                 <input name="nomor[]" type="number" id="inomor_${id}" data-count="${id}" class="form-control form-kustom">
+            </div>
+
+            <div class="col-md-4 panel-kustom mb-3">
+                <label for="iposisi_${id}" class="control-label">Posisi</label>
+                <select id="iposisi_${id}" name="posisi[]" type="text" class="form-control form-kustom">
+                    <option value="sayap">sayap</option>
+                    <option value="utama">utama</option>
+                    <option value="hook">hook</option>
+                </select>
             </div>
 
             <div class="col-md-4 panel-kustom mb-3" style="display: none;">
@@ -334,9 +315,9 @@ function setTotal(){
   $("#itotal_harga").val(total).trigger('keyup')
 }
 
-function getHistory(id, user_id, blok=""){
+function getHistory(id, user_id, blok="", posisi=""){
   return new Promise(function(resolve, reject){
-    var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id + '&user_id='+user_id + '&blok='+blok
+    var url = '<?=base_url("api_admin/order/get_history/?produk_id=")?>'+id + '&user_id='+user_id + '&blok='+blok + '&posisi='+posisi
     var metode = $("#imetode").val();
     if(metode) url += '&metode='+metode;
     var s = '';
@@ -404,8 +385,9 @@ $("#imetode").on('change', function(e){
   e.preventDefault();
   var id = $("#ib_produk_id_0").find("option:selected").val();
   var text = $("#ib_produk_id_0").find("option:selected").text();
+  var posisi = $("#iposisi_0").find("option:selected").val();
   var b_user_id = $("#ib_user_id").val();
-  getHistory(id, b_user_id, text).then(function(dt){
+  getHistory(id, b_user_id, text, posisi).then(function(dt){
     if(dt){
       $(".panel_history").html(dt).slideDown();
     }else{
@@ -435,8 +417,9 @@ $(document).on('change', '[name="b_produk_id[]"]', function(e){
   var b_user_id = $("#ib_user_id").val();
 	var id = $(this).find("option:selected").val();
 	var text = $(this).find("option:selected").text();
+  var posisi = $("#iposisi_0").find("option:selected").val();
   $(".panel_history").html('').slideUp();
-  getHistory(id, b_user_id, text).then(function(dt){
+  getHistory(id, b_user_id, text, posisi).then(function(dt){
     if(dt){
       $(".panel_history").html(dt).slideDown();
     }else{
@@ -594,9 +577,10 @@ $(document).on('click', '.history-pembayaran', function(e){
 	e.preventDefault();
   var id = $(this).attr('data-id');
   var blok = $(this).attr('data-blok');
+  var posisi = $("#iposisi_0").find("option:selected").val();
   var text = $(this).text();
   var b_user_id = $("#ib_user_id").val();
-  getHistory(id, b_user_id, blok).then(function(dt){
+  getHistory(id, b_user_id, blok, posisi).then(function(dt){
     var history = dt;
     $(".modal-title").text(text)
     $(".panel_history").html(history)

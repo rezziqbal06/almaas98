@@ -466,6 +466,7 @@ class Produk_Item extends JI_Controller
 		foreach ($custom_ordered as $co) {
 			if (!isset($co->blok)) $co->blok = '';
 			if (!isset($co->nomor)) $co->nomor = '';
+			if (!isset($co->posisi)) $co->posisi = '';
 			$co->id = 'kustom-' . $co->blok . $co->nomor;
 			$co->harga = $co->lt * $co->harga_satuan;
 			$co->harga = number_format($co->harga, 0, ',', '.');

@@ -150,7 +150,6 @@ class C_Order_Produk_Model extends \Model\C_Order_Produk_Concern
     $this->db->select_as("$this->tbl2_as.diskon", 'diskon', 0);
     $this->db->select_as("$this->tbl5_as.id", 'b_user_id', 0);
     $this->db->select_as("$this->tbl6_as.nama", 'a_pengguna_nama', 0);
-    $this->db->select_as("COALESCE($this->tbl3_as.posisi,'')", 'posisi', 0);
     $this->db->select_as("COALESCE($this->tbl7_as.nama,'')", 'kawasan', 0);
     $this->db->from($this->tbl, $this->tbl_as);
     $this->join_company();

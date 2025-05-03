@@ -297,7 +297,9 @@ class SENE_MySQLi_Engine
     {
         if (is_array($var)) {
         } else {
-            if (strtolower($var)=='null') {
+            if(!isset($var)){
+                return "NULL";
+            }else if (strtolower($var)=='null') {
                 return "NULL";
             } else {
                 return '"'.$this->__mysqli->real_escape_string($var).'"';
@@ -1160,7 +1162,7 @@ class SENE_MySQLi_Engine
 
         foreach ($datas as $ds) {
             foreach ($ds as $key=>$val) {
-                if (strtolower($val)=='now()' || strtolower($val)=='null') {
+                if (isset($val) && (strtolower($val)=='now()' || strtolower($val)=='null')) {
                     $sql .=''.$val.',';
                 } else {
                     $sql .=''.$this->esc($val).',';
@@ -1203,7 +1205,9 @@ class SENE_MySQLi_Engine
 
         foreach ($datas as $ds) {
             foreach ($ds as $key=>$val) {
-                if (strtolower($val)=='now()' || strtolower($val)=='null') {
+                if(!isset($val)){
+                    $sql .=''.$val.',';
+                }else if (strtolower($val)=='now()' || strtolower($val)=='null') {
                     $sql .=''.$val.',';
                 } else {
                     $sql .=''.$this->esc($val).',';
@@ -1244,6 +1248,8 @@ class SENE_MySQLi_Engine
             foreach ($datas as $key=>$val) {
                 if ($val=='NOW()' || $val=='now()') {
                     $sql .=''.$val.',';
+                } elseif (!isset($val)) {
+                    $sql .='NULL,';
                 } elseif (strtolower($val)=='null') {
                     $sql .='NULL,';
                 } else {
@@ -1476,6 +1482,8 @@ class SENE_MySQLi_Engine
             foreach ($datas as $key=>$val) {
                 if ($val=='NOW()' || $val=='now()') {
                     $sql .=''.$val.',';
+                } elseif (!isset($val)) {
+                    $sql .='NULL,';
                 } elseif (strtolower($val)=='null') {
                     $sql .='NULL,';
                 } else {
@@ -1509,7 +1517,9 @@ class SENE_MySQLi_Engine
                 die();
             }
             foreach ($data as $key=>$val) {
-                if (strtolower($val)=='now()' || strtolower($val)=='null') {
+                if (!isset($val)) {
+                    $sql .=''.$val.',';
+                }else if (strtolower($val)=='now()' || strtolower($val)=='null') {
                     $sql .=''.$val.',';
                 } else {
                     $sql .=''.$this->esc($val).',';
@@ -1522,7 +1532,9 @@ class SENE_MySQLi_Engine
 
         foreach ($datas as $ds) {
             foreach ($ds as $key=>$val) {
-                if (strtolower($val)=='now()' || strtolower($val)=='null') {
+                if(!isset($val)){
+                    $sql .=''.$val.',';
+                }else if (strtolower($val)=='now()' || strtolower($val)=='null') {
                     $sql .=''.$val.',';
                 } else {
                     $sql .=''.$this->esc($val).',';
